@@ -6,3 +6,4 @@ This repository contains all of my university projects and the class materials t
   - Computational Logic
   - Linear Algebra
   - Mathematical Analysis
+  - Educational Psychology
