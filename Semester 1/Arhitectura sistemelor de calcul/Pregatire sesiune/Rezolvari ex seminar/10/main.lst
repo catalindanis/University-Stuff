@@ -1,0 +1,98 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit, scanf, printf
+     6                                  import exit msvcrt.dll
+     7                                  import scanf msvcrt.dll
+     8                                  import printf msvcrt.dll
+     9                                  
+    10                                  segment data use32 class=data
+    11                                  
+    12 00000000 <res 00000004>          n resd 1
+    13 00000004 <res 00000190>          sir resd 100
+    14 00000194 256400                  format_citire db "%d", 0
+    15 00000197 25642000                format_afisare db "%d ", 0
+    16 0000019B <res 00000004>          valoare resd 1
+    17                                  
+    18                                  segment code use32 class=code
+    19                                  start:
+    20                                      ;scanf(format_citire, &n)
+    21 00000000 68[00000000]                push dword n
+    22 00000005 68[94010000]                push dword format_citire
+    23 0000000A FF15[00000000]              call [scanf]
+    24 00000010 83C408                      add esp, 4 * 2
+    25                                      
+    26 00000013 833D[00000000]00            cmp dword[n], 0
+    27 0000001A 0F8495000000                je final
+    28                                     
+    29 00000020 8B0D[00000000]              mov ecx, [n]
+    30                                      
+    31 00000026 BF[04000000]                mov edi, sir
+    32                                      citeste:
+    33 0000002B 51                              push ecx
+    34                                          
+    35                                          ;scanf(format_citire, &valoare)
+    36 0000002C 68[9B010000]                    push dword valoare
+    37 00000031 68[94010000]                    push dword format_citire
+    38 00000036 FF15[00000000]                  call [scanf]
+    39 0000003C 83C408                          add esp, 4 * 2
+    40                                          
+    41 0000003F A1[9B010000]                    mov eax, [valoare]
+    42 00000044 AB                              stosd
+    43                                          
+    44 00000045 59                              pop ecx
+    45 00000046 E2E3                        loop citeste
+    46                                      
+    47 00000048 8B0D[00000000]              mov ecx, [n]
+    48                                      
+    49 0000004E 83F901                      cmp ecx, 1
+    50 00000051 7E3B                        jle sortat
+    51 00000053 83E901                      sub ecx, 1
+    52                                      
+    53 00000056 B800000000                  mov eax, 0
+    54                                      outer_loop:
+    55 0000005B 51                              push ecx
+    56                                          
+    57 0000005C 89C3                            mov ebx, eax
+    58 0000005E 83C301                          add ebx, 1
+    59                                          
+    60                                          inner_loop:
+    61 00000061 8B1485[04000000]                    mov edx, [eax * 4 + sir]
+    62 00000068 8B0C9D[04000000]                    mov ecx, [ebx * 4 + sir]
+    63 0000006F 39CA                                cmp edx, ecx
+    64 00000071 7E0E                                jle e_ok
+    65                                              
+    66 00000073 890C85[04000000]                    mov [eax * 4 + sir], ecx
+    67 0000007A 89149D[04000000]                    mov [ebx * 4 + sir], edx
+    68                                              
+    69                                              e_ok:
+    70 00000081 43                                  inc ebx
+    71 00000082 3B1D[00000000]                      cmp ebx, [n]
+    72 00000088 7CD7                            jl inner_loop
+    73                                          
+    74 0000008A 40                              inc eax
+    75 0000008B 59                              pop ecx
+    76 0000008C E2CD                        loop outer_loop
+    77                                      
+    78                                      sortat:
+    79 0000008E 8B0D[00000000]              mov ecx, [n]
+    80 00000094 B800000000                  mov eax, 0
+    81                                      afisare:
+    82 00000099 51                              push ecx
+    83 0000009A 50                              push eax
+    84                                          
+    85                                          ;printf(format_afisare, sir[eax])
+    86 0000009B FF3485[04000000]                push dword [sir + eax * 4]
+    87 000000A2 68[97010000]                    push dword format_afisare
+    88 000000A7 FF15[00000000]                  call [printf]
+    89 000000AD 83C408                          add esp, 4 * 2
+    90                                          
+    91 000000B0 58                              pop eax
+    92 000000B1 40                              inc eax
+    93 000000B2 59                              pop ecx
+    94 000000B3 E2E4                        loop afisare
+    95                                      
+    96                                      final:
+    97 000000B5 6A00                        push dword 0
+    98 000000B7 FF15[00000000]              call [exit]

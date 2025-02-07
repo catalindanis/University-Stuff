@@ -1,0 +1,18 @@
+     1                                  bits 32
+     2                                  
+     3                                  extern exit
+     4                                  import exit msvcrt.dll
+     5                                  
+     6                                  global start
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10 00000000 6824                    a dw 12468h
+    10          ******************       warning: word data exceeds bounds [-w+number-overflow]
+    11                                  
+    12                                  segment code use32 class=code
+    13                                  start:
+    14 00000000 8F05[00000000]              pop dword[a]
+    15 00000006 6A00                        push dword 0
+    16 00000008 FF15[00000000]              call [exit]
+    17                                      

@@ -1,0 +1,45 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  import exit msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10 00000000 AB8EF74D21DDBCA3        a dq 0A3BCDD214DF78EABh
+    11 00000008 00                      n db 0
+    12                                  ;n = 3
+    13 00000009 00000000                b dd 0
+    14                                  ; b = 1D E6 E9 0D => (little endian) 0D E9 E6 1D
+    15 0000000D 00                      c db 0
+    16                                  ; c =  1111 0100 = F4
+    17                                  segment code use32 class=code
+    18                                  start:
+    19                                      ;Se da quadwordul A. Sa se obtina numarul intreg N reprezentat de bitii 17-19 ai lui A.
+    20                                      ;Sa se obtina apoi in B dublucuvantul rezultat prin rotirea spre stanga a dublucuvantului
+    21                                      ;superior al lui A cu N pozitii. Sa se obtina octetul C astfel:
+    22                                      ;bitii 0-2 ai lui C sunt bitii 9-11 ai lui B
+    23                                      ;bitii 3-7 ai lui C sunt bitii 20-24 ai lui B
+    24 00000000 A0[02000000]                mov al, [a+2]
+    25 00000005 240E                        and al, 1110b
+    26 00000007 D0E8                        shr al, 1
+    27 00000009 A2[08000000]                mov [n], al
+    28                                      
+    29 0000000E A1[04000000]                mov eax, [a + 4]
+    30 00000013 A3[09000000]                mov [b], eax
+    31 00000018 8A0D[08000000]              mov cl, [n]
+    32 0000001E D305[09000000]              rol dword[b], cl
+    33                                      
+    34 00000024 A1[09000000]                mov eax, [b]
+    35 00000029 C1E809                      shr eax, 9
+    36 0000002C 83E007                      and eax, 111b
+    37 0000002F 0805[0D000000]              or [c], al
+    38                                      
+    39 00000035 A1[09000000]                mov eax, [b]
+    40 0000003A C1E814                      shr eax, 20
+    41 0000003D 83E01F                      and eax, 11111b
+    42 00000040 C1E003                      shl eax, 3
+    43 00000043 0805[0D000000]              or [c], al
+    44 00000049 6A00                        push dword 0
+    45 0000004B FF15[00000000]              call [exit]

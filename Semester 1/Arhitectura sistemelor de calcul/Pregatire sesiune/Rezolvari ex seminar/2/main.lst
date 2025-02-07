@@ -1,0 +1,32 @@
+     1                                  bits 32 
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  import exit msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10 00000000 636174616C696E2065-     s db "catalin este frumos"
+    10 00000009 737465206672756D6F-
+    10 00000012 73                 
+    11                                  ls equ $ - s
+    12 00000013 00<rept>                d times ls db 0
+    13                                  
+    14                                  segment code use32 class=code
+    15                                  start:
+    16 00000000 B913000000                  mov ecx, ls
+    17 00000005 BE[00000000]                mov esi, s
+    18 0000000A BF[13000000]                mov edi, d
+    19                                      
+    20 0000000F E306                        jecxz final
+    21                                      
+    22                                      repeta:
+    23 00000011 AC                              lodsb
+    24 00000012 2C20                            sub al, 'a'-'A'
+    25 00000014 AA                              stosb
+    26 00000015 E2FA                        loop repeta
+    27                                      
+    28                                      final:
+    29 00000017 6A00                        push dword 0
+    30 00000019 FF15[00000000]              call [exit]

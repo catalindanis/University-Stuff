@@ -1,0 +1,59 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit, scanf, printf
+     6                                  import exit msvcrt.dll
+     7                                  import scanf msvcrt.dll
+     8                                  import printf msvcrt.dll
+     9                                  
+    10                                  segment data use32 class=data
+    11                                  
+    12 00000000 00000000                a dd 0
+    13 00000004 00000000                b dd 0
+    14 00000008 00                      rezultat db 0 
+    15 00000009 496E74726F64756365-     format_mesaj_citire db "Introduceti un numar : ", 0
+    15 00000012 746920756E206E756D-
+    15 0000001B 6172203A2000       
+    16 00000021 256400                  format_citire db "%d", 0
+    17 00000024 50726F647573756C20-     format_afisare db "Produsul este : %d", 0
+    17 0000002D 65737465203A202564-
+    17 00000036 00                 
+    18                                  
+    19                                  segment code use32 class=code
+    20                                  start:
+    21                                      ;printf(format_mesaj_citire)
+    22 00000000 68[09000000]                push dword format_mesaj_citire
+    23 00000005 FF15[00000000]              call [printf]
+    24 0000000B 83C404                      add esp, 4 * 1
+    25                                  
+    26                                      ;scanf(format_citire, &a)
+    27 0000000E 68[00000000]                push dword a
+    28 00000013 68[21000000]                push dword format_citire
+    29 00000018 FF15[00000000]              call [scanf]
+    30 0000001E 83C408                      add esp, 4 * 2
+    31                                      
+    32                                      ;printf(format_mesaj_citire)
+    33 00000021 68[09000000]                push dword format_mesaj_citire
+    34 00000026 FF15[00000000]              call [printf]
+    35 0000002C 83C404                      add esp, 4 * 1
+    36                                  
+    37                                      ;scanf(format_citire, &b)
+    38 0000002F 68[04000000]                push dword b
+    39 00000034 68[21000000]                push dword format_citire
+    40 00000039 FF15[00000000]              call [scanf]
+    41 0000003F 83C408                      add esp, 4 * 2
+    42                                      
+    43 00000042 A1[00000000]                mov eax, [a]
+    44 00000047 F72D[04000000]              imul dword [b]
+    45                                      
+    46                                      ;printf(format_afisare, a * b)
+    47 0000004D 52                          push edx
+    48 0000004E 50                          push eax
+    49 0000004F 68[24000000]                push format_afisare
+    50 00000054 FF15[00000000]              call [printf]
+    51 0000005A 83C40C                      add esp, 4 * 3
+    52                                      
+    53                                      
+    54 0000005D 6A00                        push dword 0
+    55 0000005F FF15[00000000]              call [exit]

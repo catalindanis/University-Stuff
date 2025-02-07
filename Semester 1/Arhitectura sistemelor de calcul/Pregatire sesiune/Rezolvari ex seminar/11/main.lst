@@ -1,0 +1,60 @@
+     1                                  bits 32 ; assembling for the 32 bits architecture
+     2                                  
+     3                                  global start        
+     4                                  
+     5                                  extern exit, gets, printf
+     6                                  import exit msvcrt.dll    
+     7                                  import gets msvcrt.dll        
+     8                                  import printf msvcrt.dll
+     9                                  
+    10                                  segment data use32 class=data
+    11                                  
+    12 00000000 <res 00000064>          sir resb 100
+    13 00000064 257300                  format_citire db "%s", 0
+    14                                  
+    15                                  segment code use32 class=code
+    16                                  start:
+    17                                      ;gets(sir)
+    18 00000000 68[00000000]                push dword sir
+    19 00000005 FF15[00000000]              call [gets]
+    20 0000000B 83C404                      add esp, 4 * 1
+    21                                      
+    22 0000000E B800000000                  mov eax, 0
+    23                                      repeta:
+    24 00000013 8A98[00000000]                  mov bl, [sir + eax]
+    25 00000019 80FB00                          cmp bl, 0
+    26 0000001C 7428                            je gata
+    27                                          
+    28 0000001E 80FB7A                          cmp bl, 'z'
+    29 00000021 7719                            ja caracter_special
+    30                                          
+    31 00000023 80FB61                          cmp bl, 'a'
+    32 00000026 731B                            jae nu_e_caracter_special
+    33                                          
+    34 00000028 80FB5A                          cmp bl, 'Z'
+    35 0000002B 770F                            ja caracter_special
+    36                                          
+    37 0000002D 80FB41                          cmp bl, 'A'
+    38 00000030 7311                            jae nu_e_caracter_special
+    39                                          
+    40 00000032 80FB39                          cmp bl, '9'
+    41 00000035 7705                            ja caracter_special
+    42                                          
+    43 00000037 80FB30                          cmp bl, '0'
+    44 0000003A 7307                            jae nu_e_caracter_special
+    45                                          
+    46                                          caracter_special:
+    47 0000003C C680[00000000]58                mov byte[sir + eax], 'X'
+    48                                          
+    49                                          nu_e_caracter_special:
+    50 00000043 40                              inc eax
+    51 00000044 EBCD                        jmp repeta
+    52                                      gata:
+    53                                      ;printf(format_citire, sir)
+    54 00000046 68[00000000]                push dword sir
+    55 0000004B 68[64000000]                push dword format_citire
+    56 00000050 FF15[00000000]              call [printf]
+    57 00000056 83C408                      add esp, 4 * 2
+    58                                      
+    59 00000059 6A00                        push dword 0      
+    60 0000005B FF15[00000000]              call [exit]      

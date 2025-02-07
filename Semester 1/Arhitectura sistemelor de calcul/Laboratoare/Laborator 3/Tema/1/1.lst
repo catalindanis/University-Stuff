@@ -1,0 +1,50 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  import exit msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10 00000000 19                      a db 25
+    11 00000001 0900                    b dw 9
+    12 00000003 08000000                c dd 8
+    13 00000007 0700000000000000        d dq 7
+    14                                  
+    15                                  segment code use32 class=code
+    16                                  start:
+    17                                      ; (a+c)-(d+b) = 33 - 16 = 17
+    18                                      ; a - byte
+    19                                      ; b - word
+    20                                      ; c - double word
+    21                                      ; d - quad word
+    22                                      ; *interpretare fara semn*
+    23                                      
+    24 00000000 B800000000                  mov EAX, 0 ; EAX <- 0
+    25 00000005 A0[00000000]                mov AL, [a] ; EAX <- a
+    26 0000000A 0305[03000000]              add EAX, [c] ; EAX <- a + c
+    27 00000010 BA00000000                  mov EDX, 0 ; EDX:EAX <- (a+c)
+    28 00000015 83D200                      adc EDX, 0
+    29                                      
+    30 00000018 50                          push EAX
+    31 00000019 52                          push EDX ; STACK <- EDX:EAX
+    32                                      
+    33 0000001A BA00000000                  mov EDX, 0
+    34 0000001F B800000000                  mov EAX, 0
+    35 00000024 66A1[01000000]              mov AX, [b] ; EDX:EAX <- b
+    36                                      
+    37 0000002A 8B1D[07000000]              mov EBX, [d]
+    38 00000030 8B0D[0B000000]              mov ECX, [d+4] ; ECX:EBX <- d
+    39                                      
+    40 00000036 01D8                        add EAX, EBX
+    41 00000038 11CA                        adc EDX, ECX ; EDX:EAX <- d + b
+    42                                      
+    43 0000003A 59                          pop ECX
+    44 0000003B 5B                          pop EBX ; ECX:EBX <- (a + c)
+    45                                      
+    46 0000003C 29C3                        sub EBX, EAX
+    47 0000003E 19D1                        sbb ECX, EDX ; ECX:EBX <- (a + c) - (d + b)
+    48                                      
+    49 00000040 FF3500000000                push dword[0]
+    50 00000046 E8(00000000)                call exit

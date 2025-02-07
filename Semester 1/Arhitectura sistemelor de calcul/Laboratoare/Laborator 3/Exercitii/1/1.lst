@@ -1,0 +1,136 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  import exit msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10 00000000 FB                      a db -5
+    11 00000001 0300                    b dw 3
+    12 00000003 F7FFFFFF                c dd -9
+    13 00000007 0200000000000000        d dq 2
+    14                                  
+    15                                  segment code use32 class=code
+    16                                  start:
+    17                                      ;a - byte, b - word, c - double word, d - qword - Interpretare fara semn
+    18                                      ;c-(a+d)+(b+d) = 7 = 00 00 00 00 00 00 00 07h
+    19                                      ;mov edx, 0
+    20                                      ;mov eax, 0
+    21                                      ;mov al, [a]
+    22                                      ;add eax, [d]
+    23                                      ;adc edx, [d+4]
+    24                                      
+    25                                      ;mov ebx, 0
+    26                                      ;mov ecx, 0
+    27                                      ;mov bx, [b]
+    28                                      ;add ebx, [d]
+    29                                      ;adc ecx, [d+4]
+    30                                      
+    31                                      ;sub ebx, eax
+    32                                      ;sbb ecx, edx
+    33                                      
+    34                                      ;mov eax, 0
+    35                                      ;mov edx, 0
+    36                                      
+    37                                      ;mov eax, [c]
+    38                                      ;add eax, ebx
+    39                                      ;adc edx, ecx
+    40                                      ;edx:eax = 7 = 00 00 00 00 00 00 00 07h
+    41                                      
+    42                                      ;a - byte, b - word, c - double word, d - qword - Interpretare fara semn
+    43                                      ;(c-a-d)+(c-b)-a = 3 = 00 00 00 00 00 00 00 03h
+    44                                      ;mov eax, 0
+    45                                      ;mov al, [a]
+    46                                      ;push dword[c]
+    47                                      ;sub [c], eax
+    48                                      ;mov eax, [c]
+    49                                      ;mov edx, 0
+    50                                      ;sub eax, [d]
+    51                                      ;sbb edx, [d+4]
+    52                                      
+    53                                      ;pop dword[c]
+    54                                      ;push edx
+    55                                      ;push eax
+    56                                      
+    57                                      ;mov eax, 0
+    58                                      ;mov ax, [b]
+    59                                      ;sub [c], eax
+    60                                      ;mov eax, 0
+    61                                      ;mov al, [a]
+    62                                      ;sub [c], eax
+    63                                      ;mov eax, [c]
+    64                                      ;mov edx, 0
+    65                                      
+    66                                      ;pop ebx
+    67                                      ;pop ecx
+    68                                      
+    69                                      ;add eax, ebx
+    70                                      ;adc edx, ecx
+    71                                      ;edx:eax = 3 = 00 00 00 00 00 00 00 03h 
+    72                                      
+    73                                      ;a - byte, b - word, c - double word, d - qword - Interpretare cu semn
+    74                                      ;b+c+d+a-(d+c) = -2
+    75                                      ;mov al, [a]
+    76                                      ;cbw
+    77                                      ;add ax, [b]
+    78                                      ;cwde
+    79                                      ;add eax, [c]
+    80                                      ;cdq
+    81                                      ;add eax, [d]
+    82                                      ;adc edx, [d+4]
+    83                                      
+    84                                      ;mov ebx, eax
+    85                                      ;mov ecx, edx
+    86                                      
+    87                                      
+    88                                      ;mov eax, [c]
+    89                                      ;cdq
+    90                                      ;add eax, [d]
+    91                                      ;adc edx, [d+4]
+    92                                      
+    93                                      ;xchg eax, ebx
+    94                                      ;xchg edx, ecx
+    95                                      
+    96                                      ;sub eax, ebx
+    97                                      ;sbb edx, ecx
+    98                                      
+    99                                      
+   100                                      ;a - byte, b - word, c - double word, d - qword - Interpretare cu semn
+   101                                      ;(a + b - c) + (a + b + d) - (a + b) = 9
+   102 00000000 A0[00000000]                mov al, [a]
+   103 00000005 6698                        cbw
+   104 00000007 660305[01000000]            add ax, [b]
+   105 0000000E 98                          cwde
+   106 0000000F 2B05[03000000]              sub eax, [c]
+   107 00000015 89C3                        mov ebx, eax
+   108                                      
+   109 00000017 A0[00000000]                mov al, [a]
+   110 0000001C 6698                        cbw
+   111 0000001E 660305[01000000]            add ax, [b]
+   112 00000025 98                          cwde
+   113 00000026 99                          cdq
+   114 00000027 0305[07000000]              add eax, [d]
+   115 0000002D 1315[0B000000]              adc edx, [d+4]
+   116                                      
+   117 00000033 01D8                        add eax, ebx
+   118 00000035 83D200                      adc edx, 0
+   119                                      
+   120 00000038 89C3                        mov ebx, eax
+   121 0000003A 89D1                        mov ecx, edx
+   122                                      
+   123 0000003C A0[00000000]                mov al, [a]
+   124 00000041 6698                        cbw
+   125 00000043 660305[01000000]            add ax, [b]
+   126 0000004A 98                          cwde
+   127 0000004B 99                          cdq
+   128                                      
+   129 0000004C 93                          xchg ebx, eax
+   130 0000004D 87CA                        xchg ecx, edx
+   131                                      
+   132 0000004F 29D8                        sub eax, ebx
+   133 00000051 19CA                        sbb edx, ecx
+   134                                      
+   135 00000053 6A00                        push dword 0
+   136 00000055 FF15[00000000]              call [exit]

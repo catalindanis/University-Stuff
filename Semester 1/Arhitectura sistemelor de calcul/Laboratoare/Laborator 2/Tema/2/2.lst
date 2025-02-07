@@ -1,0 +1,26 @@
+     1                                  ;(a+b-c)-(a+d)
+     2                                  ;a, b, c, d - byte
+     3                                  bits 32
+     4                                  
+     5                                  global start
+     6                                  
+     7                                  extern exit
+     8                                  import exit msvcrt.dll
+     9                                  
+    10                                  segment data use32 class=data
+    11                                  
+    12 00000000 01                      a DB 1
+    13 00000001 01                      b DB 1
+    14 00000002 01                      c DB 1
+    15 00000003 01                      d DB 1
+    16                                  
+    17                                  segment data use32 class=code
+    18                                  start:
+    19 00000004 A0[00000000]                mov AL, [a] ; AL <- a
+    20 00000009 0205[01000000]              add AL, [b] ; AL <- a + b
+    21 0000000F 2A05[02000000]              sub AL, [c] ; AL <- a + b - c
+    22 00000015 8A25[00000000]              mov AH, [a] ; AH <- a
+    23 0000001B 0225[03000000]              add AH, [d] ; AH <- a + d
+    24 00000021 28E0                        sub AL, AH  ; AL <- AL - AH = (a + b - c) - (a + d)
+    25 00000023 6A00                        push dword 0
+    26 00000025 FF15[00000000]              call [exit]

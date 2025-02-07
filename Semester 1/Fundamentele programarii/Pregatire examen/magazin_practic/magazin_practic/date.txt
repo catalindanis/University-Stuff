@@ -1,0 +1,10 @@
+1, Lapte, 5.99
+2, Cereale, 10.0
+3, Unt, 1.5
+4, Martipan, 3.49
+5, Ulei, 12.0
+6, Piept de pui, 16.99
+7, Salam, 13.99
+8, Pasta de dinti, 10.0
+9, Cascaval, 8.49
+10, Chips-uri, 11.22

@@ -1,0 +1,7 @@
+1,oaie,43.23
+2,caracal,21.75
+3,porc,173.24
+4,capra,38.25
+5,caine,33.45
+6,nutrie,7.23
+7,llama,56.23

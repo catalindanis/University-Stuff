@@ -1,0 +1,79 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  import exit msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10 00000000 FB                      a db -5
+    11 00000001 0300                    b dw 3
+    12 00000003 F7FFFFFF                c dd -9
+    13 00000007 0200000000000000        d dq 2
+    14                                  
+    15                                  segment code use32 class=code
+    16                                  start:
+    17                                      ;a - byte, b - word, c - double word, d - qword - Interpretare cu semn
+    18                                      ;b+c+d+a-(d+c) = -2
+    19                                      ;mov al, [a]
+    20                                      ;cbw
+    21                                      ;add ax, [b]
+    22                                      ;cwde
+    23                                      ;add eax, [c]
+    24                                      ;cdq
+    25                                      ;add eax, [d]
+    26                                      ;adc edx, [d+4]
+    27                                      
+    28                                      ;mov ebx, eax
+    29                                      ;mov ecx, edx
+    30                                      
+    31                                      
+    32                                      ;mov eax, [c]
+    33                                      ;cdq
+    34                                      ;add eax, [d]
+    35                                      ;adc edx, [d+4]
+    36                                      
+    37                                      ;xchg eax, ebx
+    38                                      ;xchg edx, ecx
+    39                                      
+    40                                      ;sub eax, ebx
+    41                                      ;sbb edx, ecx
+    42                                      
+    43                                      
+    44                                      ;a - byte, b - word, c - double word, d - qword - Interpretare cu semn
+    45                                      ;(a + b - c) + (a + b + d) - (a + b) = 9
+    46 00000000 A0[00000000]                mov al, [a]
+    47 00000005 6698                        cbw
+    48 00000007 660305[01000000]            add ax, [b]
+    49 0000000E 98                          cwde
+    50 0000000F 2B05[03000000]              sub eax, [c]
+    51 00000015 89C3                        mov ebx, eax
+    52                                      
+    53 00000017 A0[00000000]                mov al, [a]
+    54 0000001C 6698                        cbw
+    55 0000001E 660305[01000000]            add ax, [b]
+    56 00000025 98                          cwde
+    57 00000026 99                          cdq
+    58 00000027 0305[07000000]              add eax, [d]
+    59 0000002D 1315[0B000000]              adc edx, [d+4]
+    60                                      
+    61 00000033 01D8                        add eax, ebx
+    62 00000035 83D200                      adc edx, 0
+    63                                      
+    64 00000038 89C3                        mov ebx, eax
+    65 0000003A 89D1                        mov ecx, edx
+    66                                      
+    67 0000003C A0[00000000]                mov al, [a]
+    68 00000041 6698                        cbw
+    69 00000043 660305[01000000]            add ax, [b]
+    70 0000004A 98                          cwde
+    71 0000004B 99                          cdq
+    72                                      
+    73 0000004C 93                          xchg ebx, eax
+    74 0000004D 87CA                        xchg ecx, edx
+    75                                      
+    76 0000004F 29D8                        sub eax, ebx
+    77 00000051 19CA                        sbb edx, ecx
+    78 00000053 6A00                        push dword 0
+    79 00000055 FF15[00000000]              call [exit]

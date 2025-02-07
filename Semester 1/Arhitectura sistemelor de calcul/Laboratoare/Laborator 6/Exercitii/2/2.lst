@@ -1,0 +1,50 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  import exit msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10                                  ;     1   2   3   4   5
+    11                                  
+    12 00000000 072137132E              s1 db 7, 33, 55, 19, 46
+    13                                  ls1 equ $-s1
+    14 00000005 2115070D1B1337012E      s2 db 33, 21, 7, 13, 27, 19, 55, 1, 46 
+    15                                  ls2 equ $-s2
+    16 0000000E 00<rept>                d times ls2 db 0
+    17                                  
+    18                                  segment code use32 class=code
+    19                                  start:
+    20 00000000 B909000000                  mov ecx, ls2
+    21 00000005 BF[0E000000]                mov edi, d
+    22 0000000A BE[05000000]                mov esi, s2
+    23 0000000F E32A                        jecxz final
+    24                                      repeta:
+    25 00000011 51                              push ecx
+    26 00000012 AC                              lodsb ; al <- s2[index]
+    27 00000013 88C3                            mov bl, al
+    28                                          
+    29 00000015 B000                            mov al, 0
+    30 00000017 BA00000000                      mov edx, 0
+    31 0000001C 83FA05                          cmp edx, ls1
+    32 0000001F 7D16                            jge dupa
+    33                                          cauta:
+    34 00000021 8A8A[00000000]                      mov cl, [s1 + edx]
+    35 00000027 38D9                                cmp cl, bl
+    36 00000029 7408                                je gasit
+    37 0000002B 42                                  inc edx
+    38 0000002C 83FA05                              cmp edx, ls1
+    39 0000002F 7CF0                            jl cauta
+    40 00000031 EB04                            jmp dupa
+    41                                          gasit:
+    42 00000033 88D0                            mov al, dl
+    43 00000035 FEC0                            inc al
+    44                                          dupa:
+    45 00000037 AA                              stosb
+    46 00000038 59                              pop ecx
+    47 00000039 E2D6                        loop repeta
+    48                                      final:
+    49 0000003B 6A00                        push dword 0
+    50 0000003D FF15[00000000]              call [exit]

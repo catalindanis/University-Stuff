@@ -1,0 +1,54 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit, printf
+     6                                  import exit msvcrt.dll
+     7                                  import printf msvcrt.dll
+     8                                  
+     9                                  segment data use32 class=data
+    10                                  
+    11 00000000 78A63412345678122B-     sir dd 1234A678h, 12785634h, 1A4D3C2Bh
+    11 00000009 3C4D1A             
+    12                                  lg equ ($ - sir) / 4
+    13 0000000C <res 00000006>          sir_rez resw lg
+    14 00000012 256400                  format_afisare db "%d", 0
+    15 00000015 00000000                nr_biti_1 dd 0
+    16                                  
+    17                                  segment code use32 class=code
+    18                                  start:
+    19 00000000 BE[00000000]                mov esi, sir
+    20 00000005 BF[0C000000]                mov edi, sir_rez
+    21 0000000A FC                          cld
+    22 0000000B B903000000                  mov ecx, lg
+    23 00000010 E321                        jecxz final
+    24                                      
+    25                                      repeta:
+    26 00000012 AC                              lodsb
+    27 00000013 AC                              lodsb
+    28 00000014 88C3                            mov bl, al
+    29 00000016 AC                              lodsb
+    30 00000017 AC                              lodsb
+    31 00000018 88C4                            mov ah, al
+    32 0000001A 88D8                            mov al, bl
+    33 0000001C 66AB                            stosw
+    34                                          
+    35 0000001E 51                              push ecx
+    36                                          
+    37 0000001F B910000000                      mov ecx, 16
+    38                                          numara:
+    39 00000024 66D1E8                              shr ax, 1
+    40 00000027 8315[15000000]00                    adc dword[nr_biti_1], 0
+    41 0000002E E2F4                            loop numara
+    42                                   
+    43 00000030 59                              pop ecx
+    44 00000031 E2DF                        loop repeta
+    45                                      
+    46                                      final:
+    47                                      ;printf(format_afisare, nr_biti_1)
+    48 00000033 FF35[15000000]              push dword [nr_biti_1]
+    49 00000039 68[12000000]                push dword format_afisare
+    50 0000003E FF15[00000000]              call [printf]
+    51                                      
+    52 00000044 6A00                        push dword 0
+    53 00000046 FF15[00000000]              call [exit]

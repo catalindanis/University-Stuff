@@ -1,0 +1,66 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit, printf, scanf
+     6                                  
+     7                                  import exit msvcrt.dll
+     8                                  import printf msvcrt.dll
+     9                                  import scanf msvcrt.dll
+    10                                  
+    11                                  segment data use32 class=data
+    12                                  
+    13 00000000 616161626463636461-     s db "aaabdccdac"
+    13 00000009 63                 
+    14                                  ls equ $ - s
+    15 0000000A 00                      c db 0
+    16 0000000B 00000000                nr_aparitii dd 0
+    17 0000000F 496E74726F64756365-     format_mesaj_citire db "Introduceti un caracter : ", 0
+    17 00000018 746920756E20636172-
+    17 00000021 6163746572203A2000 
+    18 0000002A 2563                    format_citire db "%c"
+    19 0000002C 436172616374657275-     format_mesaj_afisare db "Caracterul este : %c", 10, "iar numarul de aparitii este : %d", 0
+    19 00000035 6C2065737465203A20-
+    19 0000003E 25630A696172206E75-
+    19 00000047 6D6172756C20646520-
+    19 00000050 617061726974696920-
+    19 00000059 65737465203A202564-
+    19 00000062 00                 
+    20                                  
+    21                                  segment code use32 class=code
+    22                                  start:
+    23                                      ;Se dă un sir de caractere (definit in segmentul de date). 
+    24                                      ;Să se citească de la tastatură un caracter, să se 
+    25                                      ;determine numărul de apariţii al acelui caracter în şirul 
+    26                                      ;dat şi să se afişeze acel caracter împreună cu numărul de apariţii al acestuia.
+    27                                      
+    28                                      ;printf(format_mesaj_citire)
+    29 00000000 68[0F000000]                push dword format_mesaj_citire
+    30 00000005 FF15[00000000]              call [printf]
+    31 0000000B 83C404                      add esp, 4 * 1
+    32                                      
+    33                                      ;scanf(format_citire, &c)
+    34 0000000E 68[0A000000]                push dword c
+    35 00000013 68[2A000000]                push dword format_citire
+    36 00000018 FF15[00000000]              call [scanf]
+    37 0000001E 83C408                      add esp, 4 * 2
+    38                                      
+    39 00000021 B90A000000                  mov ecx, ls
+    40 00000026 BE[00000000]                mov esi, s
+    41 0000002B FC                          cld
+    42                                      repeta:
+    43 0000002C AC                              lodsb 
+    44 0000002D 3A05[0A000000]                  cmp al, [c]
+    45 00000033 7506                            jne sari
+    46 00000035 FF05[0B000000]                  inc dword[nr_aparitii]
+    47                                          sari:
+    48 0000003B E2EF                        loop repeta
+    49                                      
+    50                                      ;printf(format_mesaj_afisare, c, nr_aparitii)
+    51 0000003D FF35[0B000000]              push dword [nr_aparitii]
+    52 00000043 FF35[0A000000]              push dword [c]
+    53 00000049 68[2C000000]                push dword format_mesaj_afisare
+    54 0000004E FF15[00000000]              call [printf]
+    55                                      
+    56 00000054 6A00                        push dword 0
+    57 00000056 FF15[00000000]              call [exit]

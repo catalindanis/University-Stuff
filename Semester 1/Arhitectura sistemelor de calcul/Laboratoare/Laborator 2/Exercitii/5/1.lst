@@ -1,0 +1,106 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  import exit msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10 00000000 05                      a db 5
+    11 00000001 03                      b db 3
+    12 00000002 02                      c db 2
+    13 00000003 06                      d db 6
+    14                                  
+    15 00000004 0D00                    e dw 13
+    16 00000006 0500                    f dw 5
+    17 00000008 0300                    g dw 3
+    18 0000000A 0400                    h dw 4
+    19                                  
+    20                                  segment code use32 class=code
+    21                                  start:
+    22                                      ;a,b,c,d-byte, e,f,g,h-word
+    23                                      ;((a-b)*4)/c = 4
+    24                                      ;mov al, [a]
+    25                                      ;sub al, [b]
+    26                                      ;mov ah, 4
+    27                                      ;mul ah
+    28                                      ;mov bl, [c]
+    29                                      ;div bl
+    30                                      ;al = 4 = 04h
+    31                                      
+    32                                      ;a,b,c,d-byte, e,f,g,h-word
+    33                                      ;a*(b+c)+34 = 59 = 003Bh
+    34                                      ;mov al, [b]
+    35                                      ;add al, [c]
+    36                                      ;mov ah, [a]
+    37                                      ;mul ah
+    38                                      ;add ax, 34
+    39                                      ;ax = 59 = 003Bh
+    40                                      
+    41                                      ;a,b,c,d-byte, e,f,g,h-word
+    42                                      ;a*d+b*c = 26 = 001Ah
+    43                                      ;mov al, [a]
+    44                                      ;mov ah, [d]
+    45                                      ;mul ah
+    46                                      ;mov bx, ax
+    47                                      ;mov al, [b]
+    48                                      ;mov ah, [c]
+    49                                      ;mul ah
+    50                                      ;add ax, bx
+    51                                      ;ax = 26 = 001Ah
+    52                                      
+    53                                      ;a,b,c,d-byte, e,f,g,h-word
+    54                                      ;f*(e-2)/[3*(d-5)] = 3 = 0003h
+    55                                      ;mov al, [d]
+    56                                      ;sub al, 5
+    57                                      ;mov ah, 3
+    58                                      ;mul ah
+    59                                      ;mov bx, ax
+    60                                      ;mov ax, [e]
+    61                                      ;sub ax, 2
+    62                                      ;mov dx, [f]
+    63                                      ;mul dx
+    64                                      ;div bx
+    65                                      ;ax = 3 = 0003h
+    66                                      
+    67                                      ;a,b,c,d-byte, e,f,g,h-word
+    68                                      ;[(a+b+c)*2]*3/g = 30 = 001Eh
+    69                                      ;mov al, [a]
+    70                                      ;add al, [b]
+    71                                      ;add al, [c]
+    72                                      ;mov ah, 2
+    73                                      ;mul ah
+    74                                      ;mov bx, 3
+    75                                      ;mul bx
+    76                                      ;mov bx, [g]
+    77                                      ;div bx
+    78                                      ;ax = 30 = 001Eh
+    79                                      
+    80                                      ;a,b,c,d-byte, e,f,g,h-word
+    81                                      ;(e+f+g)/(a+b) = 1 = 01h
+    82                                      ;mov ax, [e]
+    83                                      ;add ax, [f]
+    84                                      ;add ax, [g]
+    85                                      ;mov bl, [a]
+    86                                      ;add bl, [b]
+    87                                      ;div bl
+    88                                      ;al = 1 = 01h
+    89                                      
+    90                                      ;a,b,c,d-byte, e,f,g,h-word
+    91                                      ;100/(e+h-3*a) = 100 = 0064h
+    92 00000000 A0[00000000]                mov al, [a]
+    93 00000005 B403                        mov ah, 3
+    94 00000007 F6E4                        mul ah
+    95 00000009 6689C3                      mov bx, ax
+    96 0000000C 66A1[04000000]              mov ax, [e]
+    97 00000012 660305[0A000000]            add ax, [h]
+    98 00000019 6629D8                      sub ax, bx
+    99 0000001C 6689C3                      mov bx, ax
+   100 0000001F 66BA0000                    mov dx, 0
+   101 00000023 66B86400                    mov ax, 100
+   102 00000027 66F7F3                      div bx
+   103                                      ;ax = 100 = 0064h 
+   104                                      
+   105 0000002A 6A00                        push dword 0
+   106 0000002C FF15[00000000]              call [exit]

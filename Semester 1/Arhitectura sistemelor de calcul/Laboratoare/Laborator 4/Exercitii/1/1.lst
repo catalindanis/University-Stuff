@@ -1,0 +1,38 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  import exit msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10 00000000 599D                    a dw 1001110101011001b
+    11 00000002 8C3A                    b dw 0011101010001100b
+    12 00000004 00000000                c dd 0
+    13                                  ;c = 1001 1101 0101 1001 1010 1111 1111 0011b
+    14                                  ;c = 9Dh 59h AFh F3h => (little endian) = F3h AFh 59h 9Dh
+    15                                                               
+    16                                  segment code use32 class=code
+    17                                  start:
+    18                                      ;Se dau cuvintele A si B. Sa se obtina dublucuvantul C:
+    19                                      ;bitii 0-4 ai lui C coincid cu bitii 11-15 ai lui A
+    20                                      ;bitii 5-11 ai lui C au valoarea 1
+    21                                      ;bitii 12-15 ai lui C coincid cu bitii 8-11 ai lui B
+    22                                      ;bitii 16-31 ai lui C coincid cu bitii lui A
+    23 00000000 66A1[00000000]              mov ax, [a]
+    24 00000006 66C1E80B                    shr ax, 11
+    25 0000000A 660905[04000000]            or [c], ax
+    26 00000011 810D[04000000]E00F-         or dword[c], 111111100000b
+    26 00000019 0000               
+    27 0000001B 66A1[02000000]              mov ax, [b]
+    28 00000021 66C1E808                    shr ax, 8
+    29 00000025 66C1E00C                    shl ax, 12
+    30 00000029 660905[04000000]            or [c], ax
+    31 00000030 B800000000                  mov eax, 0
+    32 00000035 66A1[00000000]              mov ax, [a]
+    33 0000003B C1E010                      shl eax, 16
+    34 0000003E 0905[04000000]              or [c], eax
+    35                                      
+    36 00000044 6A00                        push dword 0
+    37 00000046 FF15[00000000]              call [exit]

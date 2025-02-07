@@ -1,0 +1,17 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  import exit msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10 00000000 34                      a db 1234h
+    10          ******************       warning: byte data exceeds bounds [-w+number-overflow]
+    11                                  
+    12                                  segment code use32 class=code
+    13                                  start:
+    14 00000000 B831323334                  mov eax, "1234"
+    15 00000005 6A00                        push dword 0
+    16 00000007 FF15[00000000]              call [exit]

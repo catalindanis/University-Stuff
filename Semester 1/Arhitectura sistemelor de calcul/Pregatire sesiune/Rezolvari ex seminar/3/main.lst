@@ -1,0 +1,42 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  import exit msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10 00000000 0519377F                s db 5, 25, 55, 127
+    11                                  ls equ $-s
+    12 00000004 <res 00000004>          d resb ls
+    13                                  
+    14                                  segment code use32 class=code
+    15                                  start:
+    16 00000000 B904000000                  mov ecx, ls
+    17 00000005 E323                        jecxz final
+    18                                      
+    19 00000007 BE[00000000]                mov esi, s
+    20 0000000C BF[04000000]                mov edi, d
+    21                                      repeta:
+    22 00000011 AC                              lodsb
+    23 00000012 B300                            mov bl, 0
+    24 00000014 51                              push ecx
+    25                                          
+    26 00000015 B908000000                      mov ecx, 8
+    27                                          numara:
+    28 0000001A A801                                test al, 1
+    29 0000001C 7402                                jz sari
+    30 0000001E FEC3                                inc bl
+    31                                              sari:
+    32 00000020 D0E8                                shr al, 1
+    33 00000022 E2F6                            loop numara
+    34                                          
+    35 00000024 59                              pop ecx
+    36 00000025 88D8                            mov al, bl
+    37 00000027 AA                              stosb
+    38 00000028 E2E7                        loop repeta
+    39                                      
+    40                                      final:
+    41 0000002A 6A00                        push dword 0
+    42 0000002C FF15[00000000]              call [exit]

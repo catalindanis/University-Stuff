@@ -1,0 +1,34 @@
+     1                                  bits 32
+     2                                  
+     3                                  extern exit
+     4                                  import exit msvcrt.dll
+     5                                  
+     6                                  global start
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10                                  ;Se dau 2 siruri de octeti S1 si S2 de aceeasi lungime. 
+    11                                  ;Sa se construiasca sirul D astfel incat fiecare element din D 
+    12                                  ;sa reprezinte diferenta dintre elementele de pe pozitiile 
+    13                                  ;corespunzatoare din S1 si S2.
+    14 00000000 010306020302            s1 db 1, 3, 6, 2, 3, 2
+    15 00000006 060308010205            s2 db 6, 3, 8, 1, 2, 5
+    16                                  ls equ $ - s2
+    17 0000000C 00<rept>                srez times ls db 0
+    18                                  ;pentru ex : srez = -5, 0, -2, 1, 1, -3
+    19                                  
+    20                                  segment code use32 class=code
+    21                                  start:
+    22 00000000 B906000000                  mov ecx, ls ; ecx <- lungimea sirurilor
+    23 00000005 BF00000000                  mov edi, 0  ; edi <- 0 (index-ul pentru parcurgerea sirurilor)
+    24 0000000A E317                        jecxz final ; daca lungimea sirului initial este 0, nu executa niciun pas
+    25                                      repeta:
+    26 0000000C 8A87[00000000]                  mov al, [s1+edi]   ; al <- s1[edi]
+    27 00000012 8A97[06000000]                  mov dl, [s2+edi]   ; dl <- s2[edi]
+    28 00000018 28D0                            sub al, dl         ; al <- al - dl
+    29 0000001A 8887[0C000000]                  mov [srez+edi], al ; srez[edi] <- al
+    30 00000020 47                              inc edi            ; edi++
+    31 00000021 E2E9                        loop repeta
+    32                                      final:
+    33 00000023 6A00                        push dword 0
+    34 00000025 FF15[00000000]              call [exit]

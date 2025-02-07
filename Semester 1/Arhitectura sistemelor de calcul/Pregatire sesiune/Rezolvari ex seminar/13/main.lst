@@ -1,0 +1,44 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit, printf, selectie
+     6                                  import exit msvcrt.dll
+     7                                  import printf msvcrt.dll
+     8                                  
+     9                                  segment data use32 class=data
+    10                                  
+    11 00000000 8F010C6363050E6407-     sir dd 630C018Fh, 640E0563h, 6102DF07h, 6202CF00h, 6506BF02h
+    11 00000009 DF026100CF026202BF-
+    11 00000012 0665               
+    12                                  ls equ ($ - sir) / 4
+    13 00000014 <res 0000000A>          sir_octeti resb ls * 2
+    14 0000001E 257800                  format_afisare db "%x", 0
+    15                                  
+    16                                  segment code use32 class=code
+    17                                  start:
+    18                                      
+    19 00000000 BE[00000000]                mov esi, sir
+    20 00000005 BF[14000000]                mov edi, sir_octeti
+    21 0000000A B905000000                  mov ecx, ls
+    22 0000000F FC                          cld
+    23                                      repeta:
+    24 00000010 AD                              lodsd
+    25 00000011 C1E808                          shr eax, 8
+    26 00000014 AA                              stosb
+    27 00000015 C1E808                          shr eax, 8
+    28 00000018 AA                              stosb
+    29 00000019 E2F5                        loop repeta
+    30                                      
+    31 0000001B 6A0A                        push ls * 2
+    32 0000001D 68[14000000]                push dword sir_octeti
+    33                                      ;call selectie
+    34 00000022 83C404                      add esp, 4 * 1
+    35                                      
+    36 00000025 50                          push dword eax
+    37 00000026 68[1E000000]                push dword format_afisare
+    38 0000002B FF15[00000000]              call [printf]
+    39 00000031 83C408                      add esp, 4 * 2
+    40                                      
+    41 00000034 6A00                        push dword 0
+    42 00000036 FF15[00000000]              call [exit]

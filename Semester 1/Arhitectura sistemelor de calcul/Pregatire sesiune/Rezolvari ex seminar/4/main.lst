@@ -1,0 +1,43 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  import exit msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10 00000000 6162636465666768        s dw "abcdefgh"
+    11                                  ls equ ($-s)/2
+    12 00000008 <res 00000004>          b1 resb ls
+    13 0000000C <res 00000004>          b2 resb ls
+    14                                  
+    15                                  segment code use32 class=code
+    16                                  start:
+    17                                      
+    18 00000000 B904000000                  mov ecx, ls
+    19 00000005 E31F                        jecxz final
+    20                                      
+    21 00000007 BE[00000000]                mov esi, s
+    22 0000000C BB[08000000]                mov ebx, b1 ; sir octeti superiori
+    23 00000011 BA[0C000000]                mov edx, b2 ; sir octeti inferiori
+    24                                      repeta:
+    25 00000016 66AD                            lodsw
+    26                                          
+    27 00000018 89D7                            mov edi, edx
+    28 0000001A AA                              stosb
+    29 0000001B 89FA                            mov edx, edi
+    30                                          
+    31 0000001D 89DF                            mov edi, ebx
+    32 0000001F 88E0                            mov al, ah
+    33 00000021 AA                              stosb
+    34 00000022 89FB                            mov ebx, edi
+    35 00000024 E2F0                        loop repeta
+    36                                      
+    37                                      final:
+    38 00000026 6A00                        push dword 0
+    39 00000028 FF15[00000000]              call [exit]
+    40                                      
+    41                                      
+    42                                      
+    43                                      

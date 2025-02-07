@@ -1,0 +1,43 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  import exit msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10 00000000 1122334455667788        A dq 8877665544332211h
+    11 00000008 <res 00000001>          N resb 1
+    12 00000009 <res 00000004>          B resd 1
+    13 0000000D <res 00000001>          C resb 1
+    14                                  
+    15                                  segment code use32 class=code
+    16                                  start:
+    17                                      ;Se da quadwordul A. Sa se obtina numarul intreg N reprezentat de bitii 35-37 ai lui A.
+    18                                      ;Sa se obtina apoi in B dublucuvantul rezultat prin rotirea spre dreapta 
+    19                                      ;a dublucuvantului inferior al lui A cu N pozitii. Sa se obtina octetul C astfel:
+    20                                      ;bitii 0-3 ai lui C sunt bitii 8-11 ai lui B
+    21                                      ;bitii 4-7 ai lui C sunt bitii 16-19 ai lui B
+    22                                      
+    23 00000000 A1[04000000]                mov EAX, [A+4] ; EAX <- dword-ul high din A
+    24                                      ; EAX: 32, 33, 34, 35, 36, 37 ..., 62, 63 (bitii din A)
+    25 00000005 C1E803                      SHR EAX, 3 ; EAX: 35, 36, 37, ..., 62, 63 (bitii din A) 
+    26 00000008 83E007                      AND EAX, 111b ; EAX: 35, 36, 37 (bitii din A)
+    27 0000000B A3[08000000]                mov [N], EAX; ; N <- numarul intreg N reprezentat de bitii 35, 36, 37 ai lui A
+    28                                      
+    29 00000010 8B1D[00000000]              mov EBX, [A] ; EBX <- dword-ul low din A   
+    30 00000016 8A0D[08000000]              mov CL, [N] ; CL <- N
+    31 0000001C D3CB                        ror EBX, CL ; EBX <- dword-ul low din A rotit spre dreapta de N ori
+    32 0000001E 891D[09000000]              mov [B], EBX ; B <- dword-ul low din A rotit spre dreapta de N ori
+    33                                      
+    34 00000024 8A0D[0A000000]              mov CL, [B+1] ; CL <- bitii 8, 9, 10, ... , 15 din B
+    35 0000002A 80E10F                      AND CL, 1111b ; CL <- bitii 8, 9, 10, 11 din B
+    36 0000002D 8A15[0B000000]              mov DL, [B+2] ; BL <- bitii 16, 17, ... , 31 din B
+    37 00000033 80E20F                      AND DL, 1111b ; DL <- bitii 16, 17, 18, 19 din B
+    38 00000036 C0E204                      SHL DL, 4 ; mutarea celor 4 valori de pe bitii 0, 1, 2, 3 pe 4, 5, 6, 7 in DL
+    39 00000039 08D1                        OR CL, DL ; CL <- bitii 8, 9, 10, 11, 16, 17, 18, 19 din B
+    40 0000003B 880D[0D000000]              mov [C], CL ; C <- bitii 8, 9, 10, 11, 16, 17, 18, 19 din B
+    41                                      
+    42 00000041 6A00                        push dword 0
+    43 00000043 FF15[00000000]              call [exit]

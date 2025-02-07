@@ -1,0 +1,21 @@
+     1                                  bits 32 
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  import exit msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10 00000000 C9                      b db 11001001b
+    11 00000001 493D                    a dw 0011110101001001b
+    12                                  ;b = 11001101b = CDh
+    13                                  
+    14                                  segment code use32 class=code
+    15                                  start:
+    16                                      ;Sa se inlocuiasca bitii 0-3 ai octetului B cu bitii 8-11 ai cuvantului A.
+    17 00000000 A0[02000000]                mov al, [a+1]
+    18 00000005 240F                        and al, 00001111b
+    19 00000007 0805[00000000]              or [b], al
+    20 0000000D 6A00                        push dword 0
+    21 0000000F FF15[00000000]              call [exit]

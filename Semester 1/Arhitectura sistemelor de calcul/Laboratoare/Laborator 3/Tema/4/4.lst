@@ -1,0 +1,87 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  import exit msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10 00000000 66                      a db 102
+    11 00000001 03                      b db 3
+    12 00000002 FEFF                    c dw -2
+    13 00000004 08000000                e dd 8
+    14 00000008 9CFDFFFFFFFFFFFF        x dq -612
+    15                                  
+    16                                  segment code use32 class=code
+    17                                  start:
+    18                                      ; (100 + a + b * c)/(a - 100) + e + x / a
+    19                                      ; a, b - byte
+    20                                      ; c - word
+    21                                      ; e - doubleword
+    22                                      ; x - qword
+    23                                      ; *interpretare cu semn*
+    24 00000000 A0[01000000]                mov AL, [b] ; AL <- b
+    25 00000005 6698                        cbw ; AX <- AL
+    26                                      ; AX = b
+    27                                      
+    28 00000007 66F72D[02000000]            imul word[c] ; DX:AX <- AX * c
+    29                                      ; DX:AX = b * c
+    30 0000000E 6652                        push DX
+    31 00000010 6650                        push AX
+    32 00000012 58                          pop EAX
+    33                                      ; EAX = b * c
+    34                                      
+    35 00000013 89C3                        mov EBX, EAX ; EBX <- EAX
+    36                                      ; EBX = b * c
+    37                                      
+    38 00000015 A0[00000000]                mov AL, [a] ; AL <- a
+    39 0000001A 6698                        cbw ; AX <- a
+    40 0000001C 98                          cwde ; EAX <- a
+    41 0000001D 01D8                        add EAX, EBX ; EAX <- a + b * c
+    42 0000001F 83C064                      add EAX, 100 ; EAX <- 100 + a + b * c
+    43                                      ; EAX = 100 + a + b * c
+    44                                      
+    45 00000022 50                          push EAX
+    46                                      
+    47 00000023 A0[00000000]                mov AL, [a] ; AL <- a
+    48 00000028 6698                        cbw ; AX <- a
+    49 0000002A 6689C3                      mov BX, AX ; BX <- a
+    50 0000002D 6683EB64                    sub BX, 100 ; BX <- a - 100
+    51                                      
+    52 00000031 6658                        pop AX
+    53 00000033 665A                        pop DX
+    54                                      ; DX:AX = 100 + a + b * c
+    55                                      
+    56 00000035 66F7FB                      idiv BX
+    57                                      ; AX = (100 + a + b * c) / (a - 100)
+    58                                      
+    59 00000038 6650                        push AX
+    60                                      
+    61 0000003A A0[00000000]                mov AL, [a] ; AX <- a
+    62 0000003F 6698                        cbw ; AX <- a
+    63 00000041 98                          cwde ; EAX <- a
+    64 00000042 89C3                        mov EBX, EAX ; EBX <- a
+    65                                      ; EBX = a
+    66                                      
+    67 00000044 A1[08000000]                mov EAX, [x] ; EAX <- x (dword nesemn.)
+    68 00000049 8B15[0C000000]              mov EDX, [x+4] ; EDX <- x (dword semn.)
+    69                                      ; EDX:EAX = x
+    70                                      
+    71 0000004F F7FB                        idiv EBX
+    72                                      ; EAX = x / a
+    73                                      
+    74 00000051 0305[04000000]              add EAX, [e] 
+    75 00000057 89C3                        mov EBX, EAX
+    76                                      ; EBX = e + x / a
+    77                                      
+    78 00000059 6658                        pop AX
+    79                                      ; AX = (100 + a + b * c) / (a - 100)
+    80                                      
+    81 0000005B 98                          cwde ; EAX <- AX
+    82                                      
+    83 0000005C 01D8                        add EAX, EBX
+    84                                      ; EAX = (100 + a + b * c) / (a - 100) + e + x / a
+    85                                      
+    86 0000005E FF3500000000                push dword[0]
+    87 00000064 FF15[00000000]              call [exit]

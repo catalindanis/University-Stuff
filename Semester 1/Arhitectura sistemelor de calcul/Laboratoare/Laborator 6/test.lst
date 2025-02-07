@@ -1,0 +1,67 @@
+     1                                  bits 32
+     2                                  
+     3                                  extern exit
+     4                                  import exit msvcrt.dll
+     5                                  
+     6                                  global start
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10 00000000 02000100                s dw 2, 1
+    11                                  ls equ $-s
+    12 00000004 00                      lc db 0
+    13 00000005 00                      incmax db 0
+    14 00000006 01                      lmax db 1
+    15                                  
+    16                                  segment code use32 class=code
+    17                                  start:
+    18                                      ;Dandu-se un sir de cuvinte,
+    19                                      ;sa se calculeze cea mai lunga 
+    20                                      ;secventa de cuvinte ordonate crescator din acest sir.
+    21 00000000 B900000000                  mov ecx, 0 ; ecx reprezinta pozitia de unde incepe secventa curenta
+    22 00000005 83F904                      cmp ecx, ls ; compar ecx cu ls inainte de a executa un set de pasi
+    23 00000008 7D7C                        jge final ; daca lungimea sirului este <=0 atunci sar direct la finalul programului
+    24 0000000A 83F902                      cmp ecx, 2 ; daca lungimea sirului este chiar 1, atunci stim rezultatul
+    25 0000000D 746D                        je lungime_1
+    26                                      reindexare:
+    27 0000000F BE[00000000]                    mov esi, s ; punem in sirul sursa sirul s
+    28 00000014 01CE                            add esi, ecx ; setam pozitia de la care incepem cautarea
+    29 00000016 89CB                            mov ebx, ecx ; folosim ebx ca index in bucla interioara
+    30 00000018 83FB02                          cmp ebx, ls-2 ; comparam initial indexul curent cu lungimea sirului
+    31 0000001B 7D3C                            jge sari ; daca avem doar 1 element in subsirul curent nu are rost sa verificam conditia
+    32 0000001D C605[04000000]01                mov byte[lc], 1
+    33                                          verificare_conditie:
+    34 00000024 66AD                                lodsw ; AX <- s[ecx]
+    35 00000026 6689C2                              mov DX, AX ; DX <- s[ecx]
+    36 00000029 66AD                                lodsw ; AX <- s[ecx+1]
+    37 0000002B 83EE02                              sub ESI, 2 
+    38 0000002E 6639C2                              cmp DX, AX ; compar s[ecx] cu s[ecx+1]
+    39 00000031 7F0E                                jg iesire ; daca nu respecta conditia => ies din bucla
+    40 00000033 FE05[04000000]                      inc byte[lc] ; incrementez lungimea curenta a secventei
+    41 00000039 83C302                              add ebx, 2 ; 
+    42 0000003C 83FB02                              cmp ebx, ls-2
+    43 0000003F 7CE3                            jl verificare_conditie
+    44                                          iesire:
+    45 00000041 A0[04000000]                    mov al, [lc]    
+    46 00000046 3A05[06000000]                  cmp al, [lmax]
+    47 0000004C 7E0B                            jle sari
+    48 0000004E A2[06000000]                    mov [lmax], al
+    49 00000053 880D[05000000]                  mov [incmax], cl
+    50                                          sari:
+    51 00000059 83C102                          add ecx, 2 ; crestem din 2 in 2 (lucram pe word)
+    52 0000005C 83F904                          cmp ecx, ls ; eticheta reindexare se repeta doar cat timp ecx < ls
+    53 0000005F 7CAE                        jl reindexare
+    54 00000061 B800000000                  mov eax, 0
+    55 00000066 A0[05000000]                mov al, [incmax]
+    56 0000006B B101                        mov cl, 1
+    57 0000006D D3E8                        shr eax, cl
+    58 0000006F B900000000                  mov ecx, 0
+    59 00000074 8B0D[06000000]              mov ecx, [lmax]
+    60 0000007A EB0A                        jmp final ; daca am ajuns aici trebuie sa sarim la final pentru a nu executa
+    61                                                ; cazul sirului de lungime 1
+    62                                      lungime_1:
+    63 0000007C B800000000                      mov eax, 0
+    64 00000081 B901000000                      mov ecx, 1
+    65                                      final:
+    66 00000086 6A00                        push dword 0
+    67 00000088 FF15[00000000]              call [exit]

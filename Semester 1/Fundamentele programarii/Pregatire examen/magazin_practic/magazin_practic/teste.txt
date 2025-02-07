@@ -1,0 +1,2 @@
+2, Cereale, 6.99
+1, Lapte, 10

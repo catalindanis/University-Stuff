@@ -1,0 +1,110 @@
+     1                                  bits 32
+     2                                  
+     3                                  extern exit, fscanf, printf, fopen, fclose
+     4                                  extern construire_sir_pare, construire_sir_impare
+     5                                  import exit msvcrt.dll
+     6                                  import fscanf msvcrt.dll
+     7                                  import printf msvcrt.dll
+     8                                  import fopen msvcrt.dll
+     9                                  import fclose msvcrt.dll
+    10                                  
+    11                                  global start
+    12                                  
+    13                                  segment data use32 class=data public
+    14                                  
+    15 00000000 646174652E74787400      file_name db "date.txt", 0 
+    16 00000009 7200                    access_mode db "r", 0
+    17 0000000B 00000000                descriptor dd 0
+    18 0000000F 256400                  format db "%d", 0
+    19 00000012 25642000                format_afisare db "%d ", 0
+    20 00000016 0A00                    urmatoarea_linie db `\n`, 0
+    21 00000018 00000000                n dd 0
+    22                                  
+    23 0000001C 00000000<rept>          sir times 100 dd 0
+    24 000001AC 00000000                lg_sir dd 0
+    25                                  
+    26 000001B0 00000000<rept>          sir_pare times 100 dd 0
+    27 00000340 00000000                lg_sir_pare dd 0
+    28                                  
+    29 00000344 00000000<rept>          sir_impare times 100 dd 0
+    30 000004D4 00000000                lg_sir_impare dd 0
+    31                                  
+    32                                  segment code use32 class=code public
+    33                                  start:
+    34 00000000 68[09000000]                push dword access_mode
+    35 00000005 68[00000000]                push dword file_name
+    36 0000000A FF15[00000000]              call [fopen]
+    37 00000010 83C408                      add esp, 4 * 2
+    38                                      
+    39 00000013 83F800                      cmp eax, 0
+    40 00000016 0F84C0000000                je final
+    41 0000001C A3[0B000000]                mov [descriptor], eax
+    42                                      
+    43 00000021 BF[1C000000]                mov edi, sir
+    44                                      repeta:
+    45 00000026 68[18000000]                    push n
+    46 0000002B 68[0F000000]                    push dword format
+    47 00000030 FF35[0B000000]                  push dword [descriptor]
+    48 00000036 FF15[00000000]                  call [fscanf]
+    49 0000003C 83C40C                          add esp, 4 * 3
+    50                                          
+    51 0000003F 83F8FF                          cmp eax, -1
+    52 00000042 740E                            je final_citire
+    53                                          
+    54 00000044 A1[18000000]                    mov eax, [n]
+    55 00000049 FF05[AC010000]                  inc dword[lg_sir]
+    56 0000004F AB                              stosd
+    57 00000050 EBD4                            jmp repeta    
+    58                                      final_citire:
+    59                                      
+    60                                      ;construire_sir_pare(n, sir, n_pare, sir_pare)
+    61 00000052 68[B0010000]                push dword sir_pare
+    62 00000057 68[40030000]                push dword lg_sir_pare
+    63 0000005C 68[1C000000]                push dword sir
+    64 00000061 FF35[AC010000]              push dword [lg_sir]
+    65 00000067 E8(00000000)                call construire_sir_pare
+    66 0000006C 83C410                      add esp, 4 * 4
+    67                                      
+    68                                      ;construire_sir_impare(n, sir, &n_impare, sir_impare)
+    69 0000006F 68[44030000]                push dword sir_impare
+    70 00000074 68[D4040000]                push dword lg_sir_impare
+    71 00000079 68[1C000000]                push dword sir
+    72 0000007E FF35[AC010000]              push dword [lg_sir]
+    73 00000084 E8(00000000)                call construire_sir_impare
+    74 00000089 83C410                      add esp, 4 * 4
+    75                                      
+    76 0000008C 8B0D[40030000]              mov ecx, [lg_sir_pare]
+    77 00000092 E319                        jecxz sari_afisare_pare
+    78 00000094 BE[B0010000]                mov esi, sir_pare
+    79                                      afisarePare:
+    80 00000099 51                              push ecx
+    81 0000009A AD                              lodsd
+    82 0000009B 50                              push dword eax
+    83 0000009C 68[12000000]                    push dword format_afisare
+    84 000000A1 FF15[00000000]                  call [printf]
+    85 000000A7 83C408                          add esp, 4 * 2
+    86 000000AA 59                              pop ecx
+    87 000000AB E2EC                        loop afisarePare
+    88                                      sari_afisare_pare:
+    89                                      
+    90 000000AD 68[16000000]                push dword urmatoarea_linie
+    91 000000B2 FF15[00000000]              call [printf]
+    92 000000B8 83C404                      add esp, 4 * 1
+    93                                      
+    94 000000BB 8B0D[D4040000]              mov ecx, [lg_sir_impare]
+    95 000000C1 E319                        jecxz sari_afisare_impare
+    96 000000C3 BE[44030000]                mov esi, sir_impare
+    97                                      afisareImpare:
+    98 000000C8 51                              push ecx
+    99 000000C9 AD                              lodsd
+   100 000000CA 50                              push dword eax
+   101 000000CB 68[12000000]                    push dword format_afisare
+   102 000000D0 FF15[00000000]                  call [printf]
+   103 000000D6 83C408                          add esp, 4 * 2
+   104 000000D9 59                              pop ecx
+   105 000000DA E2EC                        loop afisareImpare
+   106                                      sari_afisare_impare:
+   107                                      
+   108                                      final:
+   109 000000DC 6A00                        push dword 0
+   110 000000DE FF15[00000000]              call [exit]

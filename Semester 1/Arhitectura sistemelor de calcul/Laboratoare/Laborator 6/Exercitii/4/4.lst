@@ -1,0 +1,55 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  import exit msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10 00000000 4030201080706050        s DD 10203040h, 50607080h
+    11                                  ls equ ($-s)
+    12 00000008 00<rept>                d times ls db 0
+    13                                  ;d = 56h, 3Ch, 34h, 2Bh, 1Ah, 15h, 12h, 07h
+    14                                  
+    15                                  segment code use32 class=code
+    16                                  start:
+    17 00000000 BE[00000000]                mov esi, s
+    18 00000005 B902000000                  mov ecx, ls / 4
+    19 0000000A BF[08000000]                mov edi, d
+    20 0000000F FC                          cld
+    21 00000010 E33B                        jecxz final
+    22                                      repeta:
+    23 00000012 AD                              lodsd
+    24 00000013 AA                              stosb
+    25 00000014 C1E808                          shr eax, 8
+    26 00000017 AA                              stosb
+    27 00000018 C1E808                          shr eax, 8
+    28 0000001B AA                              stosb
+    29 0000001C C1E808                          shr eax, 8
+    30 0000001F AA                              stosb
+    31 00000020 E2F0                        loop repeta
+    32                                      
+    33 00000022 B908000000                  mov ecx, ls  
+    34                                      iterare:
+    35 00000027 51                              push ecx
+    36                                          
+    37 00000028 BE[08000000]                    mov esi, d
+    38 0000002D BF[09000000]                    mov edi, d + 1
+    39                                          
+    40 00000032 B907000000                      mov ecx, ls-1
+    41 00000037 E314                            jecxz final
+    42                                          compara:
+    43 00000039 A6                                  cmpsb 
+    44 0000003A 770C                                ja desc
+    45 0000003C 8A46FF                                  mov al, [esi - 1]
+    46 0000003F 8A5FFF                                  mov bl, [edi - 1]
+    47 00000042 885EFF                                  mov [esi - 1], bl
+    48 00000045 8847FF                                  mov [edi - 1], al
+    49                                              desc:
+    50 00000048 E2EF                            loop compara
+    51 0000004A 59                              pop ecx
+    52 0000004B E2DA                        loop iterare
+    53                                      final:
+    54 0000004D 6A00                        push dword 0
+    55 0000004F FF15[00000000]              call [exit]

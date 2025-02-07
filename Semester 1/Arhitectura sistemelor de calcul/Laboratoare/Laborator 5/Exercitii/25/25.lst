@@ -1,0 +1,43 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  import exit msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10 00000000 2B34326138345835        S1 db '+', '4', '2', 'a', '8', '4', 'X', '5'
+    11                                  ls1 equ $-S1
+    12 00000008 613435                  S2 db 'a', '4', '5'
+    13                                  ls2 equ $-S2
+    14 0000000B 00<rept>                D times ls1 db 0
+    15                                  ;D = '+', '2', '8', 'X'
+    16                                  
+    17                                  segment code use32 class=code
+    18                                  start:
+    19 00000000 B900000000                  mov ecx, 0
+    20 00000005 83F908                      cmp ecx, ls1
+    21 00000008 7D2D                        jge final
+    22 0000000A BA00000000                  mov edx, 0
+    23                                      repeta:
+    24 0000000F 8A81[00000000]                  mov al, [S1+ecx]
+    25 00000015 51                              push ecx
+    26 00000016 B903000000                      mov ecx, ls2
+    27 0000001B E30C                            jecxz adauga
+    28                                          cauta:
+    29 0000001D 8A99[07000000]                      mov bl, [S2 + ecx - 1]
+    30 00000023 38D8                                cmp al, bl
+    31 00000025 7409                                je sari
+    32 00000027 E2F4                            loop cauta
+    33                                          adauga:
+    34 00000029 8882[0B000000]                  mov [D + edx], al
+    35 0000002F 42                              inc edx
+    36                                          sari:
+    37 00000030 59                              pop ecx
+    38 00000031 41                              inc ecx
+    39 00000032 83F908                          cmp ecx, ls1
+    40 00000035 7CD8                        jl repeta
+    41                                      final:
+    42 00000037 6A00                        push dword 0
+    43 00000039 FF15[00000000]              call [exit]

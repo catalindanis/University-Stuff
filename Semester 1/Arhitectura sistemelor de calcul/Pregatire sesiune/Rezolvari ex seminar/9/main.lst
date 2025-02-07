@@ -1,0 +1,47 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit, printf, scanf
+     6                                  import exit msvcrt.dll
+     7                                  import printf msvcrt.dll
+     8                                  import scanf msvcrt.dll
+     9                                  
+    10                                  segment data use32 class=data
+    11                                  
+    12 00000000 <res 00000004>          n resd 1
+    13 00000004 256400                  format db "%d", 0
+    14                                  
+    15                                  segment code use32 class=code
+    16                                  start:
+    17                                      ;scanf(format, &n)
+    18 00000000 68[00000000]                push dword n
+    19 00000005 68[04000000]                push dword format
+    20 0000000A FF15[00000000]              call [scanf]
+    21 00000010 83C408                      add esp, 4 * 2
+    22                                      
+    23 00000013 833D[00000000]00            cmp dword[n], 0
+    24 0000001A 7D06                        jge e_pozitiv
+    25                                      
+    26 0000001C F71D[00000000]              NEG dword[n] ; n = 0 - n
+    27                                      
+    28                                      e_pozitiv:
+    29                                      
+    30 00000022 B900000000                  mov ecx, 0 ; nr cifre
+    31 00000027 A1[00000000]                mov eax, [n]
+    32                                      repeta:
+    33 0000002C BA00000000                      mov edx, 0
+    34 00000031 BB0A000000                      mov ebx, 10
+    35 00000036 F7F3                            div ebx
+    36 00000038 41                              inc ecx
+    37 00000039 83F800                          cmp eax, 0
+    38 0000003C 75EE                        jne repeta
+    39                                      
+    40                                      ;printf(format, ecx)
+    41 0000003E 51                          push ecx
+    42 0000003F 68[04000000]                push dword format
+    43 00000044 FF15[00000000]              call [printf]
+    44 0000004A 83C408                      add esp, 4 * 2
+    45                                      
+    46 0000004D 6A00                        push dword 0
+    47 0000004F FF15[00000000]              call [exit]

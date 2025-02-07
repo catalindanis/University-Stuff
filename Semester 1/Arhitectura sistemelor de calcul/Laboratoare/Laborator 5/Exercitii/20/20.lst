@@ -1,0 +1,41 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  import exit msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10 00000000 0104020408020101        s db 1, 4, 2, 4, 8, 2, 1, 1
+    11                                  ls equ $-s
+    12 00000008 00<rept>                d times ls db 0
+    13                                  ;d = 1, 4, 2, 8
+    14                                  
+    15                                  segment code use32 class=code
+    16                                  start:
+    17 00000000 B900000000                  mov ecx, 0
+    18 00000005 83F908                      cmp ecx, ls
+    19 00000008 7D2A                        jge final
+    20 0000000A BA00000000                  mov edx, 0
+    21                                      repeta:
+    22 0000000F 8A81[00000000]                 mov al, [s + ecx]
+    23 00000015 51                             push ecx
+    24 00000016 89D1                           mov ecx, edx
+    25 00000018 E30C                           jecxz adauga
+    26                                         cauta:
+    27 0000001A 8A99[07000000]                  mov bl, [d + ecx - 1]
+    28 00000020 38D8                            cmp al, bl
+    29 00000022 7409                            je continua
+    30 00000024 E2F4                           loop cauta
+    31                                         adauga:
+    32 00000026 8882[08000000]                 mov [d + edx], al
+    33 0000002C 42                             inc edx
+    34                                         continua:
+    35 0000002D 59                             pop ecx
+    36 0000002E 41                             inc ecx
+    37 0000002F 83F908                         cmp ecx, ls
+    38 00000032 7CDB                        jl repeta
+    39                                      final:
+    40 00000034 6A00                        push dword 0
+    41 00000036 FF15[00000000]              call [exit]

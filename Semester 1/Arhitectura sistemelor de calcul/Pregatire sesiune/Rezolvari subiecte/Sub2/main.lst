@@ -1,0 +1,153 @@
+     1                                  bits 32 
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit, printf, scanf
+     6                                  import exit msvcrt.dll
+     7                                  import printf msvcrt.dll
+     8                                  import scanf msvcrt.dll
+     9                                  
+    10                                  segment data use32 class=data
+    11                                  
+    12 00000000 887766554433221111-     s dq 1122334455667788h, 99AABBCCDDEEFF11h, 0FF000000000000055h
+    12          ******************       warning: numeric constant 0FF000000000000055h does not fit in 64 bits [-w+number-overflow]
+    12 00000009 FFEEDDCCBBAA995500-
+    12 00000012 0000000000F0       
+    13 00000018 FFEFFFFFFFFFFEFFAB-       dq 0FFFEFFFFFFFFEFFFh, 450000A8000000ABh, 11113733555577ABh
+    13 00000021 000000A8000045AB77-
+    13 0000002A 555533371111       
+    14                                  lg equ $ - s
+    15 00000030 00000000                n dd 0
+    16 00000034 256400                  format_citire db "%d", 0 
+    17 00000037 2578682C2000            format_afisare db "%xh, ", 0
+    18 0000003D <res 00000030>          sir_rez resb lg
+    19 0000006D <res 00000030>          sir_rez_biti resb lg
+    20 0000009D 00000000                lungime dd 0
+    21                                   
+    22                                  segment code use32 class=code
+    23                                  start:
+    24 00000000 02                          a db 2
+    25 00000001 0300                        d dw 3
+    26 00000003 68[30000000]                push dword n
+    27 00000008 68[34000000]                push dword format_citire
+    28 0000000D FF15[00000000]              call [scanf]
+    29 00000013 83C408                      add esp, 4 * 2
+    30                                      
+    31 00000016 B930000000                  mov ecx, lg
+    32 0000001B 83F900                      cmp ecx, 0
+    33 0000001E 0F84DC000000                je final
+    34                                      
+    35 00000024 BE[00000000]                mov esi, s
+    36 00000029 68[6D000000]                push sir_rez_biti
+    37 0000002E BF[3D000000]                mov edi, sir_rez
+    38 00000033 FC                          cld
+    39                                      repeta:
+    40 00000034 AC                              lodsb
+    41                                          
+    42 00000035 88C3                            mov bl, al
+    43 00000037 B200                            mov dl, 0
+    44 00000039 51                              push ecx
+    45                                          
+    46 0000003A B908000000                      mov ecx, 8
+    47                                          numara:
+    48 0000003F D0E3                                shl bl, 1
+    49 00000041 80D200                              adc dl, 0
+    50 00000044 E2F9                            loop numara
+    51 00000046 59                              pop ecx
+    52                                          
+    53 00000047 89FB                            mov ebx, edi
+    54                                          
+    55 00000049 5F                              pop edi
+    56                                          
+    57 0000004A 88C4                            mov ah, al
+    58 0000004C 88D0                            mov al, dl
+    59 0000004E AA                              stosb
+    60 0000004F FF05[9D000000]                  inc dword[lungime]
+    61                                          
+    62 00000055 88E0                            mov al, ah
+    63                                          
+    64 00000057 57                              push edi
+    65                                          
+    66 00000058 89DF                            mov edi, ebx
+    67                                          
+    68 0000005A AA                              stosb
+    69 0000005B 2B0D[30000000]                  sub ecx, [n]
+    70 00000061 83C101                          add ecx, 1
+    71                                          
+    72 00000064 83F900                          cmp ecx, 0
+    73 00000067 7E0F                            jle gata
+    74 00000069 51                              push ecx
+    75                                          
+    76 0000006A 8B0D[30000000]                  mov ecx, [n]
+    77 00000070 83E901                          sub ecx, 1
+    78 00000073 F3AC                            rep lodsb
+    79                                          
+    80 00000075 59                              pop ecx
+    81 00000076 E2BC                        loop repeta
+    82                                      gata:
+    83                                      
+    84 00000078 BE00000000                  mov esi, 0
+    85 0000007D 8B0D[9D000000]              mov ecx, [lungime]
+    86 00000083 83F901                      cmp ecx, 1
+    87 00000086 744A                        je afisare
+    88 00000088 7C76                        jl final
+    89 0000008A 83E901                      sub ecx, 1
+    90                                      
+    91                                      outer_loop:
+    92 0000008D 89F7                            mov edi, esi
+    93 0000008F 83C701                          add edi, 1
+    94                                          
+    95                                          inner_loop:
+    96 00000092 8A86[6D000000]                      mov al, [sir_rez_biti + esi]
+    97 00000098 8A9F[6D000000]                      mov bl, [sir_rez_biti + edi]
+    98 0000009E 38D8                                cmp al, bl
+    99 000000A0 7D24                                jge sortat
+   100                                              
+   101 000000A2 889E[6D000000]                      mov [sir_rez_biti + esi], bl
+   102 000000A8 8887[6D000000]                      mov [sir_rez_biti + edi], al
+   103                                              
+   104 000000AE 8A86[3D000000]                      mov al, [sir_rez + esi]
+   105 000000B4 8A9F[3D000000]                      mov bl, [sir_rez + edi]
+   106                                              
+   107 000000BA 889E[3D000000]                      mov [sir_rez + esi], bl
+   108 000000C0 8887[3D000000]                      mov [sir_rez + edi], al
+   109                                          
+   110                                              sortat:
+   111 000000C6 47                                  inc edi
+   112 000000C7 3B3D[9D000000]                      cmp edi, [lungime]
+   113 000000CD 7CC3                            jl inner_loop
+   114                                          
+   115 000000CF 46                              inc esi
+   116 000000D0 E2BB                        loop outer_loop
+   117                                      afisare:
+   118                                      
+   119 000000D2 8B0D[9D000000]              mov ecx, [lungime]
+   120 000000D8 E326                        jecxz final
+   121                                      
+   122 000000DA B800000000                  mov eax, 0
+   123                                      iterare:
+   124 000000DF 51                              push ecx
+   125 000000E0 50                              push eax
+   126                                          
+   127 000000E1 BB00000000                      mov ebx, 0
+   128 000000E6 8A98[3D000000]                  mov bl, byte [sir_rez + eax]
+   129 000000EC 53                              push ebx
+   130 000000ED 68[37000000]                    push dword format_afisare
+   131 000000F2 FF15[00000000]                  call [printf]
+   132 000000F8 83C408                          add esp, 4 * 2
+   133                                          
+   134                                          ;mov ebx, 0
+   135                                          ;mov bl, byte [sir_rez_biti + eax]
+   136                                          ;push ebx
+   137                                          ;push dword format_afisare
+   138                                          ;call [printf]
+   139                                          ;add esp, 4 * 2
+   140                                          
+   141 000000FB 58                              pop eax
+   142 000000FC 40                              inc eax
+   143 000000FD 59                              pop ecx
+   144 000000FE E2DF                        loop iterare
+   145                                      
+   146                                      final:
+   147 00000100 6A00                        push dword 0
+   148 00000102 FF15[00000000]              call [exit]

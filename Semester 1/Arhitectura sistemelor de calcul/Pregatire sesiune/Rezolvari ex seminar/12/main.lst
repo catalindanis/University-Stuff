@@ -1,0 +1,142 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit, printf, procesare
+     6                                  import exit msvcrt.dll
+     7                                  import printf msvcrt.dll
+     8                                  
+     9                                  segment data use32 class=data
+    10                                  
+    11 00000000 20                      a db ' '
+    12 00000001 416E6120617265206D-     s db "Ana are mere Ada are fructul pasiunii Gigel are ananas "
+    12 0000000A 657265204164612061-
+    12 00000013 726520667275637475-
+    12 0000001C 6C2070617369756E69-
+    12 00000025 6920476967656C2061-
+    12 0000002E 726520616E616E6173-
+    12 00000037 20                 
+    13 00000038 5475646F7220617265-       db "Tudor are portocale si facem salata de fructe", 0
+    13 00000041 20706F72746F63616C-
+    13 0000004A 652073692066616365-
+    13 00000053 6D2073616C61746120-
+    13 0000005C 646520667275637465-
+    13 00000065 00                 
+    14 00000066 0000                    nr_secv dw 0  
+    15 00000068 256300                  format_afisare db "%c", 0
+    16 0000006B 200D0A00                afisare_new_line db " ", 13, 10, 0
+    17                                  
+    18 0000006F 303132333435363738-     tabela db "0123456789ABCDEF"
+    18 00000078 39414243444546     
+    19 0000007F <res 00000064>          nr_baza_16 resb 100
+    20                                   
+    21                                  segment code use32 class=code
+    22                                  start:
+    23 00000000 B900000000                  mov ecx, 0
+    24 00000005 BE[00000000]                mov esi, a
+    25 0000000A FC                          cld
+    26                                      repeta:
+    27 0000000B AC                              lodsb
+    28 0000000C 3C20                            cmp al, ' '
+    29 0000000E 7550                            jne sari
+    30                                          
+    31 00000010 56                              push esi
+    32                                          
+    33                                          ;procesare(esi)
+    34 00000011 56                              push esi
+    35 00000012 E8(00000000)                    call procesare
+    36 00000017 83C404                          add esp, 4 * 1
+    37                                          
+    38 0000001A 5E                              pop esi
+    39                                          
+    40 0000001B 83F800                          cmp eax, 0
+    41 0000001E 74EB                            je repeta
+    42                                          
+    43 00000020 66FF05[66000000]                inc word [nr_secv]
+    44 00000027 56                              push esi
+    45                                          
+    46 00000028 B800000000                      mov eax, 0
+    47                                          afisare:
+    48 0000002D AC                                  lodsb
+    49 0000002E 3C20                                cmp al, ' '
+    50 00000030 7417                                je gata
+    51                                              
+    52 00000032 3C00                                cmp al, 0
+    53 00000034 7413                                je gata
+    54                                              
+    55 00000036 50                                  push eax
+    56                                              ;printf(format_afisare, al)
+    57 00000037 50                                  push eax
+    58 00000038 68[68000000]                        push format_afisare
+    59 0000003D FF15[00000000]                      call [printf]
+    60 00000043 83C408                              add esp, 4 * 2
+    61                                              
+    62 00000046 58                                  pop eax
+    63 00000047 EBE4                            jmp afisare
+    64                                          gata:
+    65                                          
+    66 00000049 50                              push eax
+    67                                          
+    68                                          ;printf(format_afisare, spatiu)
+    69                                          push dword[afisare_spatiu]
+    69          ******************       error: symbol `afisare_spatiu' undefined
+    70 0000004A 68[68000000]                    push format_afisare
+    71 0000004F FF15[00000000]                  call [printf]
+    72 00000055 83C408                          add esp, 4 * 2
+    73                                          
+    74 00000058 58                              pop eax
+    75                                       
+    76 00000059 5E                              pop esi
+    77                                          
+    78                                          sari:
+    79 0000005A 3C00                            cmp al, 0
+    80 0000005C 7408                            je final
+    81 0000005E EBAB                        jmp repeta
+    82                                      final:
+    83                                      
+    84 00000060 68[6B000000]                push afisare_new_line
+    85 00000065 FF15[00000000]              call [printf]
+    86 0000006B 83C404                      add esp, 4 * 1
+    87                                      
+    88 0000006E BB[6F000000]                mov ebx, tabela
+    89 00000073 BF[7F000000]                mov edi, nr_baza_16
+    90 00000078 B900000000                  mov ecx, 0
+    91                                      
+    92 0000007D 66A1[66000000]              mov ax, [nr_secv]
+    93                                      impartire:
+    94 00000083 B210                            mov dl, 16
+    95 00000085 F6F2                            div dl
+    96 00000087 41                              inc ecx
+    97                                          
+    98 00000088 660FB6D0                        movzx dx, al
+    99                                          
+   100 0000008C 88E0                            mov al, ah
+   101 0000008E D7                              xlat ; AL <- EBX[AL]
+   102                                          
+   103 0000008F AA                              stosb
+   104                                          
+   105 00000090 6689D0                          mov ax, dx
+   106 00000093 6683F800                        cmp ax, 0
+   107 00000097 7408                            je gata1
+   108 00000099 EBE8                        jmp impartire
+   109                                      gata1:    
+   110                                       
+   111 0000009B FD                          std
+   112 0000009C 89FE                        mov esi, edi
+   113 0000009E 83EE01                      sub esi, 1
+   114                                      
+   115                                      afisare1:
+   116 000000A1 51                              push ecx
+   117                                          
+   118 000000A2 AC                              lodsb
+   119                                          
+   120 000000A3 50                              push eax
+   121 000000A4 68[68000000]                    push dword format_afisare
+   122 000000A9 FF15[00000000]                  call [printf]
+   123 000000AF 83C408                          add esp, 4 * 2
+   124                                          
+   125 000000B2 59                              pop ecx
+   126 000000B3 E2EC                        loop afisare1
+   127                                      
+   128 000000B5 6A00                        push dword 0
+   129 000000B7 FF15[00000000]              call [exit]

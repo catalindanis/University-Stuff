@@ -1,0 +1,45 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  import exit msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10 00000000 2B32326238365838        S1 db '+', '2', '2', 'b', '8', '6', 'X', '8'
+    11                                  ls1 equ $-S1
+    12                                  
+    13 00000008 613435                  S2 db 'a', '4', '5'
+    14                                  ls2 equ $-S2
+    15                                  
+    16 0000000B 00<rept>                D times ls2 + ls1 / 2 db 0
+    17                                  ;D: '5', '4', 'a', '2','b', '6', '8'
+    18                                  
+    19                                  segment code use32 class=code
+    20                                  start:
+    21 00000000 BA00000000                  mov edx, 0
+    22 00000005 B903000000                  mov ecx, ls2
+    23 0000000A E30F                        jecxz sari
+    24                                      repeta:
+    25 0000000C 8A81[07000000]                  mov al, [S2 + ecx - 1]
+    26 00000012 8882[0B000000]                  mov [D + edx], al
+    27 00000018 42                              inc edx
+    28 00000019 E2F1                        loop repeta
+    29                                      sari:
+    30 0000001B B901000000                  mov ecx, 1
+    31 00000020 83F908                      cmp ecx, ls1
+    32 00000023 7F1B                        jg final
+    33                                      repeta1:
+    34 00000025 F7C101000000                    test ecx, 1b
+    35 0000002B 750D                            jnz continua
+    36 0000002D 8A81[FFFFFFFF]                  mov al, [S1 + ecx - 1]
+    37 00000033 8882[0B000000]                  mov [D + edx], al
+    38 00000039 42                              inc edx
+    39                                          continua:
+    40 0000003A 41                              inc ecx
+    41 0000003B 83F908                          cmp ecx, ls1
+    42 0000003E 7EE5                        jle repeta1
+    43                                      final:
+    44 00000040 6A00                        push dword 0
+    45 00000042 FF15[00000000]              call [exit]

@@ -1,0 +1,44 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  import exit msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10 00000000 050103060204            s db 5, 1, 3, 6, 2, 4
+    11                                  ls equ $-s
+    12                                  
+    13                                  segment code use32 class=code
+    14                                  start:
+    15 00000000 B906000000                  mov ecx, ls
+    16 00000005 83F901                      cmp ecx, 1
+    17 00000008 7E32                        jle final
+    18                                      
+    19 0000000A B800000000                  mov eax, 0
+    20                                      outer_loop:
+    21 0000000F 89C3                            mov ebx, eax
+    22 00000011 83C301                          add ebx, 1
+    23                                          
+    24                                          inner_loop:
+    25 00000014 8A88[00000000]                      mov cl, [eax + s]
+    26 0000001A 8A93[00000000]                      mov dl, [ebx + s]
+    27 00000020 38D1                                cmp cl, dl
+    28 00000022 7E0C                                jle sari
+    29                                              
+    30 00000024 888B[00000000]                      mov [ebx + s], cl
+    31 0000002A 8890[00000000]                      mov [eax + s], dl
+    32                                              
+    33                                              sari:
+    34 00000030 43                                  inc ebx
+    35 00000031 83FB05                              cmp ebx, ls-1
+    36 00000034 7EDE                            jle inner_loop
+    37                                          
+    38 00000036 40                              inc eax
+    39 00000037 83F805                          cmp eax, ls-1
+    40 0000003A 7CD3                        jl outer_loop
+    41                                      
+    42                                      final:
+    43 0000003C 6A00                        push dword 0
+    44 0000003E FF15[00000000]              call [exit]

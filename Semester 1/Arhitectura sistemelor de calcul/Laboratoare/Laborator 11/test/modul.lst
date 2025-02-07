@@ -1,0 +1,39 @@
+     1                                  bits 32
+     2                                  
+     3                                  global construire_sir_pare
+     4                                  global construire_sir_impare
+     5                                  
+     6                                  segment code use32 class=code public
+     7                                  construire_sir_pare:
+     8 00000000 8B4C2404                    mov ecx, [esp+4]
+     9 00000004 E319                        jecxz final_pare
+    10 00000006 8B742408                    mov esi, [esp + 8]
+    11 0000000A 8B54240C                    mov edx, [esp + 12]
+    12 0000000E 8B7C2410                    mov edi, [esp + 16]
+    13                                      repeta_pare:
+    14 00000012 AD                              lodsd
+    15 00000013 A901000000                      test eax, 1
+    16 00000018 7503                            jnz impar
+    17 0000001A AB                              stosd
+    18 0000001B FF02                            inc dword[edx]
+    19                                          impar:
+    20 0000001D E2F3                        loop repeta_pare
+    21                                      final_pare:
+    22 0000001F C3                          ret
+    23                                  construire_sir_impare:
+    24 00000020 8B4C2404                    mov ecx, [esp+4]
+    25 00000024 E319                        jecxz final_impare
+    26 00000026 8B742408                    mov esi, [esp + 8]
+    27 0000002A 8B54240C                    mov edx, [esp + 12]
+    28 0000002E 8B7C2410                    mov edi, [esp + 16]
+    29                                      repeta_impare:
+    30 00000032 AD                              lodsd
+    31 00000033 A901000000                      test eax, 1
+    32 00000038 7403                            jz par
+    33 0000003A AB                              stosd
+    34 0000003B FF02                            inc dword[edx]
+    35                                          par:
+    36 0000003D E2F3                        loop repeta_impare
+    37                                      final_impare:
+    38 0000003F C3                          ret
+    39                                      

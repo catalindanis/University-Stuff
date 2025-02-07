@@ -1,0 +1,20 @@
+     1                                  bits 32 
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit, printf, scanf
+     6                                  import exit msvcrt.dll
+     7                                  import printf msvcrt.dll
+     8                                  import scanf msvcrt.dll
+     9                                  
+    10                                  
+    11                                  segment data use32 class=data
+    12                                  
+    13 00000000 0100020003000A0014-     a dw 1, 2, 3, 10, 20, 30
+    13 00000009 001E00             
+    14                                  
+    15                                  segment code use32 class=code
+    16                                  start:
+    17                                      
+    18 00000000 6A00                        push dword 0
+    19 00000002 FF15[00000000]              call [exit]

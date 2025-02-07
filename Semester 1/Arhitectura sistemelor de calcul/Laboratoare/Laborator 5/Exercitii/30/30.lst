@@ -1,0 +1,29 @@
+     1                                  bits 32
+     2                                  
+     3                                  global start
+     4                                  
+     5                                  extern exit
+     6                                  import exit msvcrt.dll
+     7                                  
+     8                                  segment data use32 class=data
+     9                                  
+    10 00000000 010306020302            s1 db 1, 3, 6, 2, 3, 2
+    11 00000006 060308010205            s2 db 6, 3, 8, 1, 2, 5
+    12                                  ls equ $-s2
+    13 0000000C 00<rept>                d times ls db 0
+    14                                  ;D = 7, 6, 14, 3, 5, 7
+    15                                  
+    16                                  segment code use32 class=code
+    17                                  start:
+    18 00000000 B906000000                  mov ecx, ls
+    19 00000005 E316                        jecxz final
+    20                                      repeta
+    20          ******************       warning: label alone on a line without a colon might be in error [-w+orphan-labels]
+    21 00000007 8A81[FFFFFFFF]                  mov al, [s1 + ecx - 1]
+    22 0000000D 8A99[05000000]                  mov bl, [s2 + ecx - 1]
+    23 00000013 00D8                            add al, bl
+    24 00000015 8881[0B000000]                  mov [d + ecx - 1], al
+    25 0000001B E2EA                        loop repeta
+    26                                      final:
+    27 0000001D 6A00                        push dword 0
+    28 0000001F FF15[00000000]              call [exit]
