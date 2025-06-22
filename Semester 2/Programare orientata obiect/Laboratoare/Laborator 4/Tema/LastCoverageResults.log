@@ -1,0 +1,21 @@
+[2025-03-17 19:29:39] [info] Start Program:
+Path:"D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 3\Tema\x64\Debug\Tema.exe"
+Arguments:
+Working directory: "D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 3\Tema"
+Modules: Selected: D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 3\Tema\x64\Debug\Tema.exe Excluded: 
+Sources: Selected: D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 3\Tema Excluded: 
+Log Level: Normal
+Cover Children: 0
+Aggregate by file: 1
+Continue after C++ exception: 0
+Optimized build support: 0
+Export: Binary C:\Users\catal\AppData\Local\Temp\ogacmvtt.x1v 
+Input coverage: 
+Unified diff: 
+Excluded line regular expressions: 
+Substitute pdb source paths: 
+
+[2025-03-17 19:29:39] [info] Module: D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 3\Tema\x64\Debug\Tema.exe is selected because it matches selected pattern: D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 3\Tema\x64\Debug\Tema.exe
+[2025-03-17 19:29:42] [info] ----------------------------------------------------
+[2025-03-17 19:29:42] [info] Coverage binary generated in file: C:\Users\catal\AppData\Local\Temp\ogacmvtt.x1v
+[2025-03-17 19:29:42] [info] ----------------------------------------------------
