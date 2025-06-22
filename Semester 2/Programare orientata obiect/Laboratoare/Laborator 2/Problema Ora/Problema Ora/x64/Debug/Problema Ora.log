@@ -1,0 +1,8 @@
+﻿  main.c
+D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 1\Problema Ora\main.c(18,10): warning C4477: 'scanf_s' : format string '%s' requires an argument of type 'unsigned int', but variadic argument 2 has type 'size_t'
+      D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 1\Problema Ora\main.c(18,10):
+      this argument is used as a buffer size
+  
+D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 1\Problema Ora\main.c(19,22): warning C4013: 'strlen' undefined; assuming extern returning int
+D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 1\Problema Ora\main.c(20,8): warning C4013: 'isdigit' undefined; assuming extern returning int
+  Problema Ora.vcxproj -> D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 1\Problema Ora\x64\Debug\Problema Ora.exe
