@@ -1,0 +1,22 @@
+﻿  Book.cpp
+  Repository.cpp
+  Service.cpp
+  Tests.cpp
+  Ui.cpp
+  main.cpp
+  Running Code Analysis for C/C++...
+  Generating Code...
+  [1/7] Processing file D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 5\Tema\Book.cpp.
+  [2/7] Processing file D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 5\Tema\main.cpp.
+  [3/7] Processing file D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 5\Tema\Repository.cpp.
+  [4/7] Processing file D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 5\Tema\Service.cpp.
+  [5/7] Processing file D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 5\Tema\Tests.cpp.
+  [6/7] Processing file D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 5\Tema\Ui.cpp.
+  [7/7] Processing file D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 5\Tema\Validator.cpp.
+D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 5\Tema\Book.h(31,2): warning GF00F9E6C: definition of implicit copy assignment operator for 'Book' is deprecated because it has a user-provided copy constructor [clang-diagnostic-deprecated-copy-with-user-provided-copy]
+     31 |         Book(const Book& book);
+        |         ^
+  D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 5\Tema\Repository.cpp:26:21: note: in implicit copy assignment operator for 'Book' first required here
+     26 |         this->books[index] = book;
+        |                            ^
+  Tema.vcxproj -> D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 5\Tema\x64\Debug\Tema.exe

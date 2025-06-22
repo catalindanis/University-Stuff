@@ -1,0 +1,37 @@
+[
+  {
+    "directory": "D:\\Facultate\\Programare orientata obiect\\Laboratoare\\Laborator 5\\Tema",
+    "command": "\"C:\\WINDOWS\\system32\\CL.exe\" \/c \/nologo \/W4 \/WX \/diagnostics:column \/Od \/D CODE_ANALYSIS \/D _DEBUG \/D _CONSOLE \/D _UNICODE \/D UNICODE \/EHsc \/RTC1 \/MDd \/GS \/fp:precise \/std:c++17 \/permissive- \/Fo\"Tema\\x64\\Debug\\\\\" \/Gd \/TP --target=amd64-pc-windows-msvc   \"D:\\Facultate\\Programare orientata obiect\\Laboratoare\\Laborator 5\\Tema\\Book.cpp\"",
+    "file": "D:\\Facultate\\Programare orientata obiect\\Laboratoare\\Laborator 5\\Tema\\Book.cpp"
+  },
+  {
+    "directory": "D:\\Facultate\\Programare orientata obiect\\Laboratoare\\Laborator 5\\Tema",
+    "command": "\"C:\\WINDOWS\\system32\\CL.exe\" \/c \/nologo \/W4 \/WX \/diagnostics:column \/Od \/D CODE_ANALYSIS \/D _DEBUG \/D _CONSOLE \/D _UNICODE \/D UNICODE \/EHsc \/RTC1 \/MDd \/GS \/fp:precise \/std:c++17 \/permissive- \/Fo\"Tema\\x64\\Debug\\\\\" \/Gd \/TP --target=amd64-pc-windows-msvc   \"D:\\Facultate\\Programare orientata obiect\\Laboratoare\\Laborator 5\\Tema\\main.cpp\"",
+    "file": "D:\\Facultate\\Programare orientata obiect\\Laboratoare\\Laborator 5\\Tema\\main.cpp"
+  },
+  {
+    "directory": "D:\\Facultate\\Programare orientata obiect\\Laboratoare\\Laborator 5\\Tema",
+    "command": "\"C:\\WINDOWS\\system32\\CL.exe\" \/c \/nologo \/W4 \/WX \/diagnostics:column \/Od \/D CODE_ANALYSIS \/D _DEBUG \/D _CONSOLE \/D _UNICODE \/D UNICODE \/EHsc \/RTC1 \/MDd \/GS \/fp:precise \/std:c++17 \/permissive- \/Fo\"Tema\\x64\\Debug\\\\\" \/Gd \/TP --target=amd64-pc-windows-msvc   \"D:\\Facultate\\Programare orientata obiect\\Laboratoare\\Laborator 5\\Tema\\Repository.cpp\"",
+    "file": "D:\\Facultate\\Programare orientata obiect\\Laboratoare\\Laborator 5\\Tema\\Repository.cpp"
+  },
+  {
+    "directory": "D:\\Facultate\\Programare orientata obiect\\Laboratoare\\Laborator 5\\Tema",
+    "command": "\"C:\\WINDOWS\\system32\\CL.exe\" \/c \/nologo \/W4 \/WX \/diagnostics:column \/Od \/D CODE_ANALYSIS \/D _DEBUG \/D _CONSOLE \/D _UNICODE \/D UNICODE \/EHsc \/RTC1 \/MDd \/GS \/fp:precise \/std:c++17 \/permissive- \/Fo\"Tema\\x64\\Debug\\\\\" \/Gd \/TP --target=amd64-pc-windows-msvc   \"D:\\Facultate\\Programare orientata obiect\\Laboratoare\\Laborator 5\\Tema\\Service.cpp\"",
+    "file": "D:\\Facultate\\Programare orientata obiect\\Laboratoare\\Laborator 5\\Tema\\Service.cpp"
+  },
+  {
+    "directory": "D:\\Facultate\\Programare orientata obiect\\Laboratoare\\Laborator 5\\Tema",
+    "command": "\"C:\\WINDOWS\\system32\\CL.exe\" \/c \/nologo \/W4 \/WX \/diagnostics:column \/Od \/D CODE_ANALYSIS \/D _DEBUG \/D _CONSOLE \/D _UNICODE \/D UNICODE \/EHsc \/RTC1 \/MDd \/GS \/fp:precise \/std:c++17 \/permissive- \/Fo\"Tema\\x64\\Debug\\\\\" \/Gd \/TP --target=amd64-pc-windows-msvc   \"D:\\Facultate\\Programare orientata obiect\\Laboratoare\\Laborator 5\\Tema\\Tests.cpp\"",
+    "file": "D:\\Facultate\\Programare orientata obiect\\Laboratoare\\Laborator 5\\Tema\\Tests.cpp"
+  },
+  {
+    "directory": "D:\\Facultate\\Programare orientata obiect\\Laboratoare\\Laborator 5\\Tema",
+    "command": "\"C:\\WINDOWS\\system32\\CL.exe\" \/c \/nologo \/W4 \/WX \/diagnostics:column \/Od \/D CODE_ANALYSIS \/D _DEBUG \/D _CONSOLE \/D _UNICODE \/D UNICODE \/EHsc \/RTC1 \/MDd \/GS \/fp:precise \/std:c++17 \/permissive- \/Fo\"Tema\\x64\\Debug\\\\\" \/Gd \/TP --target=amd64-pc-windows-msvc   \"D:\\Facultate\\Programare orientata obiect\\Laboratoare\\Laborator 5\\Tema\\Ui.cpp\"",
+    "file": "D:\\Facultate\\Programare orientata obiect\\Laboratoare\\Laborator 5\\Tema\\Ui.cpp"
+  },
+  {
+    "directory": "D:\\Facultate\\Programare orientata obiect\\Laboratoare\\Laborator 5\\Tema",
+    "command": "\"C:\\WINDOWS\\system32\\CL.exe\" \/c \/nologo \/W4 \/WX \/diagnostics:column \/Od \/D CODE_ANALYSIS \/D _DEBUG \/D _CONSOLE \/D _UNICODE \/D UNICODE \/EHsc \/RTC1 \/MDd \/GS \/fp:precise \/std:c++17 \/permissive- \/Fo\"Tema\\x64\\Debug\\\\\" \/Gd \/TP --target=amd64-pc-windows-msvc   \"D:\\Facultate\\Programare orientata obiect\\Laboratoare\\Laborator 5\\Tema\\Validator.cpp\"",
+    "file": "D:\\Facultate\\Programare orientata obiect\\Laboratoare\\Laborator 5\\Tema\\Validator.cpp"
+  }
+]

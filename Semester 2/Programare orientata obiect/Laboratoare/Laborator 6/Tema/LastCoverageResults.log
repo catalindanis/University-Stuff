@@ -1,0 +1,22 @@
+[2025-04-02 21:58:45] [info] Start Program:
+Path:"D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 5\Tema\x64\Debug\Tema.exe"
+Arguments:
+Working directory: "D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 5\Tema\"
+Modules: Selected: D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\Tema\x64\Debug\Tema.exe Excluded: 
+Sources: Selected: D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\Tema Excluded: 
+Log Level: Normal
+Cover Children: 0
+Aggregate by file: 1
+Continue after C++ exception: 0
+Optimized build support: 0
+Export: Binary C:\Users\catal\AppData\Local\Temp\glqoyrix.lzg 
+Input coverage: 
+Unified diff: 
+Excluded line regular expressions: 
+Substitute pdb source paths: 
+
+[2025-04-02 21:58:54] [info] ----------------------------------------------------
+[2025-04-02 21:58:54] [info] Coverage binary generated in file: C:\Users\catal\AppData\Local\Temp\czbc0pja.l0x
+[2025-04-02 21:58:54] [info] ----------------------------------------------------
+[2025-04-02 21:58:54] [warning] No modules were selected. Please check the values of --modules and --excluded_modules.
+You can try to remove all --modules and --excluded_modules and use --modules=D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 5\Tema\x64\Debug instead.
