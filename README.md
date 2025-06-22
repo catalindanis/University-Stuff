@@ -8,3 +8,9 @@ Semester 1:
 - Mathematical analysis
 - Computational logic
 - Educational psychology
+
+Semester 2:
+
+- Object oriented programming
+- Geometry
+- Foundations of pedagogy
