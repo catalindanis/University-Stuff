@@ -1,0 +1,28 @@
+﻿   Qt/MSBuild: 3.4.0.1
+   Qt: 6.9.0
+  Repository.cpp
+  Service.cpp
+  Tests.cpp
+  UndoAction.cpp
+  Validator.cpp
+  Book.cpp
+  BookDTO.cpp
+  CartService.cpp
+  main.cpp
+D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 14\Tema\Repository.cpp(67,1): warning C4715: 'Repository::getBook': not all control paths return a value
+D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 14\Tema\BookTableModel.h(23,20): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'main.cpp')
+  
+D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 14\Tema\BookListModel.h(28,20): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'main.cpp')
+  
+  qrc_Tema.cpp
+  moc_BookListModel.cpp
+  moc_BookTableModel.cpp
+D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 14\Tema\BookTableModel.h(23,20): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Tema/x64/Debug/qt/moc/moc_BookTableModel.cpp')
+  
+D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 14\Tema\BookListModel.h(28,20): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'Tema/x64/Debug/qt/moc/moc_BookListModel.cpp')
+  
+  Tema.vcxproj -> D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 14\Tema\x64\Debug\Tema.exe

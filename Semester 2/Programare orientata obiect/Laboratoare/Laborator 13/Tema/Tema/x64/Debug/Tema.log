@@ -1,0 +1,17 @@
+﻿   Qt/MSBuild: 3.4.0.1
+   Qt: 6.9.0
+  Repository.cpp
+  Service.cpp
+  Tests.cpp
+  UndoAction.cpp
+  Validator.cpp
+  Book.cpp
+  BookDTO.cpp
+  CartService.cpp
+  main.cpp
+D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 13\Tema\Repository.cpp(67,1): warning C4715: 'Repository::getBook': not all control paths return a value
+D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 13\Tema\Ui.h(178,39): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'main.cpp')
+  
+  qrc_Tema.cpp
+  Tema.vcxproj -> D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 13\Tema\x64\Debug\Tema.exe
