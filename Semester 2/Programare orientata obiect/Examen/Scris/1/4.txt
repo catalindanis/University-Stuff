@@ -1,0 +1,19 @@
+template <typename T>
+class Geanta{
+private:
+	string proprietar;
+	vector<T> obiecte;
+public:
+	Geanta(string p) : proprietar{p} {}
+	Geanta& operator +(const T& o)	{
+		this->obiecte.push_back(o);
+		return *this;
+	}
+	auto begin(){
+		return obiecte.begin();
+	}
+
+	auto end(){
+		return obiecte.end();
+	}
+};

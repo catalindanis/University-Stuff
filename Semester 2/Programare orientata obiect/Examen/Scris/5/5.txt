@@ -1,0 +1,138 @@
+1.
+
+Functia returneaza vectorul transmis ca parametru sortat descrescator dupa numarul de aparitii ale fiecarui element
+preconditii : l - un vector de numere intregi
+parametrii de intrare : l - vectorul pe care facem operatiile
+	      iesire : l - noul vector
+postconditii: l - un nou vector sortat dupa numarul de aparitii ale fiecarui element
+arunca exceptie daca lungimea vectorului este 0
+
+void test(){
+	vector<int> v = {1, 2, 1};
+	f(v);
+	assert(v[0] = 1); assert(v[1] = 1); assert(v[2] = 2);
+	v = {};
+	try{
+		f(v);
+		assert(false);
+	} catch(exception& e) { assert(true); }
+}
+
+2.
+
+A A B printA printA
+A A print ~A ~A
+
+3.
+
+class Participant {
+public:
+    virtual void tipareste() = 0;
+    virtual bool eVoluntar() { return true; };
+    virtual ~Participant() = default;
+};
+
+class Personal : public Participant {
+private:
+    string nume;
+public:
+    Personal(string nume) : nume{nume} {}
+    virtual void tipareste() override {
+        cout<<nume;
+    }
+};
+
+class Administrator : public Personal {
+public:
+    Administrator(string nume) : Personal{nume} {}
+    void tipareste() override {
+        Personal::tipareste();
+        cout<<"Administrator";
+    }
+};
+
+class Director : public Personal {
+public:
+    Director(string nume) : Personal(nume) {}
+    void tipareste() override {
+        Personal::tipareste();
+        cout<<"Director";
+    }
+};
+
+class Angajat : public Participant {
+private:
+    Participant* p;
+public:
+    Angajat(Participant* p) : p{p} {}
+    void tipareste() override {
+        p->tipareste();
+        cout<<"Angajat";
+    }
+    bool eVoluntar() override {
+        return false;
+    }
+};
+
+class ONG {
+private:
+    vector<Participant* > v;
+public:
+    void add(Participant* p){
+        this->v.push_back(p);
+    }
+    vector<Participant*> getAll(bool voluntari){
+        vector<Participant*> rez;
+        for(const auto& e : this->v)
+            if(e->eVoluntar() == voluntari)
+                rez.push_back(e);
+        return rez;
+    }
+    ~ONG() {
+        for(const auto& val: this->v)
+            delete val;
+    }
+};
+
+ONG f() {
+    ONG rez;
+    rez.add(new Administrator{"Ion"});
+    rez.add(new Angajat(new Administrator{"Marius"}));
+    rez.add(new Director{"Istvan"});
+    rez.add(new Angajat(new Director{"Gabriela"}));
+    return rez;
+}
+
+int main(){
+    ONG v = f();
+    cout<<"Voluntari:\n";
+    for(const auto& v : v.getAll(true))
+        v->tipareste();
+    cout<<"Angajati:\n";
+    for(const auto& v : v.getAll(false))
+        v->tipareste();
+    return 0;
+}
+
+4.
+
+template <typename T>
+class Cos{
+private:
+	vector<T> cos;
+public:
+	void tipareste(const auto& out) const{
+		for(const auto& v : cos)
+			out<<v<<'\n';
+	}
+	Cos<T>& operator +(const T& e){
+		this->cos.push_back(e);
+		return *this;
+	}
+	Cos<T>& undo(){
+		this->cos.pop_back();
+		return *this;
+	}
+};
+
+

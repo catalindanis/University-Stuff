@@ -1,0 +1,6 @@
+﻿   Qt/MSBuild: 3.4.0.1
+   Qt: 6.9.0
+  moc Ui.h
+  main.cpp
+  moc_Ui.cpp
+  Proiect.vcxproj -> D:\Facultate\Programare orientata obiect\Examen\Practic\3\Proiect\x64\Debug\Proiect.exe

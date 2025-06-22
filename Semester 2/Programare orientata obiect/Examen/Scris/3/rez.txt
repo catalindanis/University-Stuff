@@ -1,0 +1,133 @@
+1.
+
+Functia returneaza daca numarul natural transmis ca parametru este prim sau nu
+preconditii: a numar intreg,  > 0 (a <= 0 arunca exceptie)
+parametrii de intrare: a numarul
+postconditii: returneaza true daca a este prim / false in caz contrar
+	      daca a e 1, functia returneaza tot true
+
+void test(){
+	assert(f(1) == true);
+	assert(f(7) == true);
+	assert(f(4) == false);
+	try{
+	 f(0);
+	 assert(false);
+	catch(exception e){
+	 assert(true);
+	}
+}
+
+2. 
+a) 
+
+A()
+B()
+printA
+printB
+
+b)
+
+7, 8
+
+3.1
+
+class Transformer
+{
+public:
+	virtual void transform(vector<int>& nrs) = 0;
+	virtual ~Transformer() = default;
+};
+
+class Adder : public Transformer
+{
+private:
+	int cat;
+public:
+	Adder(int cat) : cat{cat} {}
+	virtual void transform(vector<int>& nrs) override {
+		for(auto& e : nrs)
+			e += cat;
+	}	
+};
+
+class Swapper : public Transformer
+{
+public:
+	void transform(vector<int>& nrs) override {
+		for(int i=0;i<nrs.size()-1;i+=2)
+			swap(nrs[i], nrs[i+1]);
+	}
+};
+
+class Nuller : public Adder
+{
+public:
+	Nuller(int cat) : Adder{cat} {}
+	void transform(vector<int>& nrs) override {
+		Adder::transform();
+		for(auto& e : nrs)
+			if(e > 10)
+				e = 0;
+	}
+}
+
+class Composite : public Transformer
+{
+private:	
+	vector<Transformer*> t;
+public:
+	Composite(vector<Transformer*>& t) : t{t} {}
+	void transform(vector<int> nrs) override {
+		for(int i=0;i<t.size();i++)
+			t[i]->transform(nrs);	
+	}
+	void ~Composite() {
+		delete [] t;
+	}
+}
+
+3.2
+
+Numbers f(){
+	Numbers rez{new Composite{new Composite{new Nuller{9}, new Swapper{}}, new Adder{3}}};
+	return rez;
+}
+
+3.3
+
+int main(){
+	Numbers n = f();
+	f.add
+}
+
+4.
+
+class Examen
+{
+private:
+	string nume, ora;
+public:
+	Examen(string nume, string ora) : nume{nume}, ora{ora} {}
+	string getDescriere() const {
+		return this->nume + " " this->ora;
+	}
+};
+
+template <typename T>
+class ToDo
+{
+private:
+	vector<Examen> v;
+public:
+	Todo<T>& operator <<(T& e){
+		v.push_back(e);
+		return *v;
+	}
+
+	void printToDoList(auto& out){
+		out<<"De facut: ";
+		for(const auto& e : v)
+			out<<e.getDescriere()<<';'	
+	}
+};	

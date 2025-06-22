@@ -1,0 +1,140 @@
+1.
+
+Functia returneaza divizorii numarului transmis ca si parametru
+preconditii: a - numar intreg 
+daca a < 0, arunca exceptie
+parametrii intrare: a - numarul pentru care calculam divizorii
+	   iesire : rez - lista de divizori
+postconditii: rez contine lista de divizori a parametrului a
+
+void test(){
+	vector<int> rez = f(5);
+	assert(rez.size() == 2);
+	assert(rez[0] == 1);
+	assert(rez[1] == 5);
+
+	rez = f(4);
+	assert(rez.size() == 3);
+	assert(rez[0] == 1);
+	assert(rez[1] == 2);
+	assert(rez[2] == 4);
+	
+	rez = f(0);
+	assert(rez.size() == 0);
+	
+	try{
+		f(-1);
+		assert(false);
+	}	
+	catch(exception){
+		assert(true);
+	}
+}
+
+2.
+
+0BC
+
+5,5,7,5
+
+3.
+
+class Pizza {
+private:
+	int pret;
+public:
+	Pizza(int pret) : pret{pret} {}
+	virtual string descriere() = 0;
+	virtual int getPret() { return this->pret; }
+	virtual ~Pizza() = default;
+};
+
+class BasicPizza : public Pizza {
+private:
+	string denumire;
+public:
+	BasicPizza(int pret, string denumire) : Pizza{pret}, denumire{denumire} {}
+	string descriere() override {
+		return this->denumire;
+	}
+};
+
+class PizzaCuPeperoni : public Pizza {
+private:
+	Pizza* pizza;
+public:
+	PizzaCuPeperoni(Pizza* pizza) : Pizza{pizza->getPret()}, pizza{pizza} {}
+	string desscriere() override {
+		return this->pizza->descriere() + "cu peperoni";
+	}
+	int getPret() override {
+		return this->pizza->getPret() + 2;
+	}
+	~PizzaCuPeperoni() {
+		delete this->pizza;
+	}
+};
+
+class PizzaCuCiuperci : public Pizza {
+private:
+	Pizza* pizza;
+public:
+	PizzaCuCiuperci(Pizza* pizza) : Pizza{pizza->getPret()}, pizza{pizza} {}
+	string descriere() override {
+		return this->pizza.descriere() + "cu ciuperci";
+	}
+	int getPret() override {
+		return this->pizza.getPret() + 3;
+	}	
+	~PizzaCuCiuperci() {
+		delete this->pizza;
+	}
+};
+
+vector<Pizza*> f() {
+	vector<Pizza*> rez;
+	rez.push_back(new PizzaCuCiuperci{new BasicPizza{"Salami", 15}});
+	rez.push_back(new BasicPizza{"Salami", 15});
+	rez.push_back(new PizzaCuPeperoni{new PizzaCuCiuperci{new BasicPizza{"Diavola", 20}}});
+	return rez;
+}
+
+int main() {
+	vector<Pizza*> v = f();
+	
+	for(int i=0;i<v.size();i++)
+		for(int j=i+1;j<v.size();j++)
+			if(v[i].getPret() < v[j].getPret())
+				swap(v[i], v[j]);
+	
+	for(int i=0;i<v.size();i++)
+		cout<<v[i].descriere()<<' '<<v[i].getPret()<<'\n';
+	return 0;
+}
+
+4.
+
+template <typename T>
+class Catalog {
+private:
+	string materie;
+	vector<T> note;
+public:
+	Catalog(string materie) : materie{materie} {}
+	Catalog<T>& operator +(T nota) {
+		note.push_back(nota);
+		return *this;
+	}
+	auto begin() const {
+		return note.begin();
+	}
+	auto end() const {
+		return note.end();
+	}
+};
+
+
+
+
+
+

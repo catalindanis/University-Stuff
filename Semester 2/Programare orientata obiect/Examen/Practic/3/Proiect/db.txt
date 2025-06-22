@@ -1,0 +1,48 @@
+1
+Pix albastru
+Papetarie
+3.5
+2
+Caiet A5
+Papetarie
+7.9
+3
+Mouse wireless
+Electronice
+89.99
+4
+Sticla apa 0.5L
+Alimentare
+2.5
+5
+Carcasa PC
+Electronice
+99
+6
+Creion mecanic
+Papetarie
+5
+7
+Casti in-ear
+Electronice
+45.75
+8
+Baton energizant
+Alimentare
+4.2
+9
+Notebook 15.6"
+Electronice
+95
+10
+Guma de sters
+Papetarie
+1.25
+11
+Mine 0.5
+Papetarie
+6
+12
+test
+Alimentare
+19

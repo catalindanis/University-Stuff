@@ -1,0 +1,12 @@
+2
+titlu2
+autor2
+5
+1
+titlu
+autor
+3
+3
+titlu3
+autor3
+5

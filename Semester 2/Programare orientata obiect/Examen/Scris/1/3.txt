@@ -1,0 +1,85 @@
+1.
+class Smoothy{
+private:
+	int pret;
+public:
+	Smoothy(int pret) : pret{pret} {}
+	virtual int getPret(){
+		return this->pret;	
+	}
+	virtual string descriere() = 0;
+	virtual ~Smoothy() = default;
+}
+
+class DecoratorSmoothy : public Smoothy{
+private:
+	Smoothy* smooty;
+public:
+	DecoratorSmoothy(Smoothy* smooty) : Smoothy{smooty->getPret()}, smooty{smooty} {}
+	
+	virtual string descriere() override {
+		return smooty->descriere();
+	}
+
+	virtual int getPret() override {
+		return smooty-getPret();
+	}
+
+	~DecoratorSmoothy(){
+		delete smooty;	
+	}
+}
+
+class BasicSmoothy : public Smoothy{
+private:
+	string nume;
+public:
+	BasicSmoothy(string nume, int pret) : Smoothy{pret}, nume{nume} {}
+	string descriere() override {
+		return this->nume;
+	}
+}
+
+class SmoothyCuFrisca : public DecoratorSmoothy{
+public:
+	SmoothyCuFrisca(Smoothy* smooty) : DecoratorSmoothy{smooty} {}
+	string descriere() override {
+		return DecoratorSmoothy::descriere() + "cu frisca";
+	}
+	int getPret() override {
+		return DecoratorSmoothy::getPret() + 2;	
+	}
+}
+
+class SmoothyCuUmbreluta : public DecoratorSmoothy{
+public:
+	SmoothyCuUmbreluta(Smoothy* smooty) : DecoratorSmoothy{smooty} {}
+	string descriere() override {
+		return DecoratorSmoothy::descriere() + "cu umbreluta";
+	}
+	int getPret() override {
+		return DecoratorSmoothy::getPret() + 3;	
+	}
+}
+
+2.
+vector<Smoothy*> f() {
+	vector<Smoothy*> rez;
+	rez.push(new SmoothyCuFrisca{new SmoothyCuUmbreluta{new BasicSmoothy{"kivi", 4}}});
+	rez.push(new SmoothyCuFrisca{new BasicSmoothy{"capsuni", 4}});
+	rez.push(new BasicSmoothy{"kivi", 5});
+	return rez;
+}
+
+3.
+int main(){
+	vector<Smoothy*> v = f();
+	for(int i=0;i<v.size();i++)
+		for(int j=i+1;j<v.size();j++)
+			if(strcmp(v[i]->descriere(), v[j]->descriere()) > 0)
+				swap(v[i], v[j]);
+	for(const auto& m : v){
+		cout<<m->descriere()<<' '<<m->pret()<<'\n';
+	}
+	return 0;
+}

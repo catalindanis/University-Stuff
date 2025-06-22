@@ -1,0 +1,156 @@
+1.
+Functia verifica daca un numar este prim sau nu
+preconditii: parametrul transmis sa fie numar intreg
+parametrii de intrare: a - numarul pentru care facem verificarea
+	      iesire: true / false (numarul este prim sau nu)
+arunca eroare caca numarul transmis este <= 1
+
+void test(){
+	assert(f(2) == true);
+	assert(f(4) == false);
+	try{
+		f(1);
+		assert(false);
+	} catch(char[] e){
+		assert(true);
+	} 
+}
+
+2.
+a)
+eroare, A e clasa pur abstracta
+
+b)
+A
+A
+print
+~A
+~A
+
+3.
+
+class Channel{
+public:
+	virtual void send(string msg) = 0;
+	virtual ~Channel() = default;
+};
+
+class Telefon : public Channel{
+private:
+	int nrTel;
+public:
+	Telefon(int nrTel) : nrTel{nrTel} {}
+	virtual void send(string msg) override {
+		int n = rand() % 10;
+		if(n % 2 == 0)
+			throw std::exception("Linia este ocupata!");
+		cout<<"dail: "<<this->nrTel<<'\n';
+	}
+};
+
+class Fax : public Telefon{
+public:
+	Fax(int nrTel) : Telefon{nrTel} {}
+	void send(string msg) override {
+		try{
+			Telefon::send(msg);
+			cout<<"sending fax"<<'\n';
+		} catch(exception& e){}
+	}	
+};
+
+class SMS : public Telefon{
+public:
+	SMS(int nrTel) : Telefon{nrTel} {}
+	void send(string msg) override {
+		try{
+			Telefon::send();
+			cout<<"sending sms"<<'\n';
+		catch(exception& e){}
+	}
+};
+
+class Failover : public Channel{
+private:
+	Channel* ch1, ch2;
+public:
+	Failover(Channel* ch1, Channel* ch2) : ch1{ch1}, ch2{ch2} {}
+	void send(string msg) override {
+		try{
+			ch1->send(msg);}
+		catch(exception& e){
+			try{
+				ch2->send(msg);
+			catch(exception& e) {}
+		}
+	}	
+	~Failover(){ delete ch1; delete ch2; }
+};
+
+class Contact: public Channel{
+private:
+	Channel* ch1, ch2, ch3;
+public:
+	Contact(Channel* ch1, Channel* ch2, Channel* ch3) : ch1{ch1}, ch2{ch2}, ch3{ch3} {}
+	void sendAlarm(string msg) {
+		while(!exit){
+			try{
+				ch1->send(msg);
+				break;
+			} catch(exception& e) {}
+			try{
+				ch2->send(msg);
+				break;
+			} catch(exception& e) {}
+			try{
+				ch3->send(msg);
+				break;
+			} catch(exception& e) {}
+		}
+	}
+	~Contact(){ delete ch1; delete ch2; delete ch3; }
+}
+
+Contact f(){
+	Contact c = { 
+		new Telefon{123}, 
+	      	new Failover{new Fax{123}, new SMS{123}},
+	      	new Failover{new Telefon{123}, new Failover{new Fax{123}, new SMS{123}}
+	};
+	return c;
+}
+
+int main(){
+	Contact c = f();
+	c.sendAlarm("123");
+	c.sendAlarm("123");
+	c.sendAlarm("123");
+	return 0;
+}
+
+4.
+
+template <typename T>
+class Expresie{
+private:
+	T e;
+	vector<T> prev;
+public:
+	Expresie(T e) : e{e} {}
+	const T& valoare() const { return this->e; }
+	Expresie<T>& operator +(const T& e){
+		this->prev.push_back(this->e);
+		this->e += e;
+		return *this;
+	}
+	Expresie<T>& operator -(const T& e){
+		this->prev.push_back(this->e);
+		this->e -= e;
+		return *this;
+	}
+	Expresie<T>& undo(){
+		this->e = this->prev[this->prev.size() - 1];
+		this->prev.pop_back();
+		return *this;
+	}
+};

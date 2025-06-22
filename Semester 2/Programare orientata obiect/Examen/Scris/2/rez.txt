@@ -1,0 +1,124 @@
+1.
+
+Functia returneaza cele mai mari 2 numere din vectorul l transmis ca parametru
+preconditii: l este un vector de numere naturale pozitive
+parametrii de intrare : l - vectorul de numere
+	   de iesire  : rez - perechea de numere
+postconditii: perechea returnata contine cele mai mari 2 numere naturale in ordine descrescatoare
+	      arunca exceptie daca lungimea sirului este mai mica decat 2
+void test(){
+	std::vector<int> l = {1, 2, 3, 4, 5};
+	std::pair rez = f(l);
+	assert(rez.first == 5);
+	assert(rez.second == 4);
+	l = {1};
+	try{
+		f(l);
+		assert(false);
+	catch(exception e){
+		assert(true);	
+	}
+	
+}
+
+2.
+a) AABAA
+b) 44104
+
+3. 1)
+class Meniu{
+private:
+	int pret;
+public:
+	Meniu(int pret) : pret{pret} {}
+	virtual int getPret() { return this->pret; }
+	virtual string descriere() = 0;
+	virtual ~Meniu() = default;
+};
+
+class CuRacoritoare : public Meniu{
+private:
+	Meniu* m;
+public:
+	CuRacoritoare(Meniu* m) : Meniu{ m.getPret() }, m{m} {}
+	int getPret() override{
+		return m->getPret() + 4;
+	}
+
+	string descriere() override{
+		return m->descriere() + "cu racoritoare";
+	}
+	~CuRacoritoare() {
+		delete m;
+	}
+}
+
+class CuCafea : public Meniu{
+private:
+	Meniu* m;
+public:
+	CuCafea(Meniu* m) : Meniu{ m->getPret() }, m{m} {}
+	int getPret() override{
+		return m->getPret() + 5;	
+	}
+	
+	string descriere() override{
+		return m->descriere() + "cu cafea";
+	}
+	~CuCafea() {
+		delete m;
+	}
+}
+
+class MicDejun : public Meniu{
+private:
+	string denumire;
+public:
+	MicDejun(int pret, string denumire) : Meniu{pret}, denumire{denumire} {}
+	string descriere() override {
+		return this->denumire;
+	}
+}
+
+3. 2)
+
+vector<Meniu*> f(){
+	vector<Meniu*> rez;
+	rez.push_back(new CuRacoritoare{new CuCafea{new MicDejun{"Omleta", 15}}});
+	rez.push_back(new CuCafea{new MicDejun{"Ochiuri", 10}});
+	rez.push_back(new MicDejun{"Omleta", 15});
+	return rez;
+}
+
+3. 3)
+
+int main(){
+	vector<Meniu*> v = f();
+	for(int i=0;i<v.size();i++)
+		for(int j=0;j<v.size();j++)
+			if(v[i]->getPret() < v[j]->getPret())
+				swap(v[i], v[j]);
+	for(const auto& e : v)
+		std::cout<<e->descriere()<<' '<<e->getPret()<<'\n';
+	return 0;
+}
+
+4.
+
+template <typename T>
+class Measurement{
+private:
+	T m;
+public:
+	Measurement(T m) : m{m} {}
+	Measurement<T>& operator +(T v){
+		this->m += v;
+		return *this;
+	}
+	T value() const {
+		return this->m;
+	}
+	bool operator <(const Measurement& m) const {
+		return this->m < m.value();
+	}
+}
