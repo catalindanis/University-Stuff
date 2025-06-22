@@ -1,0 +1,21 @@
+[2025-05-06 14:57:16] [info] Start Program:
+Path:"D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 10\Tema\x64\Debug\Tema.exe"
+Arguments:
+Working directory: "D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 10\Tema"
+Modules: Selected: D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 10\Tema\x64\Debug\Tema.exe Excluded: 
+Sources: Selected: D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 10\Tema Excluded: 
+Log Level: Normal
+Cover Children: 0
+Aggregate by file: 1
+Continue after C++ exception: 0
+Optimized build support: 0
+Export: Binary C:\Users\catal\AppData\Local\Temp\ztham2ri.0xh 
+Input coverage: 
+Unified diff: 
+Excluded line regular expressions: 
+Substitute pdb source paths: 
+
+[2025-05-06 14:57:16] [info] Module: D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 10\Tema\x64\Debug\Tema.exe is selected because it matches selected pattern: D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 10\Tema\x64\Debug\Tema.exe
+[2025-05-06 14:57:20] [info] ----------------------------------------------------
+[2025-05-06 14:57:20] [info] Coverage binary generated in file: C:\Users\catal\AppData\Local\Temp\ztham2ri.0xh
+[2025-05-06 14:57:20] [info] ----------------------------------------------------

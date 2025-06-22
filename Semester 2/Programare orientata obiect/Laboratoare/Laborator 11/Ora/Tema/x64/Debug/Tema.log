@@ -1,0 +1,7 @@
+﻿   Qt/MSBuild: 3.3.1.1
+   Qt: 6.9.0
+  main.cpp
+D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 10\Ora\Ui.h(330,38): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file 'main.cpp')
+  
+  Tema.vcxproj -> D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 10\Ora\x64\Debug\Tema.exe

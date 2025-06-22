@@ -1,0 +1,16 @@
+1
+frigider
+bosch
+100
+2
+aragaz
+idk
+120
+3
+cuptor
+tefal
+80
+4
+masina de spalat
+test
+150

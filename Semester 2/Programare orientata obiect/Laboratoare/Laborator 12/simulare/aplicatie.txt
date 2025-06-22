@@ -1,0 +1,40 @@
+1
+frigider
+bosch
+100
+2
+aragaz
+test
+120
+3
+cuptor
+tefal
+80
+4
+masina de spalat
+test
+150
+5
+frigider
+frig
+50
+6
+masina de spalat
+TTd
+150
+7
+frigider
+test
+200
+8
+masina de spalat
+beko
+150
+9
+aragaz
+tefal
+300
+10
+cuptor
+bosch
+200
