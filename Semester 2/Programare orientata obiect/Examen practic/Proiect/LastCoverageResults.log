@@ -1,0 +1,21 @@
+[2025-06-21 13:09:10] [info] Start Program:
+Path:"D:\Facultate\Programare orientata obiect\Examen practic\Proiect\x64\Debug\Proiect.exe"
+Arguments:
+Working directory: "D:\Facultate\Programare orientata obiect\Examen practic\Proiect\"
+Modules: Selected: D:\Facultate\Programare orientata obiect\Examen practic\Proiect\x64\Debug\Proiect.exe Excluded: 
+Sources: Selected: D:\Facultate\Programare orientata obiect\Examen practic\Proiect Excluded: 
+Log Level: Normal
+Cover Children: 0
+Aggregate by file: 1
+Continue after C++ exception: 0
+Optimized build support: 0
+Export: Binary C:\Users\catal\AppData\Local\Temp\xuaeu3ug.m02 
+Input coverage: 
+Unified diff: 
+Excluded line regular expressions: 
+Substitute pdb source paths: 
+
+[2025-06-21 13:09:10] [info] Module: D:\Facultate\Programare orientata obiect\Examen practic\Proiect\x64\Debug\Proiect.exe is selected because it matches selected pattern: D:\Facultate\Programare orientata obiect\Examen practic\Proiect\x64\Debug\Proiect.exe
+[2025-06-21 13:09:10] [info] ----------------------------------------------------
+[2025-06-21 13:09:10] [info] Coverage binary generated in file: C:\Users\catal\AppData\Local\Temp\xuaeu3ug.m02
+[2025-06-21 13:09:10] [info] ----------------------------------------------------

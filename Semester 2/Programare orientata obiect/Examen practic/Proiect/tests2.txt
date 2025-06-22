@@ -1,0 +1,13 @@
+1
+descriere1
+3
+prog1
+prog2
+prog3
+open
+2
+descriere2
+2
+prog1
+prog2
+closed
