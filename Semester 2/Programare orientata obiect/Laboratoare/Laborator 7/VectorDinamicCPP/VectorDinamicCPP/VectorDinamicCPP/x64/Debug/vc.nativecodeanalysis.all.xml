@@ -1,0 +1,638 @@
+﻿<?xml version="1.0" encoding="utf-8"?><DEFECTS><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>LinkedList.h</FILENAME>
+      <LINE>72</LINE>
+      <COLUMN>16</COLUMN>
+    </SFA>
+    <DEFECTCODE>26432</DEFECTCODE>
+    <DESCRIPTION>If you define or delete any default operation in the type 'class LinkedList&lt;class Pet&gt;', define or delete them all (c.21).</DESCRIPTION>
+    <FUNCTION>LinkedList&lt;Pet&gt;::=</FUNCTION>
+    <DECORATED>??4?$LinkedList@VPet@@@@QEAAAEAV0@AEBV0@@Z</DECORATED>
+    <FUNCLINE>72</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>LinkedList.h</FILENAME>
+      <LINE>81</LINE>
+      <COLUMN>50</COLUMN>
+    </SFA>
+    <DEFECTCODE>26409</DEFECTCODE>
+    <DESCRIPTION>Avoid calling new and delete explicitly, use std::make_unique&lt;T&gt; instead (r.11).</DESCRIPTION>
+    <FUNCTION>LinkedList&lt;Pet&gt;::add</FUNCTION>
+    <DECORATED>?add@?$LinkedList@VPet@@@@QEAAXVPet@@@Z</DECORATED>
+    <FUNCLINE>80</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>LinkedList.h</FILENAME>
+      <LINE>81</LINE>
+      <COLUMN>50</COLUMN>
+    </SFA>
+    <DEFECTCODE>26400</DEFECTCODE>
+    <DESCRIPTION>Do not assign the result of an allocation or a function call with an owner&lt;T&gt; return value to a raw pointer, use owner&lt;T&gt; instead (i.11).</DESCRIPTION>
+    <FUNCTION>LinkedList&lt;Pet&gt;::add</FUNCTION>
+    <DECORATED>?add@?$LinkedList@VPet@@@@QEAAXVPet@@@Z</DECORATED>
+    <FUNCLINE>80</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectorDinamicTemplate.h</FILENAME>
+      <LINE>86</LINE>
+      <COLUMN>9</COLUMN>
+    </SFA>
+    <DEFECTCODE>26409</DEFECTCODE>
+    <DESCRIPTION>Avoid calling new and delete explicitly, use std::make_unique&lt;T&gt; instead (r.11).</DESCRIPTION>
+    <FUNCTION>VectDinNewDeleteT&lt;Pet&gt;::{ctor}</FUNCTION>
+    <DECORATED>??0?$VectDinNewDeleteT@VPet@@@@QEAA@AEBV0@@Z</DECORATED>
+    <FUNCLINE>85</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectorDinamicTemplate.h</FILENAME>
+      <LINE>76</LINE>
+      <COLUMN>29</COLUMN>
+    </SFA>
+    <DEFECTCODE>26455</DEFECTCODE>
+    <DESCRIPTION>Default constructor should not throw. Declare it 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>VectDinNewDeleteT&lt;Pet&gt;::{ctor}</FUNCTION>
+    <DECORATED>??0?$VectDinNewDeleteT@VPet@@@@QEAA@XZ</DECORATED>
+    <FUNCLINE>76</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectorDinamicTemplate.h</FILENAME>
+      <LINE>76</LINE>
+      <COLUMN>57</COLUMN>
+    </SFA>
+    <DEFECTCODE>26409</DEFECTCODE>
+    <DESCRIPTION>Avoid calling new and delete explicitly, use std::make_unique&lt;T&gt; instead (r.11).</DESCRIPTION>
+    <FUNCTION>VectDinNewDeleteT&lt;Pet&gt;::{ctor}</FUNCTION>
+    <DECORATED>??0?$VectDinNewDeleteT@VPet@@@@QEAA@XZ</DECORATED>
+    <FUNCLINE>76</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectorDinamicTemplate.h</FILENAME>
+      <LINE>154</LINE>
+      <COLUMN>58</COLUMN>
+    </SFA>
+    <DEFECTCODE>26439</DEFECTCODE>
+    <DESCRIPTION>This kind of function should not throw. Declare it 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>VectDinNewDeleteT&lt;Pet&gt;::=</FUNCTION>
+    <DECORATED>??4?$VectDinNewDeleteT@VPet@@@@QEAAAEAV0@$$QEAV0@@Z</DECORATED>
+    <FUNCLINE>154</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectorDinamicTemplate.h</FILENAME>
+      <LINE>107</LINE>
+      <COLUMN>9</COLUMN>
+    </SFA>
+    <DEFECTCODE>26409</DEFECTCODE>
+    <DESCRIPTION>Avoid calling new and delete explicitly, use std::make_unique&lt;T&gt; instead (r.11).</DESCRIPTION>
+    <FUNCTION>VectDinNewDeleteT&lt;Pet&gt;::=</FUNCTION>
+    <DECORATED>??4?$VectDinNewDeleteT@VPet@@@@QEAAAEAV0@AEBV0@@Z</DECORATED>
+    <FUNCLINE>102</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectorDinamicTemplate.h</FILENAME>
+      <LINE>179</LINE>
+      <COLUMN>39</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function 'VectDinNewDeleteT&lt;Pet&gt;::get' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>VectDinNewDeleteT&lt;Pet&gt;::get</FUNCTION>
+    <DECORATED>?get@?$VectDinNewDeleteT@VPet@@@@QEBAAEAVPet@@H@Z</DECORATED>
+    <FUNCLINE>179</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectorDinamicTemplate.h</FILENAME>
+      <LINE>180</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26481</DEFECTCODE>
+    <DESCRIPTION>Don't use pointer arithmetic. Use span instead (bounds.1).</DESCRIPTION>
+    <FUNCTION>VectDinNewDeleteT&lt;Pet&gt;::get</FUNCTION>
+    <DECORATED>?get@?$VectDinNewDeleteT@VPet@@@@QEBAAEAVPet@@H@Z</DECORATED>
+    <FUNCLINE>179</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectorDinamicTemplate.h</FILENAME>
+      <LINE>132</LINE>
+      <COLUMN>29</COLUMN>
+    </SFA>
+    <DEFECTCODE>26439</DEFECTCODE>
+    <DESCRIPTION>This kind of function should not throw. Declare it 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>VectDinNewDeleteT&lt;Pet&gt;::{ctor}</FUNCTION>
+    <DECORATED>??0?$VectDinNewDeleteT@VPet@@@@QEAA@$$QEAV0@@Z</DECORATED>
+    <FUNCLINE>132</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectorDinamicTemplate.h</FILENAME>
+      <LINE>208</LINE>
+      <COLUMN>55</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function 'VectDinNewDeleteT&lt;Pet&gt;::begin' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>VectDinNewDeleteT&lt;Pet&gt;::begin</FUNCTION>
+    <DECORATED>?begin@?$VectDinNewDeleteT@VPet@@@@QEAA?AV?$IteratorVectorT@VPet@@@@XZ</DECORATED>
+    <FUNCLINE>208</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectorDinamicTemplate.h</FILENAME>
+      <LINE>214</LINE>
+      <COLUMN>55</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function 'VectDinNewDeleteT&lt;Pet&gt;::end' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>VectDinNewDeleteT&lt;Pet&gt;::end</FUNCTION>
+    <DECORATED>?end@?$VectDinNewDeleteT@VPet@@@@QEAA?AV?$IteratorVectorT@VPet@@@@XZ</DECORATED>
+    <FUNCLINE>214</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectorDinamicTemplate.h</FILENAME>
+      <LINE>199</LINE>
+      <COLUMN>17</COLUMN>
+    </SFA>
+    <DEFECTCODE>26409</DEFECTCODE>
+    <DESCRIPTION>Avoid calling new and delete explicitly, use std::make_unique&lt;T&gt; instead (r.11).</DESCRIPTION>
+    <FUNCTION>VectDinNewDeleteT&lt;Pet&gt;::ensureCapacity</FUNCTION>
+    <DECORATED>?ensureCapacity@?$VectDinNewDeleteT@VPet@@@@AEAAXXZ</DECORATED>
+    <FUNCLINE>194</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectorDinamicTemplate.h</FILENAME>
+      <LINE>199</LINE>
+      <COLUMN>17</COLUMN>
+    </SFA>
+    <DEFECTCODE>26400</DEFECTCODE>
+    <DESCRIPTION>Do not assign the result of an allocation or a function call with an owner&lt;T&gt; return value to a raw pointer, use owner&lt;T&gt; instead (i.11).</DESCRIPTION>
+    <FUNCTION>VectDinNewDeleteT&lt;Pet&gt;::ensureCapacity</FUNCTION>
+    <DECORATED>?ensureCapacity@?$VectDinNewDeleteT@VPet@@@@AEAAXXZ</DECORATED>
+    <FUNCLINE>194</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectorDinamicTemplate.h</FILENAME>
+      <LINE>248</LINE>
+      <COLUMN>37</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function 'IteratorVectorT&lt;Pet&gt;::element' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>IteratorVectorT&lt;Pet&gt;::element</FUNCTION>
+    <DECORATED>?element@?$IteratorVectorT@VPet@@@@QEBAAEAVPet@@XZ</DECORATED>
+    <FUNCLINE>248</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectorDinamicTemplate.h</FILENAME>
+      <LINE>249</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26481</DEFECTCODE>
+    <DESCRIPTION>Don't use pointer arithmetic. Use span instead (bounds.1).</DESCRIPTION>
+    <FUNCTION>IteratorVectorT&lt;Pet&gt;::element</FUNCTION>
+    <DECORATED>?element@?$IteratorVectorT@VPet@@@@QEBAAEAVPet@@XZ</DECORATED>
+    <FUNCLINE>248</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectorDinamicTemplate.h</FILENAME>
+      <LINE>253</LINE>
+      <COLUMN>32</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function 'IteratorVectorT&lt;Pet&gt;::next' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>IteratorVectorT&lt;Pet&gt;::next</FUNCTION>
+    <DECORATED>?next@?$IteratorVectorT@VPet@@@@QEAAXXZ</DECORATED>
+    <FUNCLINE>253</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinNewDelete.cpp</FILENAME>
+      <LINE>8</LINE>
+      <COLUMN>18</COLUMN>
+    </SFA>
+    <DEFECTCODE>26455</DEFECTCODE>
+    <DESCRIPTION>Default constructor should not throw. Declare it 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>VectDinNewDelete::{ctor}</FUNCTION>
+    <DECORATED>??0VectDinNewDelete@@QEAA@XZ</DECORATED>
+    <FUNCLINE>8</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinNewDelete.cpp</FILENAME>
+      <LINE>8</LINE>
+      <COLUMN>45</COLUMN>
+    </SFA>
+    <DEFECTCODE>26409</DEFECTCODE>
+    <DESCRIPTION>Avoid calling new and delete explicitly, use std::make_unique&lt;T&gt; instead (r.11).</DESCRIPTION>
+    <FUNCTION>VectDinNewDelete::{ctor}</FUNCTION>
+    <DECORATED>??0VectDinNewDelete@@QEAA@XZ</DECORATED>
+    <FUNCLINE>8</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinNewDelete.cpp</FILENAME>
+      <LINE>17</LINE>
+      <COLUMN>9</COLUMN>
+    </SFA>
+    <DEFECTCODE>26409</DEFECTCODE>
+    <DESCRIPTION>Avoid calling new and delete explicitly, use std::make_unique&lt;T&gt; instead (r.11).</DESCRIPTION>
+    <FUNCTION>VectDinNewDelete::{ctor}</FUNCTION>
+    <DECORATED>??0VectDinNewDelete@@QEAA@AEBV0@@Z</DECORATED>
+    <FUNCLINE>16</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinNewDelete.cpp</FILENAME>
+      <LINE>37</LINE>
+      <COLUMN>9</COLUMN>
+    </SFA>
+    <DEFECTCODE>26409</DEFECTCODE>
+    <DESCRIPTION>Avoid calling new and delete explicitly, use std::make_unique&lt;T&gt; instead (r.11).</DESCRIPTION>
+    <FUNCTION>VectDinNewDelete::=</FUNCTION>
+    <DECORATED>??4VectDinNewDelete@@QEAAAEAV0@AEBV0@@Z</DECORATED>
+    <FUNCLINE>32</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinNewDelete.cpp</FILENAME>
+      <LINE>60</LINE>
+      <COLUMN>18</COLUMN>
+    </SFA>
+    <DEFECTCODE>26439</DEFECTCODE>
+    <DESCRIPTION>This kind of function should not throw. Declare it 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>VectDinNewDelete::{ctor}</FUNCTION>
+    <DECORATED>??0VectDinNewDelete@@QEAA@$$QEAV0@@Z</DECORATED>
+    <FUNCLINE>60</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinNewDelete.cpp</FILENAME>
+      <LINE>81</LINE>
+      <COLUMN>36</COLUMN>
+    </SFA>
+    <DEFECTCODE>26439</DEFECTCODE>
+    <DESCRIPTION>This kind of function should not throw. Declare it 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>VectDinNewDelete::=</FUNCTION>
+    <DECORATED>??4VectDinNewDelete@@QEAAAEAV0@$$QEAV0@@Z</DECORATED>
+    <FUNCLINE>81</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinNewDelete.cpp</FILENAME>
+      <LINE>104</LINE>
+      <COLUMN>27</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function 'VectDinNewDelete::get' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>VectDinNewDelete::get</FUNCTION>
+    <DECORATED>?get@VectDinNewDelete@@QEBAAEAVPet@@H@Z</DECORATED>
+    <FUNCLINE>104</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinNewDelete.cpp</FILENAME>
+      <LINE>105</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26481</DEFECTCODE>
+    <DESCRIPTION>Don't use pointer arithmetic. Use span instead (bounds.1).</DESCRIPTION>
+    <FUNCTION>VectDinNewDelete::get</FUNCTION>
+    <DECORATED>?get@VectDinNewDelete@@QEBAAEAVPet@@H@Z</DECORATED>
+    <FUNCLINE>104</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinNewDelete.cpp</FILENAME>
+      <LINE>121</LINE>
+      <COLUMN>16</COLUMN>
+    </SFA>
+    <DEFECTCODE>26409</DEFECTCODE>
+    <DESCRIPTION>Avoid calling new and delete explicitly, use std::make_unique&lt;T&gt; instead (r.11).</DESCRIPTION>
+    <FUNCTION>VectDinNewDelete::ensureCapacity</FUNCTION>
+    <DECORATED>?ensureCapacity@VectDinNewDelete@@AEAAXXZ</DECORATED>
+    <FUNCLINE>116</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinNewDelete.cpp</FILENAME>
+      <LINE>121</LINE>
+      <COLUMN>16</COLUMN>
+    </SFA>
+    <DEFECTCODE>26400</DEFECTCODE>
+    <DESCRIPTION>Do not assign the result of an allocation or a function call with an owner&lt;T&gt; return value to a raw pointer, use owner&lt;T&gt; instead (i.11).</DESCRIPTION>
+    <FUNCTION>VectDinNewDelete::ensureCapacity</FUNCTION>
+    <DECORATED>?ensureCapacity@VectDinNewDelete@@AEAAXXZ</DECORATED>
+    <FUNCLINE>116</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinNewDelete.cpp</FILENAME>
+      <LINE>130</LINE>
+      <COLUMN>33</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function 'VectDinNewDelete::begin' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>VectDinNewDelete::begin</FUNCTION>
+    <DECORATED>?begin@VectDinNewDelete@@QEAA?AVIteratorVector@@XZ</DECORATED>
+    <FUNCLINE>130</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinNewDelete.cpp</FILENAME>
+      <LINE>135</LINE>
+      <COLUMN>33</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function 'VectDinNewDelete::end' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>VectDinNewDelete::end</FUNCTION>
+    <DECORATED>?end@VectDinNewDelete@@QEAA?AVIteratorVector@@XZ</DECORATED>
+    <FUNCLINE>135</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinNewDelete.cpp</FILENAME>
+      <LINE>148</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26481</DEFECTCODE>
+    <DESCRIPTION>Don't use pointer arithmetic. Use span instead (bounds.1).</DESCRIPTION>
+    <FUNCTION>IteratorVector::element</FUNCTION>
+    <DECORATED>?element@IteratorVector@@QEBAAEAVPet@@XZ</DECORATED>
+    <FUNCLINE>147</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinNewDelete.cpp</FILENAME>
+      <LINE>153</LINE>
+      <COLUMN>25</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function 'IteratorVector::operator*' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>IteratorVector::*</FUNCTION>
+    <DECORATED>??DIteratorVector@@QEAAAEAVPet@@XZ</DECORATED>
+    <FUNCLINE>153</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinNewDelete.cpp</FILENAME>
+      <LINE>156</LINE>
+      <COLUMN>32</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function 'IteratorVector::operator++' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>IteratorVector::++</FUNCTION>
+    <DECORATED>??EIteratorVector@@QEAAAEAV0@XZ</DECORATED>
+    <FUNCLINE>156</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>8</LINE>
+      <COLUMN>21</COLUMN>
+    </SFA>
+    <DEFECTCODE>26455</DEFECTCODE>
+    <DESCRIPTION>Default constructor should not throw. Declare it 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::{ctor}</FUNCTION>
+    <DECORATED>??0VectDinSmartPointer@@QEAA@XZ</DECORATED>
+    <FUNCLINE>8</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>13</LINE>
+      <COLUMN>23</COLUMN>
+    </SFA>
+    <DEFECTCODE>26446</DEFECTCODE>
+    <DESCRIPTION>Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::{ctor}</FUNCTION>
+    <DECORATED>??0VectDinSmartPointer@@QEAA@AEBV0@@Z</DECORATED>
+    <FUNCLINE>11</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>13</LINE>
+      <COLUMN>9</COLUMN>
+    </SFA>
+    <DEFECTCODE>26446</DEFECTCODE>
+    <DESCRIPTION>Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::{ctor}</FUNCTION>
+    <DECORATED>??0VectDinSmartPointer@@QEAA@AEBV0@@Z</DECORATED>
+    <FUNCLINE>11</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>23</LINE>
+      <COLUMN>23</COLUMN>
+    </SFA>
+    <DEFECTCODE>26446</DEFECTCODE>
+    <DESCRIPTION>Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::=</FUNCTION>
+    <DECORATED>??4VectDinSmartPointer@@QEAAAEAV0@AEBV0@@Z</DECORATED>
+    <FUNCLINE>17</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>23</LINE>
+      <COLUMN>9</COLUMN>
+    </SFA>
+    <DEFECTCODE>26446</DEFECTCODE>
+    <DESCRIPTION>Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::=</FUNCTION>
+    <DECORATED>??4VectDinSmartPointer@@QEAAAEAV0@AEBV0@@Z</DECORATED>
+    <FUNCLINE>17</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>32</LINE>
+      <COLUMN>11</COLUMN>
+    </SFA>
+    <DEFECTCODE>26446</DEFECTCODE>
+    <DESCRIPTION>Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::add</FUNCTION>
+    <DECORATED>?add@VectDinSmartPointer@@QEAAXAEBVPet@@@Z</DECORATED>
+    <FUNCLINE>30</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>36</LINE>
+      <COLUMN>17</COLUMN>
+    </SFA>
+    <DEFECTCODE>26446</DEFECTCODE>
+    <DESCRIPTION>Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::get</FUNCTION>
+    <DECORATED>?get@VectDinSmartPointer@@QEBAAEAVPet@@H@Z</DECORATED>
+    <FUNCLINE>35</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>35</LINE>
+      <COLUMN>30</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function 'VectDinSmartPointer::get' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::get</FUNCTION>
+    <DECORATED>?get@VectDinSmartPointer@@QEBAAEAVPet@@H@Z</DECORATED>
+    <FUNCLINE>35</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>40</LINE>
+      <COLUMN>10</COLUMN>
+    </SFA>
+    <DEFECTCODE>26446</DEFECTCODE>
+    <DESCRIPTION>Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::set</FUNCTION>
+    <DECORATED>?set@VectDinSmartPointer@@QEAAXHAEBVPet@@@Z</DECORATED>
+    <FUNCLINE>39</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>54</LINE>
+      <COLUMN>18</COLUMN>
+    </SFA>
+    <DEFECTCODE>26446</DEFECTCODE>
+    <DESCRIPTION>Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::ensureCapacity</FUNCTION>
+    <DECORATED>?ensureCapacity@VectDinSmartPointer@@AEAAXXZ</DECORATED>
+    <FUNCLINE>47</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>54</LINE>
+      <COLUMN>7</COLUMN>
+    </SFA>
+    <DEFECTCODE>26446</DEFECTCODE>
+    <DESCRIPTION>Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::ensureCapacity</FUNCTION>
+    <DECORATED>?ensureCapacity@VectDinSmartPointer@@AEAAXXZ</DECORATED>
+    <FUNCLINE>47</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>61</LINE>
+      <COLUMN>38</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function 'VectDinSmartPointer::begin' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::begin</FUNCTION>
+    <DECORATED>?begin@VectDinSmartPointer@@QEAA?AVIteratorVectorSP@@XZ</DECORATED>
+    <FUNCLINE>61</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>66</LINE>
+      <COLUMN>38</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function 'VectDinSmartPointer::end' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::end</FUNCTION>
+    <DECORATED>?end@VectDinSmartPointer@@QEAA?AVIteratorVectorSP@@XZ</DECORATED>
+    <FUNCLINE>66</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>79</LINE>
+      <COLUMN>19</COLUMN>
+    </SFA>
+    <DEFECTCODE>26446</DEFECTCODE>
+    <DESCRIPTION>Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4).</DESCRIPTION>
+    <FUNCTION>IteratorVectorSP::element</FUNCTION>
+    <DECORATED>?element@IteratorVectorSP@@QEBAAEAVPet@@XZ</DECORATED>
+    <FUNCLINE>78</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>84</LINE>
+      <COLUMN>27</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function 'IteratorVectorSP::operator*' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>IteratorVectorSP::*</FUNCTION>
+    <DECORATED>??DIteratorVectorSP@@QEAAAEAVPet@@XZ</DECORATED>
+    <FUNCLINE>84</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT><DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>87</LINE>
+      <COLUMN>36</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function 'IteratorVectorSP::operator++' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>IteratorVectorSP::++</FUNCTION>
+    <DECORATED>??EIteratorVectorSP@@QEAAAEAV0@XZ</DECORATED>
+    <FUNCLINE>87</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT></DEFECTS>

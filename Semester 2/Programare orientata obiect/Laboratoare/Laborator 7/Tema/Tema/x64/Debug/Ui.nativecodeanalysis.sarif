@@ -1,0 +1,83 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.43.34808.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/tema/ui.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "216e64854d9204c8f28c56ae0fb28df8f96644004b8ecf6f0d61af3f92f12ddc"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/tema/ui.h"
+          },
+          "hashes": {
+            "sha-256": "5b793c1e22a9140afe830e8c6ca06491034d06d9ac7c093f5df8c097247c619c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/tema/service.h"
+          },
+          "hashes": {
+            "sha-256": "64b6e3c6b6aa82d309464f5316f23f2678bc020fe36de7f4e438832eb93c1cd8"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/tema/repository.h"
+          },
+          "hashes": {
+            "sha-256": "ab96849c295097b67d7c2540662d51d042abefad494b82ae30870430dea33da4"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/tema/linkedlist.h"
+          },
+          "hashes": {
+            "sha-256": "032de92603f902da7a1d6db8faac39ce8ddcd24dcfa2d03c65bf0406d77bfb7d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/tema/book.h"
+          },
+          "hashes": {
+            "sha-256": "91cf31748761e8676703d019094bba283ecc2f4f882884954749c85c158f73ed"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/tema/validator.h"
+          },
+          "hashes": {
+            "sha-256": "d394a437113ea069fbf02c2ad1cc8903b5125d5ca701675b0194e5546bfa345c"
+          }
+        }
+      ]
+    }
+  ]
+}

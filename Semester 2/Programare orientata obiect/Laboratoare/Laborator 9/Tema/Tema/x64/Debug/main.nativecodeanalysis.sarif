@@ -1,0 +1,123 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.43.34808.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 8/tema/main.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "7e6c9972c1bde800aa378db26b1c2e4f8677d184d2730d25f2472b009be0191f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 8/tema/tests.h"
+          },
+          "hashes": {
+            "sha-256": "ed2216d1f838eb0a9f32e20305d7721277105ad58b615930292a593d6e4b767b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 8/tema/exceptions.h"
+          },
+          "hashes": {
+            "sha-256": "f29caf2243303845563059baf776d9ec1fa3dd19ab61a535973fbcce86e20c6e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 8/tema/repository.h"
+          },
+          "hashes": {
+            "sha-256": "f9d78da4e172b4afe6f692f6604ff1459bf74f9dc4e23804513610d3c042f5c5"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 8/tema/book.h"
+          },
+          "hashes": {
+            "sha-256": "0f3fa70f9bf4d910db6d9223bfa9e7659a4b102ea748fe76159fdeb1dacf338d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 8/tema/validator.h"
+          },
+          "hashes": {
+            "sha-256": "d394a437113ea069fbf02c2ad1cc8903b5125d5ca701675b0194e5546bfa345c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 8/tema/service.h"
+          },
+          "hashes": {
+            "sha-256": "cc0f8d1a746ee7fbc2620a822312505d116deba2f1701d0180d9e50d1607343b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 8/tema/cartservice.h"
+          },
+          "hashes": {
+            "sha-256": "7ef06dde09c1c5459991a7fbf3cfcf92083bef8b5395c292a51e6da6eef6cf5b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 8/tema/bookdto.h"
+          },
+          "hashes": {
+            "sha-256": "ccec517062fbb40aa51b7a5fd8c31393cd39c63c06057020ee84325b8604eac2"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 8/tema/mainui.h"
+          },
+          "hashes": {
+            "sha-256": "9d85a4d5e4439dba403bc8feba7ca782bb9ddf9f0d0893d032016580a369fcd4"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 8/tema/managerui.h"
+          },
+          "hashes": {
+            "sha-256": "c402c1983ce0dc1fd208e4aa237b9e3d50a622099937ac171085153259010d5d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 8/tema/clientui.h"
+          },
+          "hashes": {
+            "sha-256": "3fa5cb7a963023113880dfd2b370cafd36fd9869f347326f54145c1d7211b737"
+          }
+        }
+      ]
+    }
+  ]
+}

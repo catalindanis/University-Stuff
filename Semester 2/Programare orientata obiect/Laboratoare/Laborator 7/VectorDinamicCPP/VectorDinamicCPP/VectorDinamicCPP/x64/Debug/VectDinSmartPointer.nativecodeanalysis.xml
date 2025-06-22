@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>8</LINE>
+      <COLUMN>21</COLUMN>
+    </SFA>
+    <DEFECTCODE>26455</DEFECTCODE>
+    <DESCRIPTION>Default constructor should not throw. Declare it 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::{ctor}</FUNCTION>
+    <DECORATED>??0VectDinSmartPointer@@QEAA@XZ</DECORATED>
+    <FUNCLINE>8</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>13</LINE>
+      <COLUMN>23</COLUMN>
+    </SFA>
+    <DEFECTCODE>26446</DEFECTCODE>
+    <DESCRIPTION>Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::{ctor}</FUNCTION>
+    <DECORATED>??0VectDinSmartPointer@@QEAA@AEBV0@@Z</DECORATED>
+    <FUNCLINE>11</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>13</LINE>
+      <COLUMN>9</COLUMN>
+    </SFA>
+    <DEFECTCODE>26446</DEFECTCODE>
+    <DESCRIPTION>Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::{ctor}</FUNCTION>
+    <DECORATED>??0VectDinSmartPointer@@QEAA@AEBV0@@Z</DECORATED>
+    <FUNCLINE>11</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>23</LINE>
+      <COLUMN>23</COLUMN>
+    </SFA>
+    <DEFECTCODE>26446</DEFECTCODE>
+    <DESCRIPTION>Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::=</FUNCTION>
+    <DECORATED>??4VectDinSmartPointer@@QEAAAEAV0@AEBV0@@Z</DECORATED>
+    <FUNCLINE>17</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>23</LINE>
+      <COLUMN>9</COLUMN>
+    </SFA>
+    <DEFECTCODE>26446</DEFECTCODE>
+    <DESCRIPTION>Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::=</FUNCTION>
+    <DECORATED>??4VectDinSmartPointer@@QEAAAEAV0@AEBV0@@Z</DECORATED>
+    <FUNCLINE>17</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>32</LINE>
+      <COLUMN>11</COLUMN>
+    </SFA>
+    <DEFECTCODE>26446</DEFECTCODE>
+    <DESCRIPTION>Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::add</FUNCTION>
+    <DECORATED>?add@VectDinSmartPointer@@QEAAXAEBVPet@@@Z</DECORATED>
+    <FUNCLINE>30</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>36</LINE>
+      <COLUMN>17</COLUMN>
+    </SFA>
+    <DEFECTCODE>26446</DEFECTCODE>
+    <DESCRIPTION>Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::get</FUNCTION>
+    <DECORATED>?get@VectDinSmartPointer@@QEBAAEAVPet@@H@Z</DECORATED>
+    <FUNCLINE>35</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>35</LINE>
+      <COLUMN>30</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function 'VectDinSmartPointer::get' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::get</FUNCTION>
+    <DECORATED>?get@VectDinSmartPointer@@QEBAAEAVPet@@H@Z</DECORATED>
+    <FUNCLINE>35</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>40</LINE>
+      <COLUMN>10</COLUMN>
+    </SFA>
+    <DEFECTCODE>26446</DEFECTCODE>
+    <DESCRIPTION>Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::set</FUNCTION>
+    <DECORATED>?set@VectDinSmartPointer@@QEAAXHAEBVPet@@@Z</DECORATED>
+    <FUNCLINE>39</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>54</LINE>
+      <COLUMN>18</COLUMN>
+    </SFA>
+    <DEFECTCODE>26446</DEFECTCODE>
+    <DESCRIPTION>Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::ensureCapacity</FUNCTION>
+    <DECORATED>?ensureCapacity@VectDinSmartPointer@@AEAAXXZ</DECORATED>
+    <FUNCLINE>47</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>54</LINE>
+      <COLUMN>7</COLUMN>
+    </SFA>
+    <DEFECTCODE>26446</DEFECTCODE>
+    <DESCRIPTION>Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::ensureCapacity</FUNCTION>
+    <DECORATED>?ensureCapacity@VectDinSmartPointer@@AEAAXXZ</DECORATED>
+    <FUNCLINE>47</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>61</LINE>
+      <COLUMN>38</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function 'VectDinSmartPointer::begin' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::begin</FUNCTION>
+    <DECORATED>?begin@VectDinSmartPointer@@QEAA?AVIteratorVectorSP@@XZ</DECORATED>
+    <FUNCLINE>61</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>66</LINE>
+      <COLUMN>38</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function 'VectDinSmartPointer::end' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>VectDinSmartPointer::end</FUNCTION>
+    <DECORATED>?end@VectDinSmartPointer@@QEAA?AVIteratorVectorSP@@XZ</DECORATED>
+    <FUNCLINE>66</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>79</LINE>
+      <COLUMN>19</COLUMN>
+    </SFA>
+    <DEFECTCODE>26446</DEFECTCODE>
+    <DESCRIPTION>Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4).</DESCRIPTION>
+    <FUNCTION>IteratorVectorSP::element</FUNCTION>
+    <DECORATED>?element@IteratorVectorSP@@QEBAAEAVPet@@XZ</DECORATED>
+    <FUNCLINE>78</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>84</LINE>
+      <COLUMN>27</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function 'IteratorVectorSP::operator*' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>IteratorVectorSP::*</FUNCTION>
+    <DECORATED>??DIteratorVectorSP@@QEAAAEAVPet@@XZ</DECORATED>
+    <FUNCLINE>84</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\VectorDinamicCPP\VectorDinamicCPP\VectorDinamicCPP\</FILEPATH>
+      <FILENAME>VectDinSmartPointer.cpp</FILENAME>
+      <LINE>87</LINE>
+      <COLUMN>36</COLUMN>
+    </SFA>
+    <DEFECTCODE>26440</DEFECTCODE>
+    <DESCRIPTION>Function 'IteratorVectorSP::operator++' can be declared 'noexcept' (f.6).</DESCRIPTION>
+    <FUNCTION>IteratorVectorSP::++</FUNCTION>
+    <DECORATED>??EIteratorVectorSP@@QEAAAEAV0@XZ</DECORATED>
+    <FUNCLINE>87</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

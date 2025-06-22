@@ -1,0 +1,537 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "ruleId": "C26455",
+          "message": {
+            "text": "Default constructor should not throw. Declare it 'noexcept' (f.6)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/vectdinsmartpointer.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectDinSmartPointer.cpp"
+                },
+                "region": {
+                  "startLine": 8,
+                  "startColumn": 22
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinSmartPointer::{ctor}",
+                  "decoratedName": "??0VectDinSmartPointer@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26446",
+          "message": {
+            "text": "Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/vectdinsmartpointer.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectDinSmartPointer.cpp"
+                },
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 14,
+                  "endLine": 13,
+                  "endColumn": 24
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinSmartPointer::{ctor}",
+                  "decoratedName": "??0VectDinSmartPointer@@QEAA@AEBV0@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26446",
+          "message": {
+            "text": "Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/vectdinsmartpointer.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectDinSmartPointer.cpp"
+                },
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 3,
+                  "endLine": 13,
+                  "endColumn": 10
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinSmartPointer::{ctor}",
+                  "decoratedName": "??0VectDinSmartPointer@@QEAA@AEBV0@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26446",
+          "message": {
+            "text": "Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/vectdinsmartpointer.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectDinSmartPointer.cpp"
+                },
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 14,
+                  "endLine": 23,
+                  "endColumn": 24
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinSmartPointer::=",
+                  "decoratedName": "??4VectDinSmartPointer@@QEAAAEAV0@AEBV0@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26446",
+          "message": {
+            "text": "Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/vectdinsmartpointer.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectDinSmartPointer.cpp"
+                },
+                "region": {
+                  "startLine": 23,
+                  "startColumn": 3,
+                  "endLine": 23,
+                  "endColumn": 10
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinSmartPointer::=",
+                  "decoratedName": "??4VectDinSmartPointer@@QEAAAEAV0@AEBV0@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26446",
+          "message": {
+            "text": "Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/vectdinsmartpointer.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectDinSmartPointer.cpp"
+                },
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 2,
+                  "endLine": 32,
+                  "endColumn": 12
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinSmartPointer::add",
+                  "decoratedName": "?add@VectDinSmartPointer@@QEAAXAEBVPet@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26446",
+          "message": {
+            "text": "Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/vectdinsmartpointer.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectDinSmartPointer.cpp"
+                },
+                "region": {
+                  "startLine": 36,
+                  "startColumn": 9,
+                  "endLine": 36,
+                  "endColumn": 18
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinSmartPointer::get",
+                  "decoratedName": "?get@VectDinSmartPointer@@QEBAAEAVPet@@H@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26440",
+          "message": {
+            "text": "Function 'VectDinSmartPointer::get' can be declared 'noexcept' (f.6)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/vectdinsmartpointer.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectDinSmartPointer.cpp"
+                },
+                "region": {
+                  "startLine": 35,
+                  "startColumn": 31
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinSmartPointer::get",
+                  "decoratedName": "?get@VectDinSmartPointer@@QEBAAEAVPet@@H@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26446",
+          "message": {
+            "text": "Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/vectdinsmartpointer.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectDinSmartPointer.cpp"
+                },
+                "region": {
+                  "startLine": 40,
+                  "startColumn": 2,
+                  "endLine": 40,
+                  "endColumn": 11
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinSmartPointer::set",
+                  "decoratedName": "?set@VectDinSmartPointer@@QEAAXHAEBVPet@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26446",
+          "message": {
+            "text": "Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/vectdinsmartpointer.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectDinSmartPointer.cpp"
+                },
+                "region": {
+                  "startLine": 54,
+                  "startColumn": 12,
+                  "endLine": 54,
+                  "endColumn": 19
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinSmartPointer::ensureCapacity",
+                  "decoratedName": "?ensureCapacity@VectDinSmartPointer@@AEAAXXZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26446",
+          "message": {
+            "text": "Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/vectdinsmartpointer.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectDinSmartPointer.cpp"
+                },
+                "region": {
+                  "startLine": 54,
+                  "startColumn": 3,
+                  "endLine": 54,
+                  "endColumn": 8
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinSmartPointer::ensureCapacity",
+                  "decoratedName": "?ensureCapacity@VectDinSmartPointer@@AEAAXXZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26440",
+          "message": {
+            "text": "Function 'VectDinSmartPointer::begin' can be declared 'noexcept' (f.6)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/vectdinsmartpointer.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectDinSmartPointer.cpp"
+                },
+                "region": {
+                  "startLine": 61,
+                  "startColumn": 39
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinSmartPointer::begin",
+                  "decoratedName": "?begin@VectDinSmartPointer@@QEAA?AVIteratorVectorSP@@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26440",
+          "message": {
+            "text": "Function 'VectDinSmartPointer::end' can be declared 'noexcept' (f.6)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/vectdinsmartpointer.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectDinSmartPointer.cpp"
+                },
+                "region": {
+                  "startLine": 66,
+                  "startColumn": 39
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinSmartPointer::end",
+                  "decoratedName": "?end@VectDinSmartPointer@@QEAA?AVIteratorVectorSP@@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26446",
+          "message": {
+            "text": "Prefer to use gsl::at() instead of unchecked subscript operator (bounds.4)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/vectdinsmartpointer.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectDinSmartPointer.cpp"
+                },
+                "region": {
+                  "startLine": 79,
+                  "startColumn": 9,
+                  "endLine": 79,
+                  "endColumn": 20
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "IteratorVectorSP::element",
+                  "decoratedName": "?element@IteratorVectorSP@@QEBAAEAVPet@@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26440",
+          "message": {
+            "text": "Function 'IteratorVectorSP::operator*' can be declared 'noexcept' (f.6)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/vectdinsmartpointer.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectDinSmartPointer.cpp"
+                },
+                "region": {
+                  "startLine": 84,
+                  "startColumn": 28
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "IteratorVectorSP::*",
+                  "decoratedName": "??DIteratorVectorSP@@QEAAAEAVPet@@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26440",
+          "message": {
+            "text": "Function 'IteratorVectorSP::operator++' can be declared 'noexcept' (f.6)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/vectdinsmartpointer.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectDinSmartPointer.cpp"
+                },
+                "region": {
+                  "startLine": 87,
+                  "startColumn": 37
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "IteratorVectorSP::++",
+                  "decoratedName": "??EIteratorVectorSP@@QEAAAEAV0@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.43.34808.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/vectdinsmartpointer.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "7b77099420aaa2a4a724c3247db9daa9874bc01e61401835800b1405abb36126"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/vectdinsmartpointer.h"
+          },
+          "hashes": {
+            "sha-256": "3c2b28ebd2578a24713f60e429331b06bd8ddd1ca3ca0e8b18971e44aee14b8a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/pet.h"
+          },
+          "hashes": {
+            "sha-256": "fd14148c6196cbe4578b88d57d630f1ef8f34c34b6ed51f347fb94dfb97fec9e"
+          }
+        }
+      ]
+    }
+  ]
+}

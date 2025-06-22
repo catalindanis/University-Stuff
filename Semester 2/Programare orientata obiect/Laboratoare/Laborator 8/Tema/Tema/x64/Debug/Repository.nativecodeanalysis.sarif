@@ -1,0 +1,59 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.43.34808.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 7/tema/repository.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "f9fdd326f294733ca4189b3e689fc0191d5f4216e0c9f0b51b0b2756bd6d218b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 7/tema/repository.h"
+          },
+          "hashes": {
+            "sha-256": "8ae6ac1d6686b5b3272b7963ffb62a29ca8801625e1d7d52d284f05cf7f2a0e5"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 7/tema/book.h"
+          },
+          "hashes": {
+            "sha-256": "ca84b2847dfb4a3375f7f22f1d20c14a662316dd82a917c77b2ff5708a68a933"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 7/tema/exceptions.h"
+          },
+          "hashes": {
+            "sha-256": "f29caf2243303845563059baf776d9ec1fa3dd19ab61a535973fbcce86e20c6e"
+          }
+        }
+      ]
+    }
+  ]
+}

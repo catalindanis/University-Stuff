@@ -1,0 +1,19 @@
+﻿[1/7] Processing file D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\Tema\Book.cpp.
+[2/7] Processing file D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\Tema\main.cpp.
+[3/7] Processing file D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\Tema\Repository.cpp.
+[4/7] Processing file D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\Tema\Service.cpp.
+[5/7] Processing file D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\Tema\Tests.cpp.
+[6/7] Processing file D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\Tema\Ui.cpp.
+[7/7] Processing file D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\Tema\Validator.cpp.
+D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\Tema\Book.h:31:2: warning: definition of implicit copy assignment operator for 'Book' is deprecated because it has a user-provided copy constructor [clang-diagnostic-deprecated-copy-with-user-provided-copy]
+   31 |         Book(const Book& book);
+      |         ^
+D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\Tema\LinkedList.h:15:21: note: in implicit copy assignment operator for 'Book' first required here
+   15 |         this->value = val;
+      |                     ^
+D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\Tema\LinkedList.h:116:26: note: in instantiation of member function 'Node<Book>::setValue' requested here
+  116 |                 current->setValue(newValue);
+      |                          ^
+D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 6\Tema\Repository.cpp:24:14: note: in instantiation of member function 'LinkedList<Book>::update' requested here
+   24 |         this->books.update(this->books.getAll()[index], book);
+      |                     ^

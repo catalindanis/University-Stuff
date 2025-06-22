@@ -1,0 +1,612 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "ruleId": "C26432",
+          "message": {
+            "text": "If you define or delete any default operation in the type 'class LinkedList<class Pet>', define or delete them all (c.21)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/main.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/LinkedList.h"
+                },
+                "region": {
+                  "startLine": 72,
+                  "startColumn": 17
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "LinkedList<Pet>::=",
+                  "decoratedName": "??4?$LinkedList@VPet@@@@QEAAAEAV0@AEBV0@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26409",
+          "message": {
+            "text": "Avoid calling new and delete explicitly, use std::make_unique<T> instead (r.11)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/main.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/LinkedList.h"
+                },
+                "region": {
+                  "startLine": 81,
+                  "startColumn": 51
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "LinkedList<Pet>::add",
+                  "decoratedName": "?add@?$LinkedList@VPet@@@@QEAAXVPet@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26400",
+          "message": {
+            "text": "Do not assign the result of an allocation or a function call with an owner<T> return value to a raw pointer, use owner<T> instead (i.11)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/main.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/LinkedList.h"
+                },
+                "region": {
+                  "startLine": 81,
+                  "startColumn": 51,
+                  "endLine": 81,
+                  "endColumn": 52
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "LinkedList<Pet>::add",
+                  "decoratedName": "?add@?$LinkedList@VPet@@@@QEAAXVPet@@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26409",
+          "message": {
+            "text": "Avoid calling new and delete explicitly, use std::make_unique<T> instead (r.11)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/main.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicTemplate.h"
+                },
+                "region": {
+                  "startLine": 86,
+                  "startColumn": 10
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinNewDeleteT<Pet>::{ctor}",
+                  "decoratedName": "??0?$VectDinNewDeleteT@VPet@@@@QEAA@AEBV0@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26455",
+          "message": {
+            "text": "Default constructor should not throw. Declare it 'noexcept' (f.6)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/main.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicTemplate.h"
+                },
+                "region": {
+                  "startLine": 76,
+                  "startColumn": 30
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinNewDeleteT<Pet>::{ctor}",
+                  "decoratedName": "??0?$VectDinNewDeleteT@VPet@@@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26409",
+          "message": {
+            "text": "Avoid calling new and delete explicitly, use std::make_unique<T> instead (r.11)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/main.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicTemplate.h"
+                },
+                "region": {
+                  "startLine": 76,
+                  "startColumn": 58
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinNewDeleteT<Pet>::{ctor}",
+                  "decoratedName": "??0?$VectDinNewDeleteT@VPet@@@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26439",
+          "message": {
+            "text": "This kind of function should not throw. Declare it 'noexcept' (f.6)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/main.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicTemplate.h"
+                },
+                "region": {
+                  "startLine": 154,
+                  "startColumn": 59
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinNewDeleteT<Pet>::=",
+                  "decoratedName": "??4?$VectDinNewDeleteT@VPet@@@@QEAAAEAV0@$$QEAV0@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26409",
+          "message": {
+            "text": "Avoid calling new and delete explicitly, use std::make_unique<T> instead (r.11)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/main.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicTemplate.h"
+                },
+                "region": {
+                  "startLine": 107,
+                  "startColumn": 10
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinNewDeleteT<Pet>::=",
+                  "decoratedName": "??4?$VectDinNewDeleteT@VPet@@@@QEAAAEAV0@AEBV0@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26440",
+          "message": {
+            "text": "Function 'VectDinNewDeleteT<Pet>::get' can be declared 'noexcept' (f.6)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/main.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicTemplate.h"
+                },
+                "region": {
+                  "startLine": 179,
+                  "startColumn": 40
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinNewDeleteT<Pet>::get",
+                  "decoratedName": "?get@?$VectDinNewDeleteT@VPet@@@@QEBAAEAVPet@@H@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26481",
+          "message": {
+            "text": "Don't use pointer arithmetic. Use span instead (bounds.1)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/main.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicTemplate.h"
+                },
+                "region": {
+                  "startLine": 180,
+                  "startColumn": 2,
+                  "endLine": 180,
+                  "endColumn": 18
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinNewDeleteT<Pet>::get",
+                  "decoratedName": "?get@?$VectDinNewDeleteT@VPet@@@@QEBAAEAVPet@@H@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26439",
+          "message": {
+            "text": "This kind of function should not throw. Declare it 'noexcept' (f.6)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/main.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicTemplate.h"
+                },
+                "region": {
+                  "startLine": 132,
+                  "startColumn": 30
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinNewDeleteT<Pet>::{ctor}",
+                  "decoratedName": "??0?$VectDinNewDeleteT@VPet@@@@QEAA@$$QEAV0@@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26440",
+          "message": {
+            "text": "Function 'VectDinNewDeleteT<Pet>::begin' can be declared 'noexcept' (f.6)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/main.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicTemplate.h"
+                },
+                "region": {
+                  "startLine": 208,
+                  "startColumn": 56
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinNewDeleteT<Pet>::begin",
+                  "decoratedName": "?begin@?$VectDinNewDeleteT@VPet@@@@QEAA?AV?$IteratorVectorT@VPet@@@@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26440",
+          "message": {
+            "text": "Function 'VectDinNewDeleteT<Pet>::end' can be declared 'noexcept' (f.6)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/main.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicTemplate.h"
+                },
+                "region": {
+                  "startLine": 214,
+                  "startColumn": 56
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinNewDeleteT<Pet>::end",
+                  "decoratedName": "?end@?$VectDinNewDeleteT@VPet@@@@QEAA?AV?$IteratorVectorT@VPet@@@@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26409",
+          "message": {
+            "text": "Avoid calling new and delete explicitly, use std::make_unique<T> instead (r.11)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/main.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicTemplate.h"
+                },
+                "region": {
+                  "startLine": 199,
+                  "startColumn": 18
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinNewDeleteT<Pet>::ensureCapacity",
+                  "decoratedName": "?ensureCapacity@?$VectDinNewDeleteT@VPet@@@@AEAAXXZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26400",
+          "message": {
+            "text": "Do not assign the result of an allocation or a function call with an owner<T> return value to a raw pointer, use owner<T> instead (i.11)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/main.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicTemplate.h"
+                },
+                "region": {
+                  "startLine": 199,
+                  "startColumn": 18,
+                  "endLine": 199,
+                  "endColumn": 31
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "VectDinNewDeleteT<Pet>::ensureCapacity",
+                  "decoratedName": "?ensureCapacity@?$VectDinNewDeleteT@VPet@@@@AEAAXXZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26440",
+          "message": {
+            "text": "Function 'IteratorVectorT<Pet>::element' can be declared 'noexcept' (f.6)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/main.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicTemplate.h"
+                },
+                "region": {
+                  "startLine": 248,
+                  "startColumn": 38
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "IteratorVectorT<Pet>::element",
+                  "decoratedName": "?element@?$IteratorVectorT@VPet@@@@QEBAAEAVPet@@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26481",
+          "message": {
+            "text": "Don't use pointer arithmetic. Use span instead (bounds.1)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/main.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicTemplate.h"
+                },
+                "region": {
+                  "startLine": 249,
+                  "startColumn": 2,
+                  "endLine": 249,
+                  "endColumn": 20
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "IteratorVectorT<Pet>::element",
+                  "decoratedName": "?element@?$IteratorVectorT@VPet@@@@QEBAAEAVPet@@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "ruleId": "C26440",
+          "message": {
+            "text": "Function 'IteratorVectorT<Pet>::next' can be declared 'noexcept' (f.6)."
+          },
+          "analysisTarget": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/main.cpp"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicTemplate.h"
+                },
+                "region": {
+                  "startLine": 253,
+                  "startColumn": 33
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "IteratorVectorT<Pet>::next",
+                  "decoratedName": "?next@?$IteratorVectorT@VPet@@@@QEAAXXZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.43.34808.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/main.cpp"
+          },
+          "roles": [
+            "analysisTarget"
+          ],
+          "hashes": {
+            "sha-256": "c0f026b98d7f34acedabdfa236852df62e2cf7501335f0fec048893e5e1f0ac0"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/LinkedList.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "663aa9f2d4d10fc1eb7e59f82e70b6b912def1aab5595c67d1c155681c6ce2b4"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///D:/Facultate/Programare orientata obiect/Laboratoare/Laborator 6/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicCPP/VectorDinamicTemplate.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "b5f6b7031bf5912a326bf6ce828b15dab3b7e36f51a136637e277203ac05a4be"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/vectdinnewdelete.h"
+          },
+          "hashes": {
+            "sha-256": "6f0da4437b1fef4581d5bdbda20faf2d5ecf1efe7f8d170035b7b60b086d8b1e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/pet.h"
+          },
+          "hashes": {
+            "sha-256": "fd14148c6196cbe4578b88d57d630f1ef8f34c34b6ed51f347fb94dfb97fec9e"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///d:/facultate/programare orientata obiect/laboratoare/laborator 6/vectordinamiccpp/vectordinamiccpp/vectordinamiccpp/vectdinsmartpointer.h"
+          },
+          "hashes": {
+            "sha-256": "3c2b28ebd2578a24713f60e429331b06bd8ddd1ca3ca0e8b18971e44aee14b8a"
+          }
+        }
+      ]
+    }
+  ]
+}

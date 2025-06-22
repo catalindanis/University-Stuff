@@ -1,0 +1,4 @@
+D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 7\Tema\x64\Debug\Tema.exe.lastcodeanalysissucceeded
+D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 7\Tema\Tema\x64\Debug\NativeCodeAnalysis.read.1.tlog
+D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 8\Tema\x64\Debug\Tema.exe.lastcodeanalysissucceeded
+D:\Facultate\Programare orientata obiect\Laboratoare\Laborator 8\Tema\Tema\x64\Debug\NativeCodeAnalysis.read.1.tlog
