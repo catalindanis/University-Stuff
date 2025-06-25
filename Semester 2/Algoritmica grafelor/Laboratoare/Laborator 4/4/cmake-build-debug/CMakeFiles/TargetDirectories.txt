@@ -1,0 +1,3 @@
+D:/Facultate/Algoritmica grafelor/Laboratoare/Laborator 4/4/cmake-build-debug/CMakeFiles/4.dir
+D:/Facultate/Algoritmica grafelor/Laboratoare/Laborator 4/4/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/Facultate/Algoritmica grafelor/Laboratoare/Laborator 4/4/cmake-build-debug/CMakeFiles/rebuild_cache.dir

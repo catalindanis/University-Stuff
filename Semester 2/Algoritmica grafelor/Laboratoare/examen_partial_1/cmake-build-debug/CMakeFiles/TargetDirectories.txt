@@ -1,0 +1,3 @@
+D:/Facultate/Algoritmica grafelor/Laboratoare/examen_partial_1/cmake-build-debug/CMakeFiles/examen_partial_1.dir
+D:/Facultate/Algoritmica grafelor/Laboratoare/examen_partial_1/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/Facultate/Algoritmica grafelor/Laboratoare/examen_partial_1/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,8 @@
+# ninja log v6
+4	621	7655534495317088	CMakeFiles/Problema_2.dir/main.cpp.obj	8809f8c4b8b8ac22
+621	728	7655534501489006	Problema_2.exe	f20c41ad2e5ef61e
+91	610	7684778999427686	build.ninja	852d2fdea47d60ee
+32	881	7684779001094022	CMakeFiles/Problema_2.dir/main.cpp.obj	8809f8c4b8b8ac22
+881	1039	7684779009579175	Problema_2.exe	f20c41ad2e5ef61e
+5	820	7684780174966912	CMakeFiles/Problema_2.dir/main.cpp.obj	8809f8c4b8b8ac22
+821	998	7684780183128713	Problema_2.exe	f20c41ad2e5ef61e
