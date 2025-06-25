@@ -12,7 +12,7 @@ Semester 1:
 Semester 2:
 
 - Object oriented programming
-- Graph's algorithms
+- Graph algorithms
 - Geometry
 - Foundations of pedagogy
 
