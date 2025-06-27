@@ -1,0 +1,10 @@
+# ninja log v6
+27	1054	7682983162299054	CMakeFiles/Laborator_4.dir/tema/IteratorMultime.cpp.obj	7bfd5add1f3d62a8
+6	83	7666762339132060	CMakeFiles/Laborator_4.dir/tema/Nod.cpp.obj	48b4a544b29d4fdc
+2	120	7666717440857368	CMakeFiles/Laborator_4.dir/tema/ListaInlantuita.cpp.obj	dc39f56925f4ddb2
+7	1052	7682983162088295	CMakeFiles/Laborator_4.dir/tema/main.cpp.obj	170438c76771b3d
+9	551	7682989296670149	CMakeFiles/Laborator_4.dir/tema/TestScurt.cpp.obj	8dea3dee1e4d4269
+11	1057	7682983162137567	CMakeFiles/Laborator_4.dir/tema/TestExtins.cpp.obj	158e38a3a34140a0
+21	1896	7683064033802591	build.ninja	86a6fefda93c3d4d
+21	1049	7682983162239059	CMakeFiles/Laborator_4.dir/tema/Multime.cpp.obj	ba5a677b6fe7aabb
+552	724	7682989302094262	Laborator_4.exe	ebe8ef60ae2162fe

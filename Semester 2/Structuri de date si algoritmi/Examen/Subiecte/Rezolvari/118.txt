@@ -1,0 +1,83 @@
+A.
+
+T(1) = 0
+T(2) = 1
+...
+T(n) = T(n/2) + 1
+T(n) = T(n/4) + 1 + 1
+T(n) = T(n/8) + 1 + 1 + 1
+T(n) = T(n/2^k) + k
+
+n = 2^k => k = log2n
+
+T(n) = log2n => theta(log2n)
+
+B.
+3
+
+C. A, C
+
+A
+
+D.
+
+Nod:
+	e: TElem
+	st: !Nod
+	dr: !Nod
+
+ABC:
+	rad: !Nod
+	n: intreg
+
+Subalgoritm predecesor(abc, p)
+{pre:   abc - arborele binar de cautare pe care lucram
+	p - nodul din abc pentru care cautam predecesorul
+ post: returneaza cea mai mare cheie mai mica decat cheia nodului p}
+	Daca p.st != NIL atunci
+		predecesor<-maxim(p.st)
+	Altfel
+		prec<-parinte(p)
+		Cat timp (prec != NIL V p = [prec].st) atunci
+			p<-prec
+			prec<-parinte(abc.rad, p)
+		Sf cat timp
+		
+		Daca prec = NIL atunci
+			predecesor<- -1
+		Sf daca
+		
+		predecesor<-prec.e
+	Sf daca
+Sfarsit predecesor
+
+Subalgoritm maxim(p)
+{pre: p - radacina nevida a unui subarbore pentru care calculam maximul
+ post: returneaza cheia maxima din subarborele cu radacina p}
+	Cat timp ([p].dr != NIL) executa
+		p<-[p].dr
+	Sfarsit cat timp
+	maxim<-p
+Sfarsit maxim
+
+Subalgoritm parinte(rad, t)
+{pre: rad - radacina arborelui binar de cautare 
+        t - nodul caruia vrem sa ii aflam parintele
+ post: returneaza referinta catre parintele nodului t (NIL daca nu are un parinte)}
+	Daca rad = t V rad = NIL atunci
+		parinte<-NIL
+	Altfel
+		Daca [rad].st = t V [rad].dr = t atunci
+			parinte<-rad
+		Altfel
+			Daca [t].e < [rad].e atunci
+				parinte<-parinte(rad.st, t)
+			Altfel
+				parinte<-parinte(rad.dr, t)
+			Sf daca
+		Sf daca
+	Sf daca
+Sfarsit parinte
+
+
+

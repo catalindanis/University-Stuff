@@ -1,0 +1,45 @@
+A.
+
+Subalgoritm f(n)
+	Daca (n > 0) atunci
+		Pentru i<-1, n executa
+			Pentru j<-1, n executa
+			Sf pentru
+		Sf pentru
+		f(n-1)
+	Sf daca
+Sf f
+
+T(1) = 1
+T(2) = 2^2 + T(1)
+T(3) = 3^2 + T(2)
+...
+T(n) = n^2 + T(n-1)
+T(n) = n^2 + (n-1)^2 + T(n-2)
+T(n) = n^2 + (n-1)^2 + ... + 2^2 + 1^2
+     = n*(n-1)*(2*n-1) / 6 apartine theta(n^3) CD = CF = CM
+
+B.
+
+Daca elementele sunt in ordine crescatoare, putem considera vectorul ca fiind un min heap (prima valoare este cea mai prioritara in raport cu relatia '<='). Acest lucru se verifica pentru fiecare subarbore (radacina o sa se afle pe o pozitie mai mica in vector decat fii ei => radacina va respecta relatia in raport cu fii ei)
+
+C1.
+
+E
+
+C2.
+
+D
+
+Abore binar de cautare:
+	v: TElem[] (vectorul de contine elementele)
+	n: intreg (numarul de noduri din arbore)
+
+Subalgoritm SRD(abc, i)
+{preconditii: abc - un arbore binar de cautare nevid dezechilibrat in partea stanga (care necesita o singura rotatie spre dreapta)
+		i - indicele radacinii subarborelui care trebuie rotit spre dreapta
+ postconditii: se returneaza radacina noului arbore rezultat in urma aplicatiei SRD
+	y<-abc.v[2*i]
+	abc.v[2*i]<-abc.v[4*i+1]
+	abc.v[i]<-y
+Sf SRD

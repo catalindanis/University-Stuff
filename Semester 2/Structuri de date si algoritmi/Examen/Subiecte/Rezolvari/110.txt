@@ -1,0 +1,19 @@
+A.
+
+f : theta(n)
+
+T(1) = 1
+T(2) = 2
+T(3) = 3
+...
+T(n) = n
+
+prelucrare(n):
+
+suma(i=1, n) din i
+
+1 + 2 + 3 + ... + n = n * (n+1) / 2 apartine theta(n^2)
+
+B.
+
+A C D

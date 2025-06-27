@@ -1,0 +1,19 @@
+T(1) = 0
+T(2) = 2 * T(1) + 2
+...
+T(n) = 2 * T(n/2) + n
+     = 2 * (2 * T(n/4) + n / 2) + n
+     = 2 * (2 * (2 * T(n/8) + n/4) + n/2) + n
+
+     = (2^k) * T(n/2^k) + n * k
+
+n = 2^k
+k = log2n
+
+T(n) = T(1) + n * log2n apartine theta(n * log2n)
+
+B.
+
+
+
+     

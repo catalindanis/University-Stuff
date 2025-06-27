@@ -1,0 +1,42 @@
+A
+
+T(1) = 0
+T(2) = 4 * T(1) + 1
+...
+T(n) = 4 * T(n/2) + 1
+     = 4 * (4 * T(n/4) + 1) + 1
+     = 4 * (4 * (4 * T(n/8) + 1) + 1) + 1
+     = 4^k * T(n / 2 ^ k ) + 4^(k-1) + 4^(k-2) + ... + 4^0
+
+n = 2^k => k = log2n
+
+     = theta(n^2)
+
+D
+
+Arbore binar:
+	v: TElem[]
+	n: intreg
+
+Subalgoritm numar(ab, e)
+{preconditii: ab: Arbore binar - arborele binar pe care se face cautarea repr pe ansamblu
+ 	       e: TElem - elementul caruia ii cautam numarul asociat
+ postconditii: returneaza numarul asociat pentru elementul transmis: intreg
+	p<-0
+	nr<-0
+	Creeaza(s)
+	Cat timp (!vida(s) V p < ab.n) executa
+		Cat timp p < ab.n executa
+			adauga(s, p)
+			p<-p*2
+		Sf cat timp
+		sterge(s, p)
+		nr<-nr+1
+		Daca ab.v[p] = e atunci
+			numar<-nr
+		Sf daca
+		p<-2*p+1
+	Sf cat timp
+	p<--1
+Sfarsit numar
+

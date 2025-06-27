@@ -1,0 +1,53 @@
+A.
+
+Subalgoritm f(n)
+	Daca n > 1 atunci
+		f(n/2)
+	Sf daca
+	f<-0
+Sf f
+
+B.
+
+A, C
+
+D
+
+Nod:
+	c: TCheie
+	e: TElem
+	st: !Nod
+	dr: !Nod
+
+Arbore binar de cautare:
+	rad: !Nod (pointer spre radacina arborelui)
+	n: intreg (numarul de noduri din arbore)
+
+Subalgoritm predecesor(abc, p)
+{preconditii: abc - arbore binar de cautare nevid
+ 	        p - cheia nodului pentru care cautam predecesorul
+ postconditii: returneaza cea mai mare cheie, mai mica decat cheia p}
+	
+	Daca(p.st != NIL) atunci
+		predecesor<-maxim(abc, p.st)
+	Altfel
+		y<-parinte(abc, p)
+		Cat timp (y != NIL ^ y.st = p) executa
+			p<-y
+			y<-parinte(abc, y)
+		Sfarsit cat timp
+		
+		Daca (y = NIL) atunci
+			@arunca exceptie (nu exista un predecesor)
+		Sf daca
+		
+		predecesor<-y.c
+Sfarsit predecesor
+
+Subalgoritm maxim(abc, p)
+{preconditii: abc 
+	Cat timp (p.dr != NIL) executa
+		p<-p.dr
+	Sfarsit cat timp
+	maxim<-p.c
+Sfarsit maxim

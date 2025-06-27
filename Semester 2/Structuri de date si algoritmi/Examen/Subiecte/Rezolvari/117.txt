@@ -1,0 +1,84 @@
+A.
+
+Subalgoritm f(n)
+	copie<-n
+	Cat timp (n > 1) executa
+		m <- copie
+		Cat timp (m > 1) executa
+			m <- [m/2]
+		Sfarsit cat timp
+		n <- [n / 2]
+	Sfarsit cat timp
+Sfarsit f
+
+B.
+
+C. A, E
+
+D.
+
+Nod:
+	e: TElem
+	st: !Nod
+	dr: !Nod	
+	h: intreg
+
+Arbore binar de cautare:
+	rad: !Nod (radacina arborelui)
+	n: intreg (dimensiunea)
+
+Subalgoritm h(p)
+{preconditii: p - nod
+ postconditii: se returneaza inaltimea lui p}
+	Daca p = NIL atunci
+		h<--1
+	Altfel
+		h<-[p].h
+	SfDaca
+Sfarsit h
+
+Subalgoritm inaltime(p)
+{preconditii: p - nod
+ postconditii: se recalculeaza si returneaza inaltimea lui p}
+	Daca p = NIL atunci
+		inaltime<--1
+	Altfel
+		inaltime<-max(inaltime([p].st), inaltime([p].dr)) + 1
+	SfDaca
+Sfarsit inaltime
+
+Subalgoritm SRS(p)
+{preconditii: p - radacina unui subarbore din arbore binar de cautare nevid
+ postconditii: returneaza noua radacina a subarborelui in urma aplicarii srs}
+	y<-[p].dr
+	[p].dr<-[y].st
+	[y].st<-p	
+	[p].h<-inaltime(p)
+	[y].h<-inaltime(y)
+	SRS<-y
+Sfarsit SRS
+
+Subalgoritm SRD(p)
+{preconditii: p - radacina unui subarbore din arbore binar de cautare nevid
+ postconditii: returneaza noua radacina a subarborelui in urma aplicarii srd}
+	y<-[p].st
+	[p].st<-[y].dr
+	[y].dr<-p
+	[p].h<-inaltime(p)
+	[y].h<-inaltime(y)
+	SRD<-y
+Sfarsit SRD
+
+Subalgoritm DRD(p)
+{preconditii: p - radacina unui subarbore din arbore binar de cautare nevid
+ postconditii: returneaza noua radacina a subarborelui in urma aplicarii drd}
+	Daca p.st != NIL atunci
+		p<-SRS(p.st)
+	Sfarsit daca
+	DRD<-SRD(p)
+Sfarsit DRD
+
+
+
+
+

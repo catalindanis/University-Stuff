@@ -1,0 +1,19 @@
+# ninja log v6
+9	792	7684171705472066	CMakeFiles/tema.dir/main.cpp.obj	22094e00b997b134
+15	880	7684178388818888	CMakeFiles/tema.dir/TestScurt.cpp.obj	666c617320efdbc9
+11	845	7684193593116110	CMakeFiles/tema.dir/TestExtins.cpp.obj	b9f7dffa82b47b46
+8	870	7684209096664696	CMakeFiles/tema.dir/Multime.cpp.obj	28372fbca9f81a44
+871	1058	7684209105295298	tema.exe	d42d8f87620cb025
+29	539	7684178388964599	CMakeFiles/tema.dir/IteratorMultime.cpp.obj	67202689cbf1d729
+328	923	7684041560231672	CMakeFiles/tema.dir/VectorDinamic.cpp.obj	9122049b085a7dd0
+320	925	7684041560136733	CMakeFiles/tema.dir/Nod.cpp.obj	5e8375cad5d20177
+11	791	7684212611950221	CMakeFiles/tema.dir/Multime.cpp.obj	28372fbca9f81a44
+792	968	7684212619760331	tema.exe	d42d8f87620cb025
+9	793	7684214035721920	CMakeFiles/tema.dir/Multime.cpp.obj	28372fbca9f81a44
+794	1076	7684214043646783	tema.exe	d42d8f87620cb025
+7	658	7684216183533516	CMakeFiles/tema.dir/Multime.cpp.obj	28372fbca9f81a44
+659	808	7684216190050900	tema.exe	d42d8f87620cb025
+6	554	7684228155756940	CMakeFiles/tema.dir/Multime.cpp.obj	28372fbca9f81a44
+555	706	7684228161255476	tema.exe	d42d8f87620cb025
+6	607	7684228297456293	CMakeFiles/tema.dir/Multime.cpp.obj	28372fbca9f81a44
+607	788	7684228303462671	tema.exe	d42d8f87620cb025

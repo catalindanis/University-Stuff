@@ -1,0 +1,33 @@
+A.
+
+Rec:
+
+T(1) = 0
+T(2) = T(1) + 1
+...
+T(n) = T(n/2) + 1
+     = T(n/4) + 1 + 1
+	...
+     = T(n/2^k) + k
+n = 2^k
+=> k = log2(n)
+
+T(n) = T(1) + k = log2n
+
+Operatie:
+
+T(1) = 0
+T(2) = T(n/2) + log2n
+...
+T(n) = T(n/2) + log2n
+     = T(n/4) + log2n + log2n
+     ...
+     = T(n/2^k) + k * log2n
+
+n = 2^k
+=> k = log2n
+
+T(n) = k * log2n = (log2n)^2 
+
+B.
+

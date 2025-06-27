@@ -1,0 +1,11 @@
+# ninja log v6
+336	1646	7695084074193939	CMakeFiles/Laborator_6.dir/MD.cpp.obj	fb7348f280f51000
+3	379	7687794272885351	build.ninja	32f7ea35feedac00
+22	1495	7695084071046407	CMakeFiles/Laborator_6.dir/IteratorMD.cpp.obj	887479d2c9660d79
+5	535	7688349929511696	CMakeFiles/Laborator_6.dir/App.cpp.obj	f1f342fca9af30e2
+1722	3049	7695084088052351	Laborator_6.exe	77d232c05cc8e19d
+364	1333	7688239888691876	CMakeFiles/Laborator_6.dir/Nod.cpp.obj	a14fe922b5c1f2e5
+373	1608	7695084074563810	CMakeFiles/Laborator_6.dir/TestScurt.cpp.obj	f3742a0cf5d8bb3d
+365	1722	7695084074471858	CMakeFiles/Laborator_6.dir/TestExtins.cpp.obj	83f74f3847fb1314
+13	898	7695084374203553	CMakeFiles/Laborator_6.dir/TestScurt.cpp.obj	f3742a0cf5d8bb3d
+899	1125	7695084383074954	Laborator_6.exe	77d232c05cc8e19d

@@ -1,0 +1,45 @@
+A.
+
+B.
+
+C.
+
+d
+
+C2
+
+F
+
+adaugare se poate face la inceput => complexitate theta(1) mereu (nu conteaza factorul)
+
+D.
+
+Arbore binar:
+	v: TElem[] (elementele din arbore reprezentat sub forma unui heap indexat de la 1)
+	n: intreg (numarul de elemente din arbore)
+
+Subalgoritm cod(ab, e)
+{preconditii: ab - arbore binar nevid reprezentat prin heap
+	       e - nodul caruia ii calculam codul
+ postconditii: returneaza codul asociat elementului e din arbore}
+	Creeaza(c) {creeaza coada ce retine perechi de (indice nod, cod)}
+	adauga(c, 1, "1")
+	
+	Cat timp (!vida(c)) executa
+		element(c, i, cp)
+
+		Daca (ab.v[i] = e)
+			cod<-cp
+
+		Daca (2*i <= n) atunci
+			adauga(c, 2*i, cp + "2")
+		Sfarsit daca		
+
+		Daca (2*i+1 <= n) atunci
+			adauga(c, 2*i+1, cp + "0")
+		Sfarsit daca
+
+		sterge(c, i, cp)
+	Sfarsit cat timp
+	@arunca exceptie (nodul e nu apare in arbore)
+Sfarsit cod

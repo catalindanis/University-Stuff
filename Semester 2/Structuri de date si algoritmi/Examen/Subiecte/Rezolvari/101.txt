@@ -1,0 +1,62 @@
+A.
+
+g(n) - theta(rad(n))
+
+CM : theta(rad(n))
+CD : theta(rad(n))
+
+T(1) = rad(1) = 1
+T(2) = T(1) + rad(2)
+T(3) = T(2) + rad(3)
+...
+T(n) = T(n-1) + rad(n)
+     = rad(1) + rad(2) + ... + rad(n) E theta(rad(n))
+
+B.
+
+C.
+Fals
+
+5 2 3 7
+5 7 3 2
+
+D.
+
+2 5 14 20 1 22
+
+Nod:
+	e : TElem ( valoarea din nod )
+	st : ! Nod ( pointer catre subarborele stang )
+	dr : ! Nod ( pointer catre subarborele drept )
+
+TAD Arbore binar:
+	rad: ! Nod (pointer catre radacina arborelui)
+	n : intreg (numarul de noduri din arborele binar)
+
+Subalgoritm cautare(ab, e)
+{preconditii: ab - arborele binar in care se face cautarea
+	      e - elementul cautat
+ postconditii: i - contine indicele din parcurgerea inordine a elementului e}
+	Creeaza(s) {creaza o stiva goala}
+	
+	i<-0
+	p<-ab.rad
+	Cat timp (!vida(s) V p != NIL) executa
+		Cat timp (p != NIL) executa
+			Adauga(s, p)
+			p<-p.st
+		Sfarsit cat timp
+		
+		i<-i+1
+		Sterge(s, p)
+		
+		Daca p.e = e
+			cautare<-i
+		Sfarsit daca
+		
+		p<-p.dr
+	Sfarsit cat timp
+	@arunca exceptie - nu exista elementul cautat in arbore
+Sf subalgoritm
+
+

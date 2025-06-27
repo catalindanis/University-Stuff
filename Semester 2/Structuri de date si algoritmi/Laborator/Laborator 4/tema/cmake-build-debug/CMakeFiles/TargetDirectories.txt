@@ -1,0 +1,3 @@
+D:/Facultate/Structuri de date si algoritmi/Laborator/Laborator 4/tema/cmake-build-debug/CMakeFiles/tema.dir
+D:/Facultate/Structuri de date si algoritmi/Laborator/Laborator 4/tema/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/Facultate/Structuri de date si algoritmi/Laborator/Laborator 4/tema/cmake-build-debug/CMakeFiles/rebuild_cache.dir

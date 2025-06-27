@@ -1,0 +1,76 @@
+C.
+
+A
+
+D.
+
+CP3:
+	e: TElem[] 
+	n: intreg
+	R: relatia
+
+Subalgoritm stergere(cp)
+	e1<-cp.e[0]
+	sterge(cp, cp.e[0])
+	
+	e2<-cp.e[0]
+	sterge(cp, cp.e[0])
+
+	e3<-cp.e[0]
+	sterge(cp, cp.e[0])
+	
+	adauga(cp, e1)
+	adauga(cp, e2)
+
+	stergere<-e3
+Sfarsit stergere
+
+Subalgoritm sterge(cp, e)
+	e<-cp.e[0]
+	cp.e[0]<-cp.e[cp.n-1]
+	cp.n<-cp.n-1
+	coboara(cp, 0)
+Sfarsit sterge
+
+Subalgoritm coboara(cp, poz)
+	e<-cp.e[poz]
+	i<-poz
+	j<-2*poz + 1
+	Cat timp (j < cp.n) executa
+		Daca (cp.R(cp.e[j+1], cp.e[j]) = true) atunci
+			j<-j+1
+		Sfarsit daca
+		
+		Daca(cp.R(e, cp.e[j]) = true) atunci
+			j<-cp.n
+		Altfel
+			cp.e[i]<-cp.e[j]
+			i<-j
+			j<-2*i
+		Sfarsit daca
+	Sfarsit cat timp
+	cp.e[i]<-e
+Sfarsit coboara
+
+Subalgoritm adauga(cp, e)
+	cp.e[cp.n]<-e
+	cp.n<-cp.n+1
+	urca(cp, cp.n-1)
+Sfarsit adauga
+
+Subalgoritm urca(cp, poz)
+	e<-cp.e[poz]
+	i<-poz
+	j<-I/2
+	Cat timp (j >= 0) executa
+		Daca(cp.R(e, cp.e[j]) = true) atunci
+			cp.e[i]<-cp.e[j]
+			i<-j
+			j<-I/2
+		Altfel
+			j<- -1
+		Sfarsit daca
+	Sfarsit cat timp
+	cp.e[i]<-e
+Sfarsit urca
+

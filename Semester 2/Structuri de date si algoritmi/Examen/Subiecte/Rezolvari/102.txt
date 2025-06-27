@@ -1,0 +1,77 @@
+A.
+
+T(1) = 1
+T(2) = 2 * T(1) + 1
+T(3) = 2^2 * T(1) + 1
+...
+T(n) = 2^(n-1) * T(1) + 1
+T(n) = 2^(n-1) + 1 apartine theta(2^n)
+
+B.
+
+C.
+
+O(nlog2n)
+
+C.
+
+B
+
+Adaugare - trebuie sa shiftam cu o pozitie spre dreapta toate elementele deja existente (theta(n))
+Stergere - trebuie sa shiftam cu o pozitie spre stanga toate elementele deja existente (theta(n))
+
+D
+
+Nod:
+	e: TElem
+	st: !Nod
+	dr: !Nod
+
+TAD AB:
+	rad: !Nod
+	dim: intreg
+
+Subalgoritm verificare(ab, e, e`)
+{preconditii: ab - arbore binar nevid
+               e - un nod din arborele ab
+	       e` - alt nod din arborele ab
+ postconditii:
+             verificare = true (e si e` se afla pe acelasi nivel) / false (in caz contrar)}
+	Creeaza(c) {se creeaza o coada vida ce contine perechi de (!Nod, intreg)}
+	adauga(c, ab.rad, 0) {adaugam radacina alaturi de nivelul ei in coada}
+	
+	h1<--1 {initializam inaltimile celor doua noduri cu -1}
+	h2<--1
+
+	Cat timp (!vida(c)) executa
+		element(c, n, h) {extragem din coada perechea (nod, inaltime))
+
+		Daca (n.st != NIL)
+			adauga(c, n.st, h+1)
+		Sf daca
+
+		Daca (n.dr != NIL)
+			adauga(c, n.dr, h+1)
+		Sf daca
+
+		Daca (n.e = e)
+			h1<-h	
+		Sf daca
+
+		Daca (n.e = e`)
+			h2<-h
+		Sf daca	
+
+		sterge(c, n, h) {stergem nodul extras}
+	Sf cat timp
+	
+	Daca (h1 = -1 V h2 = -1)
+		@arunca exceptie (cel putin unul din elemente nu apare in arbore)
+	
+	Daca (h1 = h2)
+		verificare<-true
+	Altfel
+		verificare<-false	
+Sf verificare
+
+

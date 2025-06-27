@@ -1,0 +1,76 @@
+A.
+
+Subalgoritm f(n)
+	Daca n > 1 atunci
+		f(n / 2)
+	Sf daca
+	f <- 0
+Sf subalgoritm
+
+Justificare:
+
+T(1) = 0
+T(2) = T(1) + 1 = 1
+...
+T(n) = T(n / 2) + 1 
+     = T(n / 2^2) + 1 + 1 
+     = T(n / 2^3) + 1 + 1 + 1
+	...
+     = T(n / 2^k) + k * 1
+n / 2 ^ k = 1  <=>  n = 2 ^ k  => k = log2n 
+
+=> T(n) = T(1) + log2n
+   T(n) = log2n
+
+B.
+
+3
+
+Cel mai lung lant gasit din nodul 22 pana la o frunza este 22->20->50->21 (format din 3 muchii)
+
+C.
+O(n)
+
+Deoarece pentru a elimina un element dintr-un vector (indiferent daca este ordonat sau nu) va trebui sa mutam toate elementele de dupa pozitia elementului eliminat cu o pozitia spre stanga.
+
+CF: theta(1) 
+
+D.
+
+cp:
+   ans : TElem[] (ansamblul reprezentat printr-un vector)
+   n : intreg (numarul de elemente din ansamblu)
+   R : relatie (relatia dintre elemente)
+
+Subalgoritm sterge(cp, e)
+{preconditii: cp - coada cu prioritati nevida reprezentata prin ansamblu cuaternar
+ postconditii: cp` = cp \ e - coada cu prioritati nu mai contine elementul e, relatia de ansamblu e pastrata
+	       e = elementul sters - cel cu prioritatea cea mai mare}
+	{elementul cel mai prioritar este chiar radacina}
+	e-cp.ans[0]
+	
+	{mai departe, deoarece vrem sa extragem radacina, trebuie sa reordonam ansamblul astfel incat sa pastram relatia de ordine}
+	
+	cp.ans[0] <- cp.ans[n-1]
+	cp.n<-cp.n-1
+
+	i<-0
+	j<-4*i+1
+
+	Cat timp (j < cp.n) executa
+		p<-j
+		pentru k<-j+1, min(j+3, cp.n-1) executa
+			daca R(cp.ans[k], cp.ans[p])
+				p<-k
+		daca R(e, cp.ans[p]) atunci
+			j<-cp.n
+		altfel
+			cp.ans[i]<-cp.ans[j]
+			i<-j
+			j<-4*i+1
+		sf daca
+	Sf cat timp
+	cp.ans[i]<-e
+Sf subalgoritm
+		
+	
