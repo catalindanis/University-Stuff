@@ -15,5 +15,6 @@ Semester 2:
 - Data structures and algorithms
 - Graph algorithms
 - Geometry
+- Dynamical systems
 - Foundations of pedagogy
 

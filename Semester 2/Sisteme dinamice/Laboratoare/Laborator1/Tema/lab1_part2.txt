@@ -1,0 +1,91 @@
+x:=t->(1-cos(t))*cost(t);
+x := proc (t) options operator, arrow; (1-cos(t))*cost(t) end proc
+
+y:=t->(1-cos(t))*sin(t);
+y := proc (t) options operator, arrow; (1-cos(t))*sin(t) end proc
+
+plot([x(t),y(t),t=0..2*Pi]);
+
+restart;
+x:=t->sin(3*t)*cos(t);
+x := proc (t) options operator, arrow; sin(3*t)*cos(t) end proc
+
+y:=t->sin(3*t)*sin(t);
+y := proc (t) options operator, arrow; sin(3*t)*sin(t) end proc
+
+plot([x(t),y(t),t=0..2*Pi]);
+
+restart;
+x:=t->t-sin(t);
+    x := proc (t) options operator, arrow; t-sin(t) end proc
+
+y:=t->1-cos(t);
+    y := proc (t) options operator, arrow; 1-cos(t) end proc
+
+plot([x(t),y(t),t=0..6*Pi]);
+
+restart;
+f:=(t,s)->(1-(s*cos(4*t)*cos(t))/(sqrt(1-s^2*(cos(4*t))^2*(sin(t))^2)));
+f := proc (t, s) options operator, arrow; 1-s*cos(4*t)*cos(t)/sq\
+
+  rt(1-s^2*cos(4*t)^2*sin(t)^2) end proc
+
+
+s:=0.5;
+                            s := 0.5
+
+x:=t->f(t-Pi/2,s);
+x := proc (t) options operator, arrow; f(t-(1/2)*Pi, s) end proc
+
+y:=t->f(t,s);
+    y := proc (t) options operator, arrow; f(t, s) end proc
+
+plot([x(t),y(t),t=0..2*Pi]);
+
+with(plots);
+[animate, animate3d, animatecurve, arrow, changecoords, 
+
+  complexplot, complexplot3d, conformal, conformal3d, 
+
+  contourplot, contourplot3d, coordplot, coordplot3d, 
+
+  densityplot, display, dualaxisplot, fieldplot, fieldplot3d, 
+
+  gradplot, gradplot3d, implicitplot, implicitplot3d, inequal, 
+
+  interactive, interactiveparams, intersectplot, listcontplot, 
+
+  listcontplot3d, listdensityplot, listplot, listplot3d, 
+
+  loglogplot, logplot, matrixplot, multiple, odeplot, pareto, 
+
+  plotcompare, pointplot, pointplot3d, polarplot, polygonplot, 
+
+  polygonplot3d, polyhedra_supported, polyhedraplot, rootlocus, 
+
+  semilogplot, setcolors, setoptions, setoptions3d, shadebetween, 
+
+  spacecurve, sparsematrixplot, surfdata, textplot, textplot3d, 
+
+  tubeplot]
+
+
+implicitplot(x^2+y^2-2*x-4*y+4=0);
+
+implicitplot(x^2-2*x*y-y^2=1);
+
+restart;
+z:=(x,y)->4*x^2*exp(y)-2*x^4-exp(4*y);
+z := proc (x, y) options operator, arrow; 4*x^2*exp(y)-2*x^4-exp\
+
+  (4*y) end proc
+
+
+plot3d(z(x,y),x=-3..3,y=-1..1);
+
+z:=(x,y)->4*x^2-y^2;
+  z := proc (x, y) options operator, arrow; 4*x^2-y^2 end proc
+
+plot3d(z(x,y),x=-100..100,y=-100..100);
+
+
