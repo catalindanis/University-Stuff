@@ -1,0 +1,3 @@
+Se da un fisier binar. Sa se determine aparitiile fiecarui numar par din intervalul 0 100,
+ apoi sa se determine media aritmetica a aparitiilor si
+ apoi sa se afiseze numarul par care are nr de aparitii cel mai aproape de acea medie.

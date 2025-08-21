@@ -1,0 +1,197 @@
+cd -> intra in director
+cd ~ -> revino in directorul home
+cd .. -> iesi in director
+touch -> creaza un fisier gol
+vim -> intri ca sa vizualizezi, il poti edita
+chmod -> schimbi permisiunile fisierului
+________________________________________________________________________________________________________________________________________
+
+----> #!/bin/bash -> se include in antetul fisierului
+
+----> echo <=> print -> argumentul -e permite interpretarea secventelor speciale e.g. '\n' new line
+			argumentul -n previne scrierea pe o noua linie
+			sintaxa : echo "text" > fisier.txt suprascrie fisier.txt cu textul "text"
+			sintaxa : echo "text" >> fisier.txt scrie la finalul fisierului textul "txt"
+
+----> tee fisier.txt ia outputul din spatele lui prin | si il scrie in fisierul dat. daca nu se doreste suprascrierea folosim -a
+----> argumentele $1,$2,$3... li se atribuie pe rand din console ( 2 argumente : $1 si $2 o sa le contina )
+----> argumentul $0 contine nume comenzi ( e.g. am apelat programul ./a in $0 se va afla ./a )
+----> $* sau $@  - toate argumentele primate din linia de comanda
+----> $# - numarul de argumente din linia de comandă
+----> $? - codul de ieșire al comenzii anterioare ( e.g. '0' - s-a executat cu success )
+----> e mai sigur sa ne referim la argumente cu "" ( e.g. "$1" )
+----> shift 3 - shiftează spre stânga argumentele. ( $0 ramane neschimbat)
+----> << test -f a.txt >> este acelasi lucru cu << [ -f a.txt ] >> ( se retuneaza true sau false ) 
+
+
+----> iau argumentele pe rand din linia de comanda :
+for p do
+	echo $p
+done
+----------------------------------------------------
+
+----> intrerez in felul urmator :
+for p in $(grep "gr913" fisier.txt | cut -d: -f1) do
+	echo "se trimite email lui $p"
+done
+#ia de cuvantul si-l pune in p. daca pe linie sunt mai multe cuvinte, le ia pe rand si merge la urmatorul
+-----------------------------------------------------
+
+----> sintaxa unui if : ---------------------------------
+
+if [ condiție ]; then
+    # Comenzi de executat dacă condiția este adevărată
+elif [ altă_condiție ]; then
+    # Comenzi de executat dacă altă condiție este adevărată
+else
+    # Comenzi de executat dacă condiția este falsă
+fi
+
+-> argumentul -e verifica daca fisierul/directorul in conditie exista ( se pune la inceput )
+-> argumentel -r -w verifica daca fisierul este citibil, respective scriibil
+-> argumentul -z verifica daca un string e gol ( il folosim pentru a verifica daca s-au trimis argumente )
+-> pentru comparatii de stringuri avem =, !=, <, >
+-> pentru comparatii umerice  : -eq (egal ) -ne (diferit) -gt (mai mare) -ge (mai mare egal) -lt (mai mic) -le (mai mic sau egal)
+-> pentru ca if sa permita expresiile regulare folosim [[ conditie ]]
+-> negarea conditiei din if se face cu ! inainte
+-> exit 1/0 inchide programul cu codul din argument
+
+----> sintaxa unui while : ------------------------------------
+
+while [condiție]
+do
+    # Comenzi de executat atâta timp cât condiția este adevărată
+done
+
+-> commanda read citeste linie cu linie dintr-un fisier, si o desparte fictiv printr-un separator
+-> ca read sa stie in ce fisier sa citeasca, dupa done, la while, vom pune < "$1" - "$1" fiind calea fisierului
+-> argumentul -r pentru while asigura ca caracterele speciale e.g. "/n" vor fi citite asa cum sunt
+-> IFS=" " seteaza delimitatorul pentru comanda read
+-> set -- $linie va sparge linia dupa separatorul dat in IFS. argumentele $1,$2,..,$# vor fi modificate. NU UITA SA FACI COPY
+
+----------------------------------------------------------------
+
+----> | va ce se returneaz inaintea lui si da mai departe
+----> grep e comanda de selectare : grep urmat de un string afiseaza toate liniile care contin acel string
+				    argumentul -o selecteaza din fiecare linie doar stringul dat si-l afiseaza pe o linie noua
+			            argumentul -i nu deosebeste caracterele mari de cele mici
+----> wc e comanda de numarare : argumentul -l numara liniile din input
+				 argumentul -w numara cuvintele aparute in cuvant separate prin newline, spatiu, tab de pe toate liniie
+			         argumentul -m numara caracterele intr-un input de pe toate liniile
+      wc -> print newline, word, and byte counts for each input
+
+---------------------------------------------------------------
+
+interarea print-o ierarhie de directoare presupunand a calea directorului de unde incepem e in "$1" :
+
+find "$1" -type f | while read fisier; do
+    echo "Fișierul găsit: $fisier"
+done
+
+NOTE : fisier va contine calea complete catre fisier. eventual mai trebui sa facem o alta interatie prin fisier linie cu linie.
+
+----------------------------------------------------------------
+
+ls -> list the content of the current directory
+cat ARGUMENT -> see the content of a file, specified by the ARGUMENT
+ls -l -> see the contend of the current directory, but with its specifications
+ls -l -a -> as previously, but more detailed
+mkdir NAME -> create a directory with name NAME
+ls -l --color=never -> display the current directory, but without colors
+pwd -> shows the path
+man ARGUMENT -> look for the ARGUMENT in build-in manual
+whatis ARGUMENT -> in some cases more useful then man command
+
+head -n -> prints the first n line of a, let say, text file.
+
+uniq -> report or omit repeated lines
+	argument -u afiseaza liniile fara duplicate
+	argument -d afiseaza doar liniile cu duplicate
+	argument -c afiseaza nr e aparitii a fiecarei linii
+	!!! NOTE : trebuie folosit cu sort
+
+sort -> sorteaza liniile dintr-un fisier, sau cuvintele dintr-o linie
+	argumentul -f nu tine cont de litere mari sau mici
+	argumentul -n sorteaza valori umerice ( ignora stringurile ) 
+
+cut -> ia inpututl si-l interpreteaza ca n tabel pe baza unui separator din care putem alege coloanele
+       e.g. cut -d: -f1,5 ( delimitatorul  : ) ( iau coloanele 1, 5 )
+
+sed ->  inlocuieste in fisier, fata de grep care doar cauta.
+	e.g. sed s/ana/Ana/g fisier.txt -> peste tot in fisier se inlocuieste ana cu Ana
+	e.g. sed s/abcd/ABCD/ fisier.txt -> a mic se face A s.a.m.d e ca o tabela de translatatie
+	-> se folosesc expresii regulare
+
+-----------------------------------------------------------------------------------------------------------------
+awk ->  mai puternic decat grep. 
+	e.g. awk '{print $2}' fisier.txt -> al 2 cuvant de pe fiecare lini din fisier.
+	e.g. awk '{print $2,NF}' fisier.txt -> nr de cuvinte de pe linie separate prin spatiu si al doilea cuvant
+	e.g cat fisier | awk -f arg.awk -> scriem in fisierul arg.awk ce am scrie intre paranteze
+
+FISIERUL POATE ARATA CEVA DE GENU :
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>BEGIN{print "incepem", contor=0}
+
+{<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+-> print $2 # afisam al doilea cuvant
+-> print ($3+$4)/2 # daca $3 si $4 sunt numere, atunci vom afisa media aritmetica a acestora
+
+-> #interarea prin linie 
+for(i=0; i<NF; i++){
+	print $i -> al i-lea cuvant de pe linia respectiva
+	contor++ -> creste pentru fiecare cuvant care il gasim
+}
+
+-> #daca vrem sa vedem de cate ori apare un cuvant 
+for(i=0; i<NF; i++){
+	v[$i]++;
+}
+
+#putem construi if-uri
+-> if ( $1 < 0 ) { print $1 }
+-> if ( $0 ~ /Cluj/ ) { print $0 } -> printeaza linile care contin Cluj ( intre / / putem folosi expresii regulare )
+
+}<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>END{print "sfarsit"
+    for ( j in v ){
+	print "cuvantul" j "apare de " v[j] "ori"
+}
+}
+
+------------------------------------------------------------------------------------------------------------------
+
+
+
+vim FILE -> open the FILE in line editor, if the FILE dose not exist, a new FILE will be created
+gcc -Wall -Wextra -Werror -g -o EXECUTABIL FISIER -> construieste un fisier EXECUTABIL pentru FISIER
+valgrind ./EXECUTABIL -> pentru probleme legate de memorie 
+./EXECUTABIL -> ruleaza fisierul EXECUTABIL
+rm FILE -> delete the FILE
+
+----------------------------------------------------------------------
+
+REGULAR EXPRESIONS : 
+
+. -> Matches any single character 
+\ -> Escape, changes the meaning of the character following it, between normal and special 
+[abc] ->  Matches any single character that appears in the list (in this case a or b or c) 
+[a-z] -> Matches any single character that belongs to the range (in this case any lower-case letter) 
+[^0-9] -> Matches any single character that does not belong to the range (in this case anything that is not a digit) 
+^ -> Beginning of line 
+$ -> End of line 
+\< -> Beginning of word 
+\> -> End of word 
+( ) -> Group several characters into an expression 
+* -> Previous expression zero or more times 
++ -> Previous expression one or more times 
+? -> Previous expression zero or one times 
+{m,n} -> Previous expression at least m and at most n times or just {x} x times
+| -> Logical OR between parts of the regular expression
+
+--------------------------------------------------------------------------
+
+
+
+

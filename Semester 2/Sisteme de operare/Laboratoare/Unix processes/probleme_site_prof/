@@ -1,0 +1,22 @@
+#include <stdio.h>
+#include <time.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main(int argc, char* argv[]){
+	timeval t1, t2;
+
+	gettimeofday(&t1, NULL);
+	if(fork() == 0){
+		execvp("grep", argv);
+		exit(0);
+	}
+	wait(0);
+	gettimeofday(&t2, NULL);
+
+	printf("Elapsed time: %lf", t2.tv_usec - t1.tv_usec);
+
+	(void) argc;
+	(void) argv;
+	return 0;
+}

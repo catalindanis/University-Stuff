@@ -1,0 +1,62 @@
+Procese
+
+#include <unistd.h>
+
+fork() -> return 0 in copil, pid-ul copilului in parinte
+getpid() -> return current process pid
+getppid() -> return parent process pid
+
+
+#include <sys/wait.h>
+
+wait(int* status) -> asteapta ca un copil sa isi termine executia
+ 		  -> in status (dacan nu e NULL / 0) avem statusul copilului
+ 		  -> WEXITSTATUS(status) return exit code-ul copilului
+
+
+#include <signal.h>
+
+signal(signum, handler) -> atribuim semnalului signum comportamentul handler
+handler = void (*f)(int)
+man 7 signal -> toate semnalele
+
+
+#include <unistd.h>
+
+execl(path, path, arg1, arg2, ..., NULL) -> executa comanda de la path (precizat full) cu argumentele corespunzatoare
+execlp(comanda,comanda, arg1, arg2, ... NULL) -> executa comanda din PATH cu argumentele corespunzatoare
+execv(path, v) -> executa comanda de la path (precizat full) iar argumentele sunt puse in vectorul v (v[0] = path)
+execvp(comanda, v) -> executa comanda din PATH iar argumentele sunt puse in vectorul v (v[0] = comanda)
+
+
+#include <unistd.h>
+
+pipe(v[2]) -> creare + deschidere pipe
+v[0] = capat pentru citire
+v[1] = capat pentru scriere
+
+mkfifo("nume", 0600) -> creare fisier fifo din C
+mkfifo nume -> creare fisier fifo din bash
+
+rD = open("nume", O_RDONLY) -> deschidere fifo citire (ASTEAPTA PENTRU OPERATIA COMPLEMENTARA)
+wD = open("nume", O_WRONLY) -> deschidere fifo scriere (ASTEAPTA PENTRU OPERATIA COMPLEMENTARA)
+
+unlink("nume") -> stergere fifo din C
+rm nume -> stergere fifo din bash
+
+read(fd, adresa, size) -> citire din pipe / fifo
+write(fd, adresa, size) -> scriere in pipe / fifo
+close(fd) -> inchidere capat citire / scriere pentru pipe / fifo
+
+
+#include <stdio.h>
+
+FILE* fp = popen("comanda", "r" / "w") -> comanda primeste input din C / trimite output in C prin fp
+fprintf(fp, format, arg1, arg2, ...) -> scriere in popen
+fscanf(fp, format, arg1, arg2, ...) -> citire din popen
+
+
+#include <unistd.h>
+
+dup(fd) -> face o copie pentru file descriptorul transmis in tabela de descriptori
+dup(old, new) -> new este suprascris cu valoarea lui old (new refera acum spre acelasi file descriptor ca si old)

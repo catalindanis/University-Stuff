@@ -14,6 +14,7 @@ Semester 2:
 - Object oriented programming
 - Data structures and algorithms
 - Graph algorithms
+- Operating systems
 - Geometry
 - Dynamical systems
 - Foundations of pedagogy

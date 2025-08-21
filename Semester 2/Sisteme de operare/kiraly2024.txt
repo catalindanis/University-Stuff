@@ -1,0 +1,13 @@
+Scrieti un program in C care citeste de la tastatura (nu din argumente) un numar N, apoi N^2 numere, elemente ale unei matrici patrate.
+Ulterior, se mai citeste un numar K. Pentru fiecare numar din matrice se creaza un thread care calculeaza valoarea medie a vecinilor aflati
+la distanta cel mult K elemente pe verticala si orizontala. Aceasta valoare medie este apoi scazuta din vecinii aflati la distanta K/2, in mod asemanator (cu exceptia lui insine).
+In momentul in care indexului asociat unui thread ii scade valoarea sub 0, se afiseaza un mesaj din partea thread-ului, iar acel thread nu isi mai ataca vecinii.
+
+Ultimul thread care ramane in viata afiseaza un mesaj in spaniola :)
+
+Scrieti o solutie eficienta din perspectiva timpului de executie, si tratati cazuri exceptionale. Rezolvati problema folosind sisteme de organizare si notificare; Adica nu doar mutex! >:(
+
+TIP: Puteti generate numere aletoare folosind comanda "echo $((1 + $RANDOM % 10))"
+
+
+

@@ -1,0 +1,47 @@
+gcc -Wall -Wextra -Werror -g -o fisier fisier.c
+
+Threads
+
+#include <pthread.h>
+
+pthread_t t
+
+pthread_create(&t, NULL, f, arg) -> creeaza si porneste un thread t cu functia f si argumentul arg (sau NULL daca nu vrem argument)
+pthread_join(t, ret) -> asteapta dupa thread sa se termine si pune return value functiei f in ret (sau NULL daca nu ne intereseaza valoarea returnata)
+(void* ) (*f) (void* arg) = functia thread-ului
+
+
+pthread_mutex_t m
+
+pthread_mutex_init(&m, NULL) -> initializare mutex
+pthread_mutex_lock(&m) -> lock pe mutex
+pthread_mutex_unlocK(&m) -> unlock pe mutex
+pthread_mutex_destroy(&m) -> destroy mutex
+
+
+pthread_cond_t c
+
+pthread_cond_init(&c, NULL) -> initializare 
+pthread_cond_wait(&c, &m) -> asteapta la variabila conditionala (deblocheaza mutex-ul blocat anterior si il blocheaza la loc cand este semnalata)
+pthread_cond_signal(&c) -> semnaleaza unul dintre thread-urile care asteapta la variabila conditionala
+pthread_cond_broadcast(&c) -> semnaleaza toate thread-urile care asteapta la variabila conditionala
+pthread_cond_destroy(&c) -> distruge
+
+
+pthread_rwlock_t rw
+
+pthread_rwlock_init(&rw, NULL) -> initializare
+pthread_rwlock_wrlock(&rw) -> lock pe write
+pthread_rwlock_rdlock(&rw) -> lock pe read
+pthread_rwlock_unlock(&rw) -> unlock universal
+pthread_rwlock_destroy(&rw) -> distruge
+
+
+#include <semaphore.h>
+
+sem_t s
+
+sem_init(&s, NULL, count) -> initializare
+sem_wait(&s) -> asteapta la semafor (trece doar daca are loc)
+sem_post(&s) -> marcheaza trecerea (se elibereaza un loc in semafor)
+sem_destroy(&s) -> distruge
