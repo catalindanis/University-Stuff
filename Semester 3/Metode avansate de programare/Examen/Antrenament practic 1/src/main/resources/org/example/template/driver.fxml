@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" spacing="50" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.template.controllers.DriverController">
+        <Text fx:id="driverName" text="" />
+        <VBox spacing="5">
+            <Text>In progress orders</Text>
+            <ListView fx:id="inProgressOrdersListView">
+            </ListView>
+        </VBox>
+        <ComboBox fx:id="comboBox" />
+
+    <fx:define>
+        <ToggleGroup fx:id="sizeGroup"/>
+    </fx:define>
+
+    <RadioButton text="Small"  toggleGroup="$sizeGroup" selected="true" fx:id="rb1"/>
+    <RadioButton text="Medium" toggleGroup="$sizeGroup" fx:id="rb2"/>
+    <RadioButton text="Large"  toggleGroup="$sizeGroup" fx:id="rb3"/>
+
+    <CheckBox fx:id="checkBox" text="Enable feature"/>
+</VBox>

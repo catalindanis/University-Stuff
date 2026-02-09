@@ -1,0 +1,57 @@
+%a - lista, b - lista
+%(i, i) determinist
+%diferenta(a1...an, b1...bm) =
+%   elimina_multiple_aparitii(contopire(a1...an, b1...bm))
+%
+%l - lista
+%(i) determinist
+%elimina_multiple_aparitii(l1...ln) =
+%   [], n == 0
+%   l1 (+) elimina_multiple_aparitii(l2...ln), aparitii(l1...ln, l1)==1
+%   elimina_multiple_aparitii(l2...ln), altfel
+%
+%l - lista, e - element
+%(i, i) determinist
+%aparitii(l1...ln, e) =
+%   0, n == 0
+%   1 + aparitii(l2...ln), l1 == e
+%   aparitii(l2...ln), altfel
+%
+%contopire(a1...an, b1...bm) =
+%   a1...an, m == 0
+%   b1 (+) contopire(a1...an, b2...bm), altfel
+
+diferenta([], _, []).
+diferenta([H | T], B, [H | Rez]) :-
+       aparitii(B, H, NrAp),
+       NrAp is 0, !,
+       diferenta(T, B, Rez).
+diferenta([_ | T], B, Rez) :-
+	diferenta(T, B, Rez).
+
+elimina_multiple_aparitii([], []).
+elimina_multiple_aparitii([H | T], [H | Rez]) :-
+	aparitii([H | T], H, Ap1),
+	Ap1 =:= 1, !,
+	elimina_multiple_aparitii(T, Rez).
+elimina_multiple_aparitii([H | T], Rez) :-
+	elimina_toate_aparitiile([H | T], H, L),
+	elimina_multiple_aparitii(L, Rez).
+
+elimina_toate_aparitiile([], _, []).
+elimina_toate_aparitiile([H | T], H, Rez) :- !,
+	elimina_toate_aparitiile(T, H, Rez).
+elimina_toate_aparitiile([H | T], E, [H | Rez]) :-
+	elimina_toate_aparitiile(T, E, Rez).
+
+
+aparitii([], _, 0).
+aparitii([H | T], H, Rez) :- !,
+	aparitii(T, H, Rez1),
+	Rez is Rez1 + 1.
+aparitii([_ | T], E, Rez) :-
+	aparitii(T, E, Rez).
+
+contopire(L, [], L).
+contopire(L, [H | T], [H | Rez]) :-
+	contopire(L, T, Rez).

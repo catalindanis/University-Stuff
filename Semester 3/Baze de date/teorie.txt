@@ -1,0 +1,64 @@
+Supercheie - orice multime de atribute care identifica unic orice tuplu dintr-o relatie
+  Cheie candidat (sau cheie simplu) - supercheie minima
+    Cheie primara - cheie candidat aleasa de programator
+(cheie candidat si cheie primara sunt cuprinse in superchei)
+(cheia primara este cuprinsa in cheile candidat)
+ 
+Cheie straina - atribut dintr-o relatie care face referire la cheia primara (sau candidat) din alta relatie
+Cheie compusa - cheie formata din mai multe atribute
+Cheie simpla - cheie formata dintr-un singur atribut
+Cheie alternativa - o cheie candidat nealeasa ca cheie primara
+ 
+Un atribut A s.n. atribut prim <=> face parte dintr-o cheie candidat a lui R
+ 
+alfa -> beta (alfa, beta submultimi de atribute ale R) citim alfa determina functional beta / b depinde functional de alfa
+F (multime de dependente functionale) => F+ - inchiderea lui F (multimea tuturor DF implicate de F)
+alfa+ - inchiderea lui alfa (multimea tuturor atributelor pe care le putem determina prin alfa)
+ 
+1nf = toate valorile sa fie atomi (valori simple, nu array, obiecte, chestii compuse) (orice relatie relationala respecta asta)
+2nf = 1nf si nu exista dependente partiale pentru atributele neprime
+dependente partiale = un atribut este dependent functional doar de o parte a unei chei candidat (nu intreaga cheie)
+R este în 3NF dacă pentru orice dependență funcțională X → Y, X este supercheie sau Y este atribut prim.
+bcnf = R este în BCNF dacă pentru orice dependență funcțională X → Y, X este supercheie.
+ 
+3nf este mereu posibil prin descompuneri
+ 
+Transformare in 2NF:
+ 
+1. Pentru fiecare dependenta partiala X → A, creezi o noua relatie R1(X, A) si il scoti pe A din relatia initiala
+ 
+Transformare in 3NF:
+ 
+1. Calculezi acoperirea minimala a lui F 
+2. Pentru fiecare DF X → Y, creezi relatia R(X, Y)
+3. Daca niciuna dintre relatii nu contine o cheie candidat => adaugi o relatie cu o cheie
+4. Elimini relatiile redundante
+ 
+Transformare in BCNF:
+ 
+1. Alegi o DF X → Y care incalca BCNF
+2. Desparti R in R1(X, Y), R2(R - Y + X) (eliminam Y dar pastram X)
+3. Repeti acelasi lucru pentru R1, R2 pana cand toate subrelatiile sunt BCNF
+ 
+Nu este asigurata pastrarea DF-urilor in urma transformarii in BCNF (pastrarea inseamna ca fiecare DF poate fi verificata local, fara join intre mai multe tabele)
+ 
+In cursul nostru, descompunerea relatiilor trebuie sa pastreze si DF pe langa datele efective, astfel ca daca nu putem pastra DF-urile, atunci spunem ca nu putem ajunge la BCNF
+ 
+Calculare acoperire minimala a lui F:
+ 
+1. Un singur atribut in dreapta (X → A, B, C => X → A, X → B, X → C)
+2. Eliminare atribute redundante din stanga
+3. Eliminare dependente redundante
+
+Algebra relationala:
+
+Proiecția (π, L, R) = selecteaza atributele specificate in L din relatia R (SELECT DISTINCT L1, L2, ... Ln, FROM R)
+Selecția (σ, C, R) = selecteaza instantele care respecta o conditie C din relatia R (SELECT DISTINCT * FROM R WHERE C)
+Reuniunea (R, ∪, S) = combina 2 relatii (aceleasi nume de coloane, tipuri, ordine) (SELECT DISTINCT * FROM R UNION SELECT DISTINCT FROM S)
+Intersectia (R, ∩, S) = intersectie 2 relatii (SELECT DISTINCT * FROM R INTERSECT SELECT DISTINCT FROM S)
+Diferenta (R, -, S) = diferenta 2 relatii (SELECT DISTINCT * FROM R EXCEPT SELECT DISTINCT FROM S)
+Produsul cartezian (R, ×,  S) - produsul cartezian a 2 relatii (SELECT DISTINCT * FROM R, S)
+θ-join - inner join 
+Equi-join - inner join in care conditia este neaparat cu = (equi ~ egal)
+Natural-join - inner join pe toate atributele care au acelasi nume
+Catul (R1, /, R2) - contine toate tuplurile x a.i. pentru fiecare dintre tuplurile y din R2, exista un tuplu xy in R1

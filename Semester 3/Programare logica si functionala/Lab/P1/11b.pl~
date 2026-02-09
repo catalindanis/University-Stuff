@@ -1,0 +1,10 @@
+%sumaAlternanta(L: lista, Rez: int)
+%(i, i) (i, o)
+sumaAlternanta([], Rez) :-
+	Rez is 0.
+sumaAlternanta([E], Rez) :-
+	Rez is E.
+sumaAlternanta([L1, L2 | L], Rez) :-
+	sumaAlternanta(L, Rez1),
+	Rez is Rez1 + L1 - L2.
+

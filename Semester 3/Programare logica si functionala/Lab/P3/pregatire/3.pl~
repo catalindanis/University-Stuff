@@ -1,0 +1,10 @@
+subsiruri(A, Rez) :-
+	findall(S, subsiruri_aux(A, S), Rez).
+
+subsiruri_aux([H | _], [H]).
+subsiruri_aux(_, []).
+subsiruri_aux([H | T], [H, R1 | T1]) :-
+	subsiruri_aux(T, [R1 | T1]),
+	H < R1.
+subsiruri_aux([_ | T], Rez) :-
+	subsiruri_aux(T, Rez).

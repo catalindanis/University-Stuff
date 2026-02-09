@@ -1,0 +1,10 @@
+combinari(L, N, Rez) :-
+	findall(S, combinari_aux(L, N, S), Rez).
+
+combinari_aux(_, 0, []).
+combinari_aux([H | _], 1, [H]).
+combinari_aux([H | T], N, [H | Rez]) :-
+	N1 is N - 1,
+	combinari_aux(T, N1, Rez).
+combinari_aux([_ | T], N, Rez) :-
+	combinari_aux(T, N, Rez).

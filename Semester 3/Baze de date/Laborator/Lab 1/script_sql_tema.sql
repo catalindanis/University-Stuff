@@ -1,0 +1,60 @@
+CREATE DATABASE "Meditatii";
+go
+USE Meditatii;
+go
+
+CREATE TABLE Students
+	(Sid INT PRIMARY KEY IDENTITY,
+	Name varchar(50) NOT NULL,
+	Email varchar(50) DEFAULT null,
+	PhoneNumber varchar(20) DEFAULT null,
+	GradeLevel INT DEFAULT 1)
+	
+CREATE TABLE Teachers
+	(Tid INT PRIMARY KEY IDENTITY,
+	Name varchar(50) NOT NULL,
+	Email varchar(50) DEFAULT null,
+	PhoneNumber varchar(20) DEFAULT null,
+	Experience INT DEFAULT 0)
+	
+CREATE TABLE Subjects
+	(Sid INT PRIMARY KEY IDENTITY,
+	Name varchar(50) NOT NULL)
+
+CREATE TABLE Groups
+	(Gid INT PRIMARY KEY IDENTITY,
+	Sid INT FOREIGN KEY REFERENCES Subjects(Sid),
+	Name varchar(50) NOT NULL,
+	NumberOfMembers INT DEFAULT 0)
+
+CREATE TABLE Classes
+	(Cid INT PRIMARY KEY IDENTITY,
+	Name varchar(50) NOT NULL,
+	Date DATETIME NOT NULL,
+	Gid INT FOREIGN KEY REFERENCES Groups(Gid))
+
+CREATE TABLE StudentGroup
+	(Sid INT FOREIGN KEY REFERENCES Students(Sid),
+	Gid INT FOREIGN KEY REFERENCES Groups(Gid),
+	CONSTRAINT pk_SG PRIMARY KEY (Sid, Gid))
+
+CREATE TABLE TeacherGroup
+	(Tid INT FOREIGN KEY REFERENCES Teachers(Tid),
+	Gid INT FOREIGN KEY REFERENCES Groups(Gid),
+	CONSTRAINT pk_TG PRIMARY KEY (Tid, Gid))
+
+CREATE TABLE Ratings
+	(Rid INT PRIMARY KEY IDENTITY,
+	Value INT,
+	Sid INT FOREIGN KEY REFERENCES Students(Sid),
+	Tid INT FOREIGN KEY REFERENCES Teachers(Tid))
+
+CREATE TABLE Homeworks
+	(Hid INT PRIMARY KEY IDENTITY,
+	ProblemNumber INT NOT NULL,
+	DueDate DATETIME NOT NULL)
+
+CREATE TABLE HomeworkStudent
+	(Hid INT FOREIGN KEY REFERENCES Homeworks(Hid),
+	Sid INT FOREIGN KEY REFERENCES Students(Sid),
+	CONSTRAINT pk_HS PRIMARY KEY(Hid, Sid))

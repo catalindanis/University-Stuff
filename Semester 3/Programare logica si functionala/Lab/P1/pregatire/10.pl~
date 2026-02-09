@@ -1,0 +1,12 @@
+inserare([], E, 1, [E]).
+inserare([H | T], E, 1, [E, H | T]) :- !.
+inserare([H | T], E, P, [H | Rez]) :-
+	P1 is P - 1,
+	inserare(T, E, P1, Rez).
+
+
+
+cmmdc(A, 0, A) :- !.
+cmmdc(A, B, Rez) :-
+	B1 is A mod B,
+	cmmdc(B, B1, Rez).

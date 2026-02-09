@@ -1,0 +1,178 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0044)http://clisp.cons.org/impnotes/bytecode.html -->
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><HTML 
+xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>Chapter 36. The CLISP bytecode specification</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8"><LINK 
+href="Chapter&nbsp;36_&nbsp;The CLISP bytecode specification_files/impnotes.css" 
+type=text/css rel=stylesheet><LINK rev=made 
+href="mailto:clisp-list@lists.sourceforge.net">
+<META content="MSHTML 6.00.2900.3020" name=GENERATOR><LINK 
+title="Implementation Notes for GNU CLISP" href="index.html" rel=start><LINK 
+title="Part&nbsp;III.&nbsp;Internals of the CLISP Implementation" 
+href="internals.html" rel=up><LINK title=35.3.&nbsp;Recompilation 
+href="recompile.html" rel=prev><LINK title=36.1.&nbsp;Introduction 
+href="byte-intro.html" rel=next><LINK 
+title="Legal Status of the CLISP Implementation Notes" href="ln-legalese.html" 
+rel=copyright>
+<META content="'generated: 2006-10-13&nbsp;02:05:01-04:00'" name=date><LINK 
+title=Authors href="index.html#authors" rel=author><LINK 
+title="Table of Contents" href="index.html" rel=contents><LINK 
+href="glossary.html" rel=glossary><LINK title="How do I ask for help?" 
+href="faq.html#faq-help" rel=help><LINK title=Home href="http://clisp.cons.org" 
+rel=home><LINK href="idx.html" rel=index></HEAD>
+<BODY>
+<DIV class=navheader>
+<TABLE width="100%" summary="Navigation header">
+  <TBODY>
+  <TR>
+    <TH align=middle colSpan=3>Chapter&nbsp;36.&nbsp;The <SPAN><STRONG 
+      class=command>CLISP</STRONG></SPAN> bytecode specification</TH></TR>
+  <TR>
+    <TD align=left width="20%"><A accessKey=p 
+      href="http://clisp.cons.org/impnotes/recompile.html">Prev</A>&nbsp;</TD>
+    <TH align=middle width="60%">Part&nbsp;III.&nbsp;Internals of the 
+      <SPAN><STRONG class=command>CLISP</STRONG></SPAN> Implementation</TH>
+    <TD align=right width="20%">&nbsp;<A accessKey=n 
+      href="http://clisp.cons.org/impnotes/byte-intro.html">Next</A></TD></TR></TBODY></TABLE>
+<HR>
+</DIV>
+<DIV class=chapter lang=en xml:lang="en">
+<DIV class=titlepage>
+<DIV>
+<DIV>
+<H2 class=title><A id=bytecode></A>Chapter&nbsp;36.&nbsp;The <A 
+href="http://clisp.cons.org/" target=_top><SPAN><STRONG 
+class=command>CLISP</STRONG></SPAN></A> bytecode 
+specification</H2></DIV></DIV></DIV>
+<DIV class=toc>
+<P><B>Table of Contents</B></P>
+<DL>
+  <DT><SPAN class=section><A 
+  href="http://clisp.cons.org/impnotes/byte-intro.html">36.1. 
+  Introduction</A></SPAN>
+  <DT><SPAN class=section><A href="http://clisp.cons.org/impnotes/vm.html">36.2. 
+  The virtual machine</A></SPAN>
+  <DT><SPAN class=section><A 
+  href="http://clisp.cons.org/impnotes/comp-fun.html">36.3. The structure of 
+  compiled functions</A></SPAN>
+  <DT><SPAN class=section><A 
+  href="http://clisp.cons.org/impnotes/intr-struct.html">36.4. The general 
+  structure of the instructions</A></SPAN>
+  <DT><SPAN class=section><A 
+  href="http://clisp.cons.org/impnotes/intr-set.html">36.5. The instruction 
+  set</A></SPAN>
+  <DD>
+  <DL>
+    <DT><SPAN class=section><A 
+    href="http://clisp.cons.org/impnotes/intr-set.html#instr-const">36.5.1. 
+    Instructions for constants</A></SPAN>
+    <DT><SPAN class=section><A 
+    href="http://clisp.cons.org/impnotes/intr-set.html#instr-lex-var">36.5.2. 
+    Instructions for lexical variables</A></SPAN>
+    <DT><SPAN class=section><A 
+    href="http://clisp.cons.org/impnotes/intr-set.html#instr-dyn-var">36.5.3. 
+    Instructions for dynamic variables</A></SPAN>
+    <DT><SPAN class=section><A 
+    href="http://clisp.cons.org/impnotes/intr-set.html#instr-stack">36.5.4. 
+    Instructions for stack operations</A></SPAN>
+    <DT><SPAN class=section><A 
+    href="http://clisp.cons.org/impnotes/intr-set.html#instr-jump">36.5.5. 
+    Instructions for control flow, jumps</A></SPAN>
+    <DT><SPAN class=section><A 
+    href="http://clisp.cons.org/impnotes/intr-set.html#instr-env">36.5.6. 
+    Instructions for lexical environment, creation of closures</A></SPAN>
+    <DT><SPAN class=section><A 
+    href="http://clisp.cons.org/impnotes/intr-set.html#instr-funcall">36.5.7. 
+    Instructions for function calls</A></SPAN>
+    <DT><SPAN class=section><A 
+    href="http://clisp.cons.org/impnotes/intr-set.html#instr-optkey">36.5.8. 
+    Instructions for optional and keyword parameters</A></SPAN>
+    <DT><SPAN class=section><A 
+    href="http://clisp.cons.org/impnotes/intr-set.html#instr-mulval">36.5.9. 
+    Instructions for multiple values</A></SPAN>
+    <DT><SPAN class=section><A 
+    href="http://clisp.cons.org/impnotes/intr-set.html#instr-block">36.5.10. 
+    Instructions for <CODE class=function>BLOCK</CODE> and <CODE 
+    class=function>RETURN-FROM</CODE></A></SPAN>
+    <DT><SPAN class=section><A 
+    href="http://clisp.cons.org/impnotes/intr-set.html#instr-tagbody">36.5.11. 
+    Instructions for <CODE class=function>TAGBODY</CODE> and <CODE 
+    class=function>GO</CODE></A></SPAN>
+    <DT><SPAN class=section><A 
+    href="http://clisp.cons.org/impnotes/intr-set.html#instr-catch">36.5.12. 
+    Instructions for <CODE class=function>CATCH</CODE> and <CODE 
+    class=function>THROW</CODE></A></SPAN>
+    <DT><SPAN class=section><A 
+    href="http://clisp.cons.org/impnotes/intr-set.html#instr-unwind">36.5.13. 
+    Instructions for <CODE class=function>UNWIND-PROTECT</CODE></A></SPAN>
+    <DT><SPAN class=section><A 
+    href="http://clisp.cons.org/impnotes/intr-set.html#instr-handler">36.5.14. 
+    Instructions for <CODE class=function>HANDLER-BIND</CODE></A></SPAN>
+    <DT><SPAN class=section><A 
+    href="http://clisp.cons.org/impnotes/intr-set.html#instr-inline">36.5.15. 
+    Instructions for some inlined functions</A></SPAN>
+    <DT><SPAN class=section><A 
+    href="http://clisp.cons.org/impnotes/intr-set.html#instr-combo">36.5.16. 
+    Combined instructions</A></SPAN>
+    <DT><SPAN class=section><A 
+    href="http://clisp.cons.org/impnotes/intr-set.html#instr-shortcut">36.5.17. 
+    Shortcut instructions</A></SPAN></DT></DL>
+  <DT><SPAN class=section><A 
+  href="http://clisp.cons.org/impnotes/bytecode-design.html">36.6. Bytecode 
+  Design</A></SPAN>
+  <DD>
+  <DL>
+    <DT><SPAN class=section><A 
+    href="http://clisp.cons.org/impnotes/bytecode-design.html#byte-when-add-q">36.6.1. 
+    When to add a new bytecode?</A></SPAN>
+    <DT><SPAN class=section><A 
+    href="http://clisp.cons.org/impnotes/bytecode-design.html#byte-jmptail-q">36.6.2. 
+    Why JMPTAIL?</A></SPAN></DT></DL></DD></DL></DIV></DIV>
+<DIV class=bookinfo>
+<HR width="100%">
+
+<TABLE width="100%" summary="impnotes meta info">
+  <TBODY>
+  <TR>
+    <TH>
+    <TD align=left>These notes document <A href="http://clisp.cons.org/" 
+      target=_top><SPAN><STRONG class=command>CLISP</STRONG></SPAN></A> version 
+      2.41</TD>
+    <TD align=right>Last modified: 2006-10-13</TD></TH></TR></TBODY></TABLE></DIV>
+<DIV class=custom-footer>
+<HR width="100%">
+
+<TABLE width="100%">
+  <TBODY>
+  <TR>
+    <TD align=left><A href="http://clisp.cons.org/"><IMG height=48 
+      alt="[CLISP home]" 
+      src="Chapter&nbsp;36_&nbsp;The CLISP bytecode specification_files/clisp.png" 
+      width=48></A></TD>
+    <TD align=middle><A 
+      href="http://sourceforge.net/donate/index.php?group_id=1355"><IMG 
+      height=32 alt="[Support This Project]" 
+      src="Chapter&nbsp;36_&nbsp;The CLISP bytecode specification_files/project-support.jpg" 
+      width=88 border=0></A></TD>
+    <TD align=right><A href="http://sourceforge.net/"><IMG height=37 
+      alt=[SourceForge] 
+      src="Chapter&nbsp;36_&nbsp;The CLISP bytecode specification_files/sflogo.png" 
+      width=125></A></TD></TR></TBODY></TABLE></DIV>
+<DIV class=navfooter>
+<HR>
+
+<TABLE width="100%" summary="Navigation footer">
+  <TBODY>
+  <TR>
+    <TD align=left width="40%"><A accessKey=p 
+      href="http://clisp.cons.org/impnotes/recompile.html">Prev</A>&nbsp;</TD>
+    <TD align=middle width="20%"><A accessKey=u 
+      href="http://clisp.cons.org/impnotes/internals.html">Up</A></TD>
+    <TD align=right width="40%">&nbsp;<A accessKey=n 
+      href="http://clisp.cons.org/impnotes/byte-intro.html">Next</A></TD></TR>
+  <TR>
+    <TD vAlign=top align=left width="40%">35.3.&nbsp;Recompilation&nbsp;</TD>
+    <TD align=middle width="20%"><A accessKey=h 
+      href="http://clisp.cons.org/impnotes/index.html">Home</A></TD>
+    <TD vAlign=top align=right 
+  width="40%">&nbsp;36.1.&nbsp;Introduction</TD></TR></TBODY></TABLE></DIV></BODY></HTML>

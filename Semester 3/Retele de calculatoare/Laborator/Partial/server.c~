@@ -1,0 +1,135 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <sys/select.h>
+
+#define MAX_CLIENTS 100
+#define BUF_SIZE 1024
+#define NICK_SIZE 32
+#define CHAN_SIZE 32
+
+typedef struct {
+    int sock;
+    char nickname[NICK_SIZE];
+    char channel[CHAN_SIZE];
+} Client;
+
+Client clients[MAX_CLIENTS];
+
+void send_to_all(char *msg, int except_sock) {
+    for (int i = 0; i < MAX_CLIENTS; i++) {
+        if (clients[i].sock != 0 && clients[i].sock != except_sock) {
+            send(clients[i].sock, msg, strlen(msg), 0);
+        }
+    }
+}
+
+void send_to_channel(char *msg, char *channel, int except_sock) {
+    for (int i = 0; i < MAX_CLIENTS; i++) {
+        if (clients[i].sock != 0 && strcmp(clients[i].channel, channel) == 0 && clients[i].sock != except_sock) {
+            send(clients[i].sock, msg, strlen(msg), 0);
+        }
+    }
+}
+
+void send_private(char *nick, char *msg) {
+    for (int i = 0; i < MAX_CLIENTS; i++) {
+        if (clients[i].sock != 0 && strcmp(clients[i].nickname, nick) == 0) {
+            send(clients[i].sock, msg, strlen(msg), 0);
+            return;
+        }
+    }
+}
+
+int main() {
+    int server_sock, new_sock, port = 5555;
+    struct sockaddr_in server_addr, client_addr;
+    fd_set readfds;
+    socklen_t addrlen;
+    char buffer[BUF_SIZE];
+
+    memset(clients, 0, sizeof(clients));
+
+    server_sock = socket(AF_INET, SOCK_STREAM, 0);
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = INADDR_ANY;
+    server_addr.sin_port = htons(port);
+
+    if (bind(server_sock, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0){
+        printf("Eroare la bind\n");
+        return 1;
+    }
+    listen(server_sock, 5);
+    while (1) {
+        FD_ZERO(&readfds);
+        FD_SET(server_sock, &readfds);
+        int max_sd = server_sock;
+
+        for (int i = 0; i < MAX_CLIENTS; i++) {
+            int sd = clients[i].sock;
+            if (sd > 0) FD_SET(sd, &readfds);
+            if (sd > max_sd) max_sd = sd;
+        }
+
+        select(max_sd + 1, &readfds, NULL, NULL, NULL);
+
+        if (FD_ISSET(server_sock, &readfds)) {
+            addrlen = sizeof(client_addr);
+            new_sock = accept(server_sock, (struct sockaddr *)&client_addr, &addrlen);
+            for (int i = 0; i < MAX_CLIENTS; i++) {
+                if (clients[i].sock == 0) {
+                    clients[i].sock = new_sock;
+                    strcpy(clients[i].nickname, "Anon");
+                    strcpy(clients[i].channel, "");
+                    break;
+                }
+            }
+            char welcome[] = "Bine ai venit! Seteaza nick cu /nick <nume>\n";
+            send(new_sock, welcome, strlen(welcome), 0);
+        }
+
+        for (int i = 0; i < MAX_CLIENTS; i++) {
+            int sd = clients[i].sock;
+            if (FD_ISSET(sd, &readfds)) {
+                int bytes = recv(sd, buffer, BUF_SIZE - 1, 0);
+                if (bytes <= 0) {
+                    close(sd);
+                    clients[i].sock = 0;
+                    continue;
+                }
+                buffer[bytes] = '\0';
+                // comenzi
+                if (strncmp(buffer, "/nick ", 6) == 0) {
+                    sscanf(buffer + 6, "%s", clients[i].nickname);
+                    char msg[64];
+                    sprintf(msg, "Nickname setat: %s\n", clients[i].nickname);
+                    send(sd, msg, strlen(msg), 0);
+                } else if (strncmp(buffer, "/join ", 6) == 0) {
+                    sscanf(buffer + 6, "%s", clients[i].channel);
+                    char msg[64];
+                    sprintf(msg, "Ai intrat pe canalul %s\n", clients[i].channel);
+                    send(sd, msg, strlen(msg), 0);
+                } else if (strncmp(buffer, "/msg ", 5) == 0) {
+                    char to[NICK_SIZE], text[BUF_SIZE];
+                    sscanf(buffer + 5, "%s %[^\n]", to, text);
+                    char msg[BUF_SIZE + NICK_SIZE + 16];
+                    snprintf(msg, sizeof(msg), "[PM de la %s]: %s\n", clients[i].nickname, text);
+                    send_private(to, msg);
+                } else if (strncmp(buffer, "/say ", 5) == 0) {
+                    char text[BUF_SIZE];
+                    sscanf(buffer + 5, "%[^\n]", text);
+                    char msg[BUF_SIZE + NICK_SIZE + CHAN_SIZE + 8];
+                    snprintf(msg, sizeof(msg), "[%s @ %s]: %s\n", clients[i].nickname, clients[i].channel, text);
+                    send_to_channel(msg, clients[i].channel, sd);
+                } else {
+                    // broadcast global
+                    char msg[BUF_SIZE + NICK_SIZE + 4];
+                    snprintf(msg, sizeof(msg), "[%s]: %s", clients[i].nickname, buffer);
+                    send_to_all(msg, sd);
+                }
+            }
+        }
+    }
+}

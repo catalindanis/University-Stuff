@@ -1,0 +1,30 @@
+%main(L: lista)
+%(i)
+main(L) :-
+	vale(L, 0, 0, 0).
+
+%vale(L: lista, monotonie: int, c: int, d: int)
+%(i, i, i, i) (i, i, i, i)
+vale([_], M, C, D) :-
+	M =:= 1,
+	C >= 1,
+	D >= 1.
+vale([E1, E2 | L], _, C, D) :-
+	E1 < E2,
+	C1 is C + 1,
+	vale([E2 | L], 1, C1, D).
+vale([E1, E2 | L], M, C, D) :-
+	E1 > E2,
+	M =:= 0,
+	vale([E2 | L], 0, C, D1),
+	D1 is D + 1.
+
+%main([1, 2, 3, 4, 5]). => false
+%main([4, 3, 2, 1, 5]). => true
+%main([4, 3, 3, 5]) => false
+%main([1, 2, 3, 2, 1]) => false
+%main([1, 1, 1, 1]) => false
+%main([]) => false
+%main([1, 2]) => false
+%main([1]) => false
+

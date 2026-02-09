@@ -19,3 +19,12 @@ Semester 2:
 - Dynamical systems
 - Foundations of pedagogy
 
+Semester 3:
+
+- Advanced Methods of Programming
+- Databases
+- Computer Networks
+- Functional and Logic Programming
+- Probability and Statistics
+- English
+- Pedagogical Module

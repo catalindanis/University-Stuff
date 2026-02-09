@@ -1,0 +1,42 @@
+C:\Users\camel\RiderProjects\taskrunner\taskrunner\bin\Debug\net9.0\taskrunner.exe
+C:\Users\camel\RiderProjects\taskrunner\taskrunner\bin\Debug\net9.0\taskrunner.deps.json
+C:\Users\camel\RiderProjects\taskrunner\taskrunner\bin\Debug\net9.0\taskrunner.runtimeconfig.json
+C:\Users\camel\RiderProjects\taskrunner\taskrunner\bin\Debug\net9.0\taskrunner.dll
+C:\Users\camel\RiderProjects\taskrunner\taskrunner\bin\Debug\net9.0\taskrunner.pdb
+C:\Users\camel\RiderProjects\taskrunner\taskrunner\obj\Debug\net9.0\taskrunner.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\camel\RiderProjects\taskrunner\taskrunner\obj\Debug\net9.0\taskrunner.AssemblyInfoInputs.cache
+C:\Users\camel\RiderProjects\taskrunner\taskrunner\obj\Debug\net9.0\taskrunner.AssemblyInfo.cs
+C:\Users\camel\RiderProjects\taskrunner\taskrunner\obj\Debug\net9.0\taskrunner.csproj.CoreCompileInputs.cache
+C:\Users\camel\RiderProjects\taskrunner\taskrunner\obj\Debug\net9.0\taskrunner.dll
+C:\Users\camel\RiderProjects\taskrunner\taskrunner\obj\Debug\net9.0\refint\taskrunner.dll
+C:\Users\camel\RiderProjects\taskrunner\taskrunner\obj\Debug\net9.0\taskrunner.pdb
+C:\Users\camel\RiderProjects\taskrunner\taskrunner\obj\Debug\net9.0\taskrunner.genruntimeconfig.cache
+C:\Users\camel\RiderProjects\taskrunner\taskrunner\obj\Debug\net9.0\ref\taskrunner.dll
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner\taskrunner\bin\Debug\net9.0\taskrunner.exe
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner\taskrunner\bin\Debug\net9.0\taskrunner.deps.json
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner\taskrunner\bin\Debug\net9.0\taskrunner.runtimeconfig.json
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner\taskrunner\bin\Debug\net9.0\taskrunner.dll
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner\taskrunner\bin\Debug\net9.0\taskrunner.pdb
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner\taskrunner\obj\Debug\net9.0\taskrunner.GeneratedMSBuildEditorConfig.editorconfig
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner\taskrunner\obj\Debug\net9.0\taskrunner.AssemblyInfoInputs.cache
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner\taskrunner\obj\Debug\net9.0\taskrunner.AssemblyInfo.cs
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner\taskrunner\obj\Debug\net9.0\taskrunner.csproj.CoreCompileInputs.cache
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner\taskrunner\obj\Debug\net9.0\taskrunner.dll
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner\taskrunner\obj\Debug\net9.0\refint\taskrunner.dll
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner\taskrunner\obj\Debug\net9.0\taskrunner.pdb
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner\taskrunner\obj\Debug\net9.0\taskrunner.genruntimeconfig.cache
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner\taskrunner\obj\Debug\net9.0\ref\taskrunner.dll
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner_c#\taskrunner\obj\Debug\net9.0\taskrunner.GeneratedMSBuildEditorConfig.editorconfig
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner_c#\taskrunner\obj\Debug\net9.0\taskrunner.AssemblyInfoInputs.cache
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner_c#\taskrunner\obj\Debug\net9.0\taskrunner.AssemblyInfo.cs
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner_c#\taskrunner\obj\Debug\net9.0\taskrunner.csproj.CoreCompileInputs.cache
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner_c#\taskrunner\obj\Debug\net9.0\taskrunner.dll
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner_c#\taskrunner\obj\Debug\net9.0\refint\taskrunner.dll
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner_c#\taskrunner\obj\Debug\net9.0\taskrunner.pdb
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner_c#\taskrunner\bin\Debug\net9.0\taskrunner.exe
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner_c#\taskrunner\bin\Debug\net9.0\taskrunner.deps.json
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner_c#\taskrunner\bin\Debug\net9.0\taskrunner.runtimeconfig.json
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner_c#\taskrunner\bin\Debug\net9.0\taskrunner.dll
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner_c#\taskrunner\bin\Debug\net9.0\taskrunner.pdb
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner_c#\taskrunner\obj\Debug\net9.0\taskrunner.genruntimeconfig.cache
+E:\Stuffs\Prof\MAP\seminar 2025-2026\sem10_c#\taskrunner_c#\taskrunner\obj\Debug\net9.0\ref\taskrunner.dll

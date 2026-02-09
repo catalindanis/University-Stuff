@@ -1,0 +1,3061 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0040)http://clisp.cons.org/impnotes/dffi.html -->
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><HTML 
+xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>31.3. The Foreign Function Call Facility</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8"><LINK 
+href="31_3_&nbsp;The Foreign Function Call Facility_files/impnotes.css" 
+type=text/css rel=stylesheet><LINK rev=made 
+href="mailto:clisp-list@lists.sourceforge.net">
+<META content="MSHTML 6.00.2900.3020" name=GENERATOR><LINK 
+title="Implementation Notes for GNU CLISP" href="index.html" rel=start><LINK 
+title="Chapter&nbsp;31.&nbsp;Platform Specific Extensions" 
+href="ext-platform.html" rel=up><LINK title="31.2.&nbsp;External Modules" 
+href="modules.html" rel=prev><LINK 
+title="31.4.&nbsp;The Amiga Foreign Function Call Facility" href="affi.html" 
+rel=next><LINK title="Legal Status of the CLISP Implementation Notes" 
+href="ln-legalese.html" rel=copyright>
+<META content="'generated: 2006-10-13&nbsp;02:05:01-04:00'" name=date><LINK 
+title=Authors href="index.html#authors" rel=author><LINK 
+title="Table of Contents" href="index.html" rel=contents><LINK 
+href="glossary.html" rel=glossary><LINK title="How do I ask for help?" 
+href="faq.html#faq-help" rel=help><LINK title=Home href="http://clisp.cons.org" 
+rel=home><LINK href="idx.html" rel=index></HEAD>
+<BODY>
+<DIV class=navheader>
+<TABLE width="100%" summary="Navigation header">
+  <TBODY>
+  <TR>
+    <TH align=middle colSpan=3>31.3.&nbsp;The Foreign Function Call 
+  Facility</TH></TR>
+  <TR>
+    <TD align=left width="20%"><A accessKey=p 
+      href="http://clisp.cons.org/impnotes/modules.html">Prev</A>&nbsp;</TD>
+    <TH align=middle width="60%">Chapter&nbsp;31.&nbsp;Platform Specific 
+      Extensions</TH>
+    <TD align=right width="20%">&nbsp;<A accessKey=n 
+      href="http://clisp.cons.org/impnotes/affi.html">Next</A></TD></TR></TBODY></TABLE>
+<HR>
+</DIV>
+<DIV class=section lang=en xml:lang="en">
+<DIV class=titlepage>
+<DIV>
+<DIV>
+<H2 class=title style="CLEAR: both"><A id=dffi></A>31.3.&nbsp;The Foreign 
+Function Call Facility</H2></DIV>
+<DIV>
+<H3 class=subtitle><SPAN class=plat-dep>Platform Dependent: <SPAN 
+class=plat-dep>Many <A href="http://www.unix-systems.org/online.html" 
+target=_top><SPAN class=strong><STRONG>UNIX</STRONG></SPAN></A>, <A 
+href="http://winehq.com/" target=_top><SPAN class=platform>Win32</SPAN></A> 
+platforms only.</SPAN></SPAN></H3></DIV></DIV></DIV>
+<DIV class=toc>
+<DL>
+  <DT><SPAN class=section><A 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-intro">31.3.1. 
+  Introduction</A></SPAN>
+  <DT><SPAN class=section><A 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-overview">31.3.2. 
+  Overview</A></SPAN>
+  <DT><SPAN class=section><A 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-types">31.3.3. (Foreign) 
+  <SPAN><STRONG class=command>C</STRONG></SPAN> types</A></SPAN>
+  <DT><SPAN class=section><A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-flavor">31.3.4. The choice of 
+  the <SPAN><STRONG class=command>C</STRONG></SPAN> flavor</A></SPAN>
+  <DT><SPAN class=section><A 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-variables">31.3.5. Foreign 
+  variables</A></SPAN>
+  <DT><SPAN class=section><A 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-places">31.3.6. Operations 
+  on foreign places</A></SPAN>
+  <DT><SPAN class=section><A 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-functions">31.3.7. Foreign 
+  functions</A></SPAN>
+  <DT><SPAN class=section><A 
+  href="http://clisp.cons.org/impnotes/dffi.html#allocation">31.3.8. Argument 
+  and result passing conventions</A></SPAN>
+  <DT><SPAN class=section><A 
+  href="http://clisp.cons.org/impnotes/dffi.html#param-mode">31.3.9. Parameter 
+  Mode</A></SPAN>
+  <DT><SPAN class=section><A 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-examples">31.3.10. 
+  Examples</A></SPAN>
+  <DD>
+  <DL>
+    <DT><SPAN class=section><A 
+    href="http://clisp.cons.org/impnotes/dffi.html#dffi-ex-more">31.3.10.1. More 
+    examples</A></SPAN></DT></DL></DD></DL></DIV>
+<DIV class=section lang=en xml:lang="en">
+<DIV class=titlepage>
+<DIV>
+<DIV>
+<H3 class=title><A 
+id=dffi-intro></A>31.3.1.&nbsp;Introduction</H3></DIV></DIV></DIV>
+<P>This facility, also known as “<SPAN class=quote>Foreign Language 
+Interface</SPAN>”, allows one to call a function implemented in <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A> from inside <A href="http://clisp.cons.org/" 
+target=_top><SPAN><STRONG class=command>CLISP</STRONG></SPAN></A> and to do many 
+related things, like inspect and modify foreign memory, define a “<SPAN 
+class=quote>callback</SPAN>” (i.e., make a lisp function available to the <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A> world), etc. To use this facility, one 
+writes a foreign function description into an ordinary Lisp file, which is then 
+compiled and loaded as usual.</P>
+<P>There are two basic ways to do define a foreign function:</P>
+<DIV class=orderedlist>
+<OL type=1>
+  <LI>Use <A class=unix 
+  href="http://www.opengroup.org/onlinepubs/007904975/functions/dlopen.html"><CODE 
+  class=function>dlopen</CODE></A> and <A class=unix 
+  href="http://www.opengroup.org/onlinepubs/007904975/functions/dlsym.html"><CODE 
+  class=function>dlsym</CODE></A> to get to the location of the function code in 
+  a dynamic library. To access this facility, pass the <CODE 
+  class=constant>:LIBRARY</CODE> option to <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-call-out"><CODE 
+  class=function>FFI:DEF-CALL-OUT</CODE></A> and <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-c-var"><CODE 
+  class=function>FFI:DEF-C-VAR</CODE></A>. Unfortunately, this functionality is 
+  not available on some operating systems, and, also, it offers only a part of 
+  the foreign functionality: <A href="http://gcc.gnu.org/onlinedocs/cpp/" 
+  target=_top><SPAN><STRONG class=command>cpp</STRONG></SPAN></A> macros and 
+  <CODE class=literal>inline</CODE> functions cannot be accessed this way.
+  <LI>Use a somewhat less direct way: when you do not use the <CODE 
+  class=constant>:LIBRARY</CODE> argument, <A class=olink 
+  href="http://clisp.cons.org/impnotes/system-dict.html#compilefile"><CODE 
+  class=function>COMPILE-FILE</CODE></A> produces a <CODE 
+  class=filename>#P".c"</CODE> file (in addition to a <CODE 
+  class=filename>#P".fas"</CODE> and a <A title="24.1.3.&nbsp;Function REQUIRE" 
+  href="http://clisp.cons.org/impnotes/system-dict.html#require"><CODE 
+  class=filename>#P".lib"</CODE></A>). Then you compile (with a <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> compiler) and link it into <A 
+  href="http://clisp.cons.org/" target=_top><SPAN><STRONG 
+  class=command>CLISP</STRONG></SPAN></A> (statically, linking it into <CODE 
+  class=filename>lisp.a</CODE>, or dynamically, loading it into a running <A 
+  href="http://clisp.cons.org/" target=_top><SPAN><STRONG 
+  class=command>CLISP</STRONG></SPAN></A> using <A class=unix 
+  href="http://www.opengroup.org/onlinepubs/007904975/functions/dlopen.html"><CODE 
+  class=function>dlopen</CODE></A> and <A class=unix 
+  href="http://www.opengroup.org/onlinepubs/007904975/functions/dlsym.html"><CODE 
+  class=function>dlsym</CODE></A>). This way you can use any functionality your 
+  foreign library exports, whether using ordinary functions, <CODE 
+  class=literal>inline</CODE> functions, or <A 
+  href="http://gcc.gnu.org/onlinedocs/cpp/" target=_top><SPAN><STRONG 
+  class=command>cpp</STRONG></SPAN></A> macros (see <A 
+  title="Example&nbsp;31.5.&nbsp;Accessing cpp macros" 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-ex-macro">Example&nbsp;31.5, 
+  “Accessing <SPAN><STRONG class=command>cpp</STRONG></SPAN> macros”</A>). 
+</LI></OL></DIV>
+<P></P>
+<P>All symbols relating to the foreign function interface are exported from the 
+package <A title="31.3.&nbsp;The Foreign Function Call Facility" 
+href="http://clisp.cons.org/impnotes/dffi.html"><STRONG class=package>“<SPAN 
+class=quote>FFI</SPAN>”</STRONG></A>. To use them, <CODE class=code>(<A 
+href="http://www.lisp.org/HyperSpec/Body/fun_use-package.html" target=_top><CODE 
+class=function>USE-PACKAGE</CODE></A> <A 
+title="31.3.&nbsp;The Foreign Function Call Facility" 
+href="http://clisp.cons.org/impnotes/dffi.html"><STRONG class=package>“<SPAN 
+class=quote>FFI</SPAN>”</STRONG></A>)</CODE>.</P>
+<P>Special <A title="31.3.&nbsp;The Foreign Function Call Facility" 
+href="http://clisp.cons.org/impnotes/dffi.html"><STRONG class=package>“<SPAN 
+class=quote>FFI</SPAN>”</STRONG></A> forms may appear anywhere in the Lisp 
+file.</P></DIV>
+<DIV class=section lang=en xml:lang="en">
+<DIV class=titlepage>
+<DIV>
+<DIV>
+<H3 class=title><A 
+id=dffi-overview></A>31.3.2.&nbsp;Overview</H3></DIV></DIV></DIV>
+<P>These are the special <A 
+title="31.3.&nbsp;The Foreign Function Call Facility" 
+href="http://clisp.cons.org/impnotes/dffi.html"><STRONG class=package>“<SPAN 
+class=quote>FFI</SPAN>”</STRONG></A> forms. We have taken a pragmatic approach: 
+the only foreign languages we support for now are <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A> and <A href="http://www.ansi.org/" 
+target=_top><ACRONYM class=acronym 
+title="The American National Standards Institute">ANSI</ACRONYM></A> <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A>.</P>
+<DIV class=note style="MARGIN-LEFT: 0.5in; MARGIN-RIGHT: 0.5in">
+<H3 class=title>Note</H3>
+<P>Unless specifically noted otherwise, type specification parameters are not 
+evaluated, so that they can be compiled by <A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-type-parse"><CODE 
+class=function>FFI:PARSE-C-TYPE</CODE></A> into the internal format at 
+macroexpansion time. </P></DIV>
+<DIV class=variablelist>
+<P class=title><B>High-level <A 
+title="31.3.&nbsp;The Foreign Function Call Facility" 
+href="http://clisp.cons.org/impnotes/dffi.html"><STRONG class=package>“<SPAN 
+class=quote>FFI</SPAN>”</STRONG></A> forms; <EM 
+class=replaceable><CODE>name</CODE></EM> is any Lisp <A 
+href="http://www.lisp.org/HyperSpec/Body/syscla_symbol.html" target=_top><CODE 
+class=classname>SYMBOL</CODE></A>; <EM 
+class=replaceable><CODE>c-name</CODE></EM> is a <A 
+href="http://www.lisp.org/HyperSpec/Body/syscla_string.html" target=_top><CODE 
+class=classname>STRING</CODE></A></B></P>
+<DL>
+  <DT><A id=def-c-type></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-c-type"><CODE 
+  class=function>FFI:DEF-C-TYPE</CODE></A> <EM 
+  class=replaceable><CODE>name</CODE></EM> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>)</CODE></SPAN>
+  <DD>This form makes <EM class=replaceable><CODE>name</CODE></EM> a shortcut 
+  for <EM class=replaceable><CODE>c-type</CODE></EM>. Note that <EM 
+  class=replaceable><CODE>c-type</CODE></EM> may already refer to name. Forward 
+  declarations of types are not possible, however. 
+  <DT><A id=def-c-var></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-c-var"><CODE 
+  class=function>FFI:DEF-C-VAR</CODE></A> <EM 
+  class=replaceable><CODE>name</CODE></EM> {<EM 
+  class=replaceable><CODE>option</CODE></EM>}*)</CODE></SPAN>
+  <DD>
+  <P>This form defines a <A title="31.3.5.&nbsp;Foreign variables" 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-variables"><CODE 
+  class=classname>FFI:FOREIGN-VARIABLE</CODE></A>. <EM 
+  class=replaceable><CODE>name</CODE></EM> is the Lisp name, a regular Lisp <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_symbol.html" target=_top><CODE 
+  class=classname>SYMBOL</CODE></A>.</P>
+  <DIV class=variablelist><A id=def-c-var-opts></A>
+  <P class=title><B>Options for <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-c-var"><CODE 
+  class=function>FFI:DEF-C-VAR</CODE></A></B></P>
+  <DL>
+    <DT><SPAN class=term><CODE class=code>(<CODE class=constant>:NAME</CODE> <EM 
+    class=replaceable><CODE>c-name</CODE></EM>)</CODE></SPAN>
+    <DD>specifies the name as seen from <A 
+    href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+    class=command>C</STRONG></SPAN></A>, as a <A 
+    href="http://www.lisp.org/HyperSpec/Body/syscla_string.html" 
+    target=_top><CODE class=classname>STRING</CODE></A>. If not specified, it is 
+    derived from the print name of the Lisp name.
+    <DT><SPAN class=term><CODE class=code>(<CODE class=constant>:TYPE</CODE> <EM 
+    class=replaceable><CODE>c-type</CODE></EM>)</CODE></SPAN>
+    <DD>specifies the variable's foreign type. 
+    <DT><SPAN class=term><CODE class=code>(<CODE 
+    class=constant>:READ-ONLY</CODE> <A 
+    href="http://www.lisp.org/HyperSpec/Body/typ_boolean.html" target=_top><CODE 
+    class=classname>BOOLEAN</CODE></A>)</CODE></SPAN>
+    <DD>If this option is specified and non-<A 
+    href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+    class=constant>NIL</CODE></A>, it will be impossible to change the 
+    variable's value from within Lisp (using <A 
+    href="http://www.lisp.org/HyperSpec/Body/spefor_setq.html" target=_top><CODE 
+    class=function>SETQ</CODE></A> or similar).
+    <DT><SPAN class=term><CODE class=code>(:ALLOC <A 
+    title="31.3.8.&nbsp;Argument and result passing conventions" 
+    href="http://clisp.cons.org/impnotes/dffi.html#allocation"><EM 
+    class=replaceable><CODE>ALLOCATION</CODE></EM></A>)</CODE></SPAN>
+    <DD>This option can be either <CODE class=constant>:NONE</CODE> or <CODE 
+    class=constant>:MALLOC-FREE</CODE> and defaults to <CODE 
+    class=constant>:NONE</CODE>. If it is <CODE 
+    class=constant>:MALLOC-FREE</CODE>, any values of type <A 
+    href="http://clisp.cons.org/impnotes/dffi.html#c-string"><SPAN 
+    class=type>FFI:C-STRING</SPAN></A>, <A 
+    href="http://clisp.cons.org/impnotes/dffi.html#c-ptr"><SPAN 
+    class=type>FFI:C-PTR</SPAN></A>, <A 
+    href="http://clisp.cons.org/impnotes/dffi.html#c-ptr-null"><SPAN 
+    class=type>FFI:C-PTR-NULL</SPAN></A>, <A 
+    href="http://clisp.cons.org/impnotes/dffi.html#c-array-ptr"><SPAN 
+    class=type>FFI:C-ARRAY-PTR</SPAN></A> within the foreign value are assumed 
+    to be pointers to <A class=unix 
+    href="http://www.opengroup.org/onlinepubs/007904975/functions/malloc.html"><CODE 
+    class=function>malloc</CODE></A>-allocated storage, and when <A 
+    href="http://www.lisp.org/HyperSpec/Body/spefor_setq.html" target=_top><CODE 
+    class=function>SETQ</CODE></A> replaces an old value by a new one, the old 
+    storage is freed using <A class=unix 
+    href="http://www.opengroup.org/onlinepubs/007904975/functions/free.html"><CODE 
+    class=function>free</CODE></A> and the new storage allocated using <A 
+    class=unix 
+    href="http://www.opengroup.org/onlinepubs/007904975/functions/malloc.html"><CODE 
+    class=function>malloc</CODE></A>. If it is <CODE 
+    class=constant>:NONE</CODE>, <A 
+    href="http://www.lisp.org/HyperSpec/Body/spefor_setq.html" target=_top><CODE 
+    class=function>SETQ</CODE></A> assumes that the pointers point to good 
+    storage (not <CODE class=constant>NULL</CODE>!) and overwrites the old 
+    values by the new ones. This is dangerous (just think of overwriting a 
+    string with a longer one or storing some data in a <CODE 
+    class=constant>NULL</CODE> pointer...) and deprecated.
+    <DT><SPAN class=term><CODE class=code>(<CODE class=constant>:LIBRARY</CODE> 
+    <EM class=replaceable><CODE>name</CODE></EM>)</CODE></SPAN>
+    <DD>Specifies the (optional) dynamic library which contains the variable, 
+    the default is set by <A 
+    href="http://clisp.cons.org/impnotes/dffi.html#dffi-default-lib"><CODE 
+    class=function>FFI:DEFAULT-FOREIGN-LIBRARY</CODE></A>.
+    <DT><SPAN class=term><CODE class=code>(<CODE 
+    class=constant>:DOCUMENTATION</CODE> <EM 
+    class=replaceable><CODE>string</CODE></EM>)</CODE></SPAN>
+    <DD>Specifies the (optional) <A 
+    href="http://www.lisp.org/HyperSpec/Body/stagenfun_doc_umentationcp.html" 
+    target=_top><CODE class=function>VARIABLE</CODE></A> documentation. 
+  </DD></DL></DIV>
+  <DT><A id=def-c-const></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-c-const"><CODE 
+  class=function>FFI:DEF-C-CONST</CODE></A> <EM 
+  class=replaceable><CODE>name</CODE></EM> {<EM 
+  class=replaceable><CODE>option</CODE></EM>}*)</CODE></SPAN>
+  <DD>
+  <P>This form defines a Lisp <A 
+  href="http://www.lisp.org/HyperSpec/Body/sec_3-1-2-1-1-3.html" 
+  target=_top>constant variable</A> <EM class=replaceable><CODE>name</CODE></EM> 
+  whose value is determined at link time using an internal <A 
+  title="31.3.&nbsp;The Foreign Function Call Facility" 
+  href="http://clisp.cons.org/impnotes/dffi.html"><CODE 
+  class=classname>FFI:FOREIGN-FUNCTION</CODE></A>. When the <A 
+  href="http://gcc.gnu.org/onlinedocs/cpp/" target=_top><SPAN><STRONG 
+  class=command>cpp</STRONG></SPAN></A> constant is not defined, <EM 
+  class=replaceable><CODE>name</CODE></EM> is unbound.</P>
+  <DIV class=variablelist><A id=def-c-const-opts></A>
+  <P class=title><B>Options for <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-c-const"><CODE 
+  class=function>FFI:DEF-C-CONST</CODE></A></B></P>
+  <DL>
+    <DT><SPAN class=term><CODE class=code>(<CODE class=constant>:NAME</CODE> <EM 
+    class=replaceable><CODE>c-name</CODE></EM>)</CODE></SPAN>
+    <DD>specifies the name as seen from <A 
+    href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+    class=command>C</STRONG></SPAN></A>, as a <A 
+    href="http://www.lisp.org/HyperSpec/Body/syscla_string.html" 
+    target=_top><CODE class=classname>STRING</CODE></A>. If not specified, it is 
+    derived from the print name of the Lisp name.
+    <DT><SPAN class=term><CODE class=code>(<CODE class=constant>:TYPE</CODE> <EM 
+    class=replaceable><CODE>c-type</CODE></EM>)</CODE></SPAN>
+    <DD>
+    <P>specifies the constant's foreign type, one of </P>
+    <TABLE class=simplelist summary="Simple list" border=0>
+      <TBODY>
+      <TR>
+        <TD><SPAN class=type>FFI:INT</SPAN></TD></TR>
+      <TR>
+        <TD><A href="http://clisp.cons.org/impnotes/dffi.html#c-string"><SPAN 
+          class=type>FFI:C-STRING</SPAN></A></TD></TR>
+      <TR>
+        <TD><A href="http://clisp.cons.org/impnotes/dffi.html#c-pointer"><SPAN 
+          class=type>FFI:C-POINTER</SPAN></A></TD></TR></TBODY></TABLE>
+    <DT><SPAN class=term><CODE class=code>(<CODE 
+    class=constant>:DOCUMENTATION</CODE> <EM 
+    class=replaceable><CODE>string</CODE></EM>)</CODE></SPAN>
+    <DD>Specifies the (optional) <A 
+    href="http://www.lisp.org/HyperSpec/Body/stagenfun_doc_umentationcp.html" 
+    target=_top><CODE class=function>VARIABLE</CODE></A> documentation. 
+  </DD></DL></DIV>
+  <P>See also <A title="Example&nbsp;31.5.&nbsp;Accessing cpp macros" 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-ex-macro">Example&nbsp;31.5, 
+  “Accessing <SPAN><STRONG class=command>cpp</STRONG></SPAN> macros”</A>.</P>
+  <DT><A id=def-call-out></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-call-out"><CODE 
+  class=function>FFI:DEF-CALL-OUT</CODE></A> <EM 
+  class=replaceable><CODE>name</CODE></EM> {<EM 
+  class=replaceable><CODE>option</CODE></EM>}*)</CODE></SPAN>
+  <DD>
+  <P>This form defines a named call-out function (a foreign function called from 
+  Lisp: control flow temporarily leaves Lisp). </P>
+  <DIV class=variablelist><A id=def-call-out-opts></A>
+  <P class=title><B>Options for <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-call-out"><CODE 
+  class=function>FFI:DEF-CALL-OUT</CODE></A></B></P>
+  <DL>
+    <DT><SPAN class=term><CODE class=code>(<CODE class=constant>:NAME</CODE> <EM 
+    class=replaceable><CODE>c-name</CODE></EM>)</CODE></SPAN>
+    <DD>Any Lisp function call to <CODE class=function>#'<EM 
+    class=replaceable><CODE>name</CODE></EM></CODE> is redirected to call the <A 
+    href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+    class=command>C</STRONG></SPAN></A> function <EM 
+    class=replaceable><CODE>c-name</CODE></EM>. 
+    <DT><SPAN class=term><CODE class=code>(<CODE 
+    class=constant>:ARGUMENTS</CODE> {(<EM 
+    class=replaceable><CODE>argument</CODE></EM> <EM 
+    class=replaceable><CODE>c-type</CODE></EM> [<A 
+    title="31.3.9.&nbsp;Parameter Mode" 
+    href="http://clisp.cons.org/impnotes/dffi.html#param-mode"><EM 
+    class=replaceable><CODE>PARAM-MODE</CODE></EM></A> [<A 
+    title="31.3.8.&nbsp;Argument and result passing conventions" 
+    href="http://clisp.cons.org/impnotes/dffi.html#allocation"><EM 
+    class=replaceable><CODE>ALLOCATION</CODE></EM></A>]])}*)</CODE><BR></SPAN><SPAN 
+    class=term><CODE class=code>(<CODE class=constant>:RETURN-TYPE</CODE> <EM 
+    class=replaceable><CODE>c-type</CODE></EM> [<A 
+    title="31.3.8.&nbsp;Argument and result passing conventions" 
+    href="http://clisp.cons.org/impnotes/dffi.html#allocation"><EM 
+    class=replaceable><CODE>ALLOCATION</CODE></EM></A>])</CODE></SPAN>
+    <DD>Argument list and return value, see <A 
+    title="31.3.8.&nbsp;Argument and result passing conventions" 
+    href="http://clisp.cons.org/impnotes/dffi.html#allocation">Section&nbsp;31.3.8, 
+    “Argument and result passing conventions”</A> and <A 
+    title="31.3.9.&nbsp;Parameter Mode" 
+    href="http://clisp.cons.org/impnotes/dffi.html#param-mode">Section&nbsp;31.3.9, 
+    “Parameter Mode”</A>. 
+    <DT><SPAN class=term><CODE class=code>(<A 
+    title="31.3.4.&nbsp;The choice of the C flavor" 
+    href="http://clisp.cons.org/impnotes/dffi.html#c-flavor"><CODE 
+    class=constant>:LANGUAGE</CODE></A> <EM 
+    class=replaceable><CODE>language</CODE></EM>)</CODE></SPAN>
+    <DD>See <A title="31.3.4.&nbsp;The choice of the C flavor" 
+    href="http://clisp.cons.org/impnotes/dffi.html#c-flavor">Section&nbsp;31.3.4, 
+    “The choice of the <SPAN><STRONG class=command>C</STRONG></SPAN> 
+    flavor”</A>. 
+    <DT><SPAN class=term><CODE class=code>(:BUILT-IN <A 
+    href="http://www.lisp.org/HyperSpec/Body/typ_boolean.html" target=_top><CODE 
+    class=classname>BOOLEAN</CODE></A>)</CODE></SPAN>
+    <DD>When the function is a <A 
+    href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+    class=command>C</STRONG></SPAN></A> built-in, the full prototype will be 
+    output (unless suppressed by <A 
+    href="http://clisp.cons.org/impnotes/dffi.html#ffi-extern-output"><CODE 
+    class=varname>FFI:*OUTPUT-C-FUNCTIONS*</CODE></A>). 
+    <DT><SPAN class=term><CODE class=code>(<CODE class=constant>:LIBRARY</CODE> 
+    <EM class=replaceable><CODE>name</CODE></EM>)</CODE></SPAN>
+    <DD>Specifies the (optional) dynamic library which contains the function, 
+    the default is set by <A 
+    href="http://clisp.cons.org/impnotes/dffi.html#dffi-default-lib"><CODE 
+    class=function>FFI:DEFAULT-FOREIGN-LIBRARY</CODE></A>
+    <DT><SPAN class=term><CODE class=code>(<CODE 
+    class=constant>:DOCUMENTATION</CODE> <EM 
+    class=replaceable><CODE>string</CODE></EM>)</CODE></SPAN>
+    <DD>Specifies the (optional) <A 
+    href="http://www.lisp.org/HyperSpec/Body/stagenfun_doc_umentationcp.html" 
+    target=_top><CODE class=function>FUNCTION</CODE></A> documentation. 
+  </DD></DL></DIV>
+  <DT><A id=def-call-in></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-call-in"><CODE 
+  class=function>FFI:DEF-CALL-IN</CODE></A> <EM 
+  class=replaceable><CODE>name</CODE></EM> {<EM 
+  class=replaceable><CODE>option</CODE></EM>}*)</CODE></SPAN>
+  <DD>
+  <P>This form defines a named call-in function (i.e., a Lisp function called 
+  from the foreign language: control flow temporary enters Lisp)</P>
+  <DIV class=variablelist><A id=def-call-in-opts></A>
+  <P class=title><B>Options for <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-call-in"><CODE 
+  class=function>FFI:DEF-CALL-IN</CODE></A></B></P>
+  <DL>
+    <DT><SPAN class=term><CODE class=code>(<CODE class=constant>:NAME</CODE> <EM 
+    class=replaceable><CODE>c-name</CODE></EM>)</CODE></SPAN>
+    <DD>Any <A href="http://www.eskimo.com/~scs/C-faq/top.html" 
+    target=_top><SPAN><STRONG class=command>C</STRONG></SPAN></A> function call 
+    to the <A href="http://www.eskimo.com/~scs/C-faq/top.html" 
+    target=_top><SPAN><STRONG class=command>C</STRONG></SPAN></A> function <EM 
+    class=replaceable><CODE>c-name</CODE></EM> is redirected to call the <A 
+    href="http://www.lisp.org/" target=_top><SPAN><STRONG class=command>Common 
+    Lisp</STRONG></SPAN></A> function <CODE class=function>#'<EM 
+    class=replaceable><CODE>name</CODE></EM></CODE>.
+    <DT><SPAN class=term><CODE class=code>(<CODE 
+    class=constant>:ARGUMENTS</CODE> {(<EM 
+    class=replaceable><CODE>argument</CODE></EM> <EM 
+    class=replaceable><CODE>c-type</CODE></EM> [<A 
+    title="31.3.9.&nbsp;Parameter Mode" 
+    href="http://clisp.cons.org/impnotes/dffi.html#param-mode"><EM 
+    class=replaceable><CODE>PARAM-MODE</CODE></EM></A> [<A 
+    title="31.3.8.&nbsp;Argument and result passing conventions" 
+    href="http://clisp.cons.org/impnotes/dffi.html#allocation"><EM 
+    class=replaceable><CODE>ALLOCATION</CODE></EM></A>]])}*)</CODE><BR></SPAN><SPAN 
+    class=term><CODE class=code>(<CODE class=constant>:RETURN-TYPE</CODE> <EM 
+    class=replaceable><CODE>c-type</CODE></EM> [<A 
+    title="31.3.8.&nbsp;Argument and result passing conventions" 
+    href="http://clisp.cons.org/impnotes/dffi.html#allocation"><EM 
+    class=replaceable><CODE>ALLOCATION</CODE></EM></A>])</CODE></SPAN>
+    <DD>Argument list and return value, see <A 
+    title="31.3.8.&nbsp;Argument and result passing conventions" 
+    href="http://clisp.cons.org/impnotes/dffi.html#allocation">Section&nbsp;31.3.8, 
+    “Argument and result passing conventions”</A> and <A 
+    title="31.3.9.&nbsp;Parameter Mode" 
+    href="http://clisp.cons.org/impnotes/dffi.html#param-mode">Section&nbsp;31.3.9, 
+    “Parameter Mode”</A>. 
+    <DT><SPAN class=term><CODE class=code>(<A 
+    title="31.3.4.&nbsp;The choice of the C flavor" 
+    href="http://clisp.cons.org/impnotes/dffi.html#c-flavor"><CODE 
+    class=constant>:LANGUAGE</CODE></A> <EM 
+    class=replaceable><CODE>language</CODE></EM>)</CODE></SPAN>
+    <DD>See <A title="31.3.4.&nbsp;The choice of the C flavor" 
+    href="http://clisp.cons.org/impnotes/dffi.html#c-flavor">Section&nbsp;31.3.4, 
+    “The choice of the <SPAN><STRONG class=command>C</STRONG></SPAN> 
+    flavor”</A>. </DD></DL></DIV>
+  <DT><A id=dffi-close-lib></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-close-lib"><CODE 
+  class=function>FFI:CLOSE-FOREIGN-LIBRARY</CODE></A> <EM 
+  class=replaceable><CODE>name</CODE></EM>)</CODE></SPAN>
+  <DD>
+  <P>Close (unload) a shared foreign library (opened by the <CODE 
+  class=constant>:LIBRARY</CODE> argument to <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-call-out"><CODE 
+  class=function>FFI:DEF-CALL-OUT</CODE></A> or <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-c-var"><CODE 
+  class=function>FFI:DEF-C-VAR</CODE></A>).</P>
+  <P>If you modify your shared library, you need to use close it using <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-close-lib"><CODE 
+  class=function>FFI:CLOSE-FOREIGN-LIBRARY</CODE></A> first. When you try to use 
+  the <A title="31.3.5.&nbsp;Foreign variables" 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-variables"><CODE 
+  class=classname>FFI:FOREIGN-VARIABLE</CODE></A> or the <A 
+  title="31.3.&nbsp;The Foreign Function Call Facility" 
+  href="http://clisp.cons.org/impnotes/dffi.html"><CODE 
+  class=classname>FFI:FOREIGN-FUNCTION</CODE></A> which resides in the library 
+  <EM class=replaceable><CODE>name</CODE></EM>, it will be re-opened 
+  automatically. </P>
+  <DT><A id=dffi-default-lib></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-default-lib"><CODE 
+  class=function>FFI:DEFAULT-FOREIGN-LIBRARY</CODE></A> <EM 
+  class=replaceable><CODE>library-name</CODE></EM>)</CODE></SPAN>
+  <DD>
+  <P>This macro sets the default <CODE class=constant>:LIBRARY</CODE> argument 
+  for <A href="http://clisp.cons.org/impnotes/dffi.html#def-call-out"><CODE 
+  class=function>FFI:DEF-CALL-OUT</CODE></A> and <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-c-var"><CODE 
+  class=function>FFI:DEF-C-VAR</CODE></A>. <EM 
+  class=replaceable><CODE>library-name</CODE></EM> should be <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A> (meaning use the <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> file produced by <A class=olink 
+  href="http://clisp.cons.org/impnotes/system-dict.html#compilefile"><CODE 
+  class=function>COMPILE-FILE</CODE></A>), a <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_string.html" target=_top><CODE 
+  class=classname>STRING</CODE></A>, or, depending on the underlying <A 
+  class=unix 
+  href="http://www.opengroup.org/onlinepubs/007904975/functions/dlsym.html"><CODE 
+  class=function>dlsym</CODE></A> implementation, <CODE 
+  class=constant>:DEFAULT</CODE> or <CODE class=constant>:NEXT</CODE>.</P>
+  <P>The default is set separately in each <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_c.html#compilation_unit" 
+  target=_top>compilation unit</A>, so, if you are interfacing to a single 
+  library, you can set this variable in the beginning of your lisp file and omit 
+  the <CODE class=constant>:LIBRARY</CODE> argument throughout the file.</P>
+  <DT><A id=def-c-struct></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-c-struct"><CODE 
+  class=function>FFI:DEF-C-STRUCT</CODE></A> <EM 
+  class=replaceable><CODE>name</CODE></EM> (<EM 
+  class=replaceable><CODE>symbol</CODE></EM> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>)*)</CODE></SPAN>
+  <DD>
+  <P>This form defines <EM class=replaceable><CODE>name</CODE></EM> to be both a 
+  <A href="http://www.lisp.org/HyperSpec/Body/syscla_structure-class.html" 
+  target=_top><CODE class=classname>STRUCTURE-CLASS</CODE></A> and a foreign <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> type with the given slots. If this class 
+  representation overhead is not needed one should consider writing <CODE 
+  class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-c-type"><CODE 
+  class=function>FFI:DEF-C-TYPE</CODE></A> <EM 
+  class=replaceable><CODE>name</CODE></EM> (<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-struct"><SPAN 
+  class=type>FFI:C-STRUCT</SPAN></A> {<A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_list.html" target=_top><CODE 
+  class=classname>LIST</CODE></A> | <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_vector.html" target=_top><CODE 
+  class=classname>VECTOR</CODE></A>} (<EM 
+  class=replaceable><CODE>symbol</CODE></EM> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>)*))</CODE> instead. <EM 
+  class=replaceable><CODE>name</CODE></EM> is a <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_symbol.html" target=_top><CODE 
+  class=classname>SYMBOL</CODE></A> (structure name) or a <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_list.html" target=_top><CODE 
+  class=classname>LIST</CODE></A> whose <A 
+  href="http://www.lisp.org/HyperSpec/Body/acc_firstcm_s_inthcm_tenth.html" 
+  target=_top><CODE class=function>FIRST</CODE></A> element is the structure 
+  name and the <A href="http://www.lisp.org/HyperSpec/Body/acc_rest.html" 
+  target=_top><CODE class=function>REST</CODE></A> is options. Two options are 
+  supported at this time: </P>
+  <DIV class=variablelist><A id=def-c-struct-opts></A>
+  <P class=title><B>Options for <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-c-struct"><CODE 
+  class=function>FFI:DEF-C-STRUCT</CODE></A></B></P>
+  <DL>
+    <DT><A id=def-c-struct-typedef></A><SPAN class=term><CODE 
+    class=constant>:TYPEDEF</CODE></SPAN>
+    <DD>means that the name of this structure is a <A 
+    href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+    class=command>C</STRONG></SPAN></A> type defined with <CODE 
+    class=function>typedef</CODE> elsewhere.
+    <DT><A id=def-c-struct-external></A><SPAN class=term><CODE 
+    class=constant>:EXTERNAL</CODE></SPAN>
+    <DD>means that this structure is defined in a <CODE 
+    class=filename>#P".c"</CODE> file that you include with, e.g., <CODE 
+    class=code>(<A href="http://clisp.cons.org/impnotes/dffi.html#c-lines"><CODE 
+    class=function>FFI:C-LINES</CODE></A> "#include 
+    &lt;filename.h&gt;~%")</CODE>. </DD></DL></DIV>
+  <P>These options determine how the struct is written to the <CODE 
+  class=filename>#P".c"</CODE>. </P>
+  <DT><A id=def-c-enum></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-c-enum"><CODE 
+  class=function>FFI:DEF-C-ENUM</CODE></A> <EM 
+  class=replaceable><CODE>name</CODE></EM> {<EM 
+  class=replaceable><CODE>symbol</CODE></EM> | (<EM 
+  class=replaceable><CODE>symbol</CODE></EM> [<EM 
+  class=replaceable><CODE>value</CODE></EM>])}*)</CODE></SPAN>
+  <DD>
+  <P>This form defines <EM class=replaceable><CODE>symbol</CODE></EM>s as 
+  constants, similarly to the <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> declaration <SPAN class=type>enum { <EM 
+  class=replaceable><CODE>symbol</CODE></EM> [= <EM 
+  class=replaceable><CODE>value</CODE></EM>], ... };</SPAN></P>
+  <P>You can use <CODE class=code>(<CODE 
+  class=function>FFI:ENUM-FROM-VALUE</CODE> <EM 
+  class=replaceable><CODE>name</CODE></EM> <EM 
+  class=replaceable><CODE>value</CODE></EM>)</CODE> and <CODE class=code>(<CODE 
+  class=function>FFI:ENUM-TO-VALUE</CODE> <EM 
+  class=replaceable><CODE>name</CODE></EM> <EM 
+  class=replaceable><CODE>symbol</CODE></EM>)</CODE> to convert between the 
+  numeric and symbolic representations (of course, the latter function boils 
+  down to <A href="http://www.lisp.org/HyperSpec/Body/acc_symbol-value.html" 
+  target=_top><CODE class=function>SYMBOL-VALUE</CODE></A> plus a check that the 
+  <EM class=replaceable><CODE>symbol</CODE></EM> is indeed a constant defined in 
+  the <A href="http://clisp.cons.org/impnotes/dffi.html#def-c-enum"><CODE 
+  class=function>FFI:DEF-C-ENUM</CODE></A> <EM 
+  class=replaceable><CODE>name</CODE></EM>).</P>
+  <DT><A id=c-lines></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-lines"><CODE 
+  class=function>FFI:C-LINES</CODE></A> <EM 
+  class=replaceable><CODE>format-string</CODE></EM> {<EM 
+  class=replaceable><CODE>argument</CODE></EM>}*)</CODE></SPAN>
+  <DD>
+  <P>This form outputs the string <CODE class=code>(<A 
+  href="http://www.lisp.org/HyperSpec/Body/fun_format.html" target=_top><CODE 
+  class=function>FORMAT</CODE></A> <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A> <EM 
+  class=replaceable><CODE>format-string</CODE></EM> {<EM 
+  class=replaceable><CODE>argument</CODE></EM>}*)</CODE> to the <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> output file's top level. This is usually 
+  used to include the relevant header files, see <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-c-struct-external"><CODE 
+  class=constant>:EXTERNAL</CODE></A> and <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#ffi-extern-output"><A 
+  href="http://clisp.cons.org/impnotes/dffi.html#ffi-extern-output"><CODE 
+  class=varname>FFI:*OUTPUT-C-FUNCTIONS*</CODE></A></A>.</P>
+  <P>When <EM class=replaceable><CODE>format-string</CODE></EM> is not a <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_string.html" target=_top><CODE 
+  class=classname>STRING</CODE></A>, is should be a <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_symbol.html" target=_top><CODE 
+  class=classname>SYMBOL</CODE></A>, and then the <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_string.html" target=_top><CODE 
+  class=classname>STRING</CODE></A> <CODE class=code>(<A 
+  href="http://www.lisp.org/HyperSpec/Body/fun_format.html" target=_top><CODE 
+  class=function>FORMAT</CODE></A> <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A> {<EM 
+  class=replaceable><CODE>argument</CODE></EM>}*)</CODE> is added to the 
+  appropriate <A href="http://www.eskimo.com/~scs/C-faq/top.html" 
+  target=_top><SPAN><STRONG class=command>C</STRONG></SPAN></A> function:</P>
+  <DIV class=variablelist>
+  <DL>
+    <DT><SPAN class=term><CODE 
+    class=constant>:INIT-ALWAYS</CODE><BR></SPAN><SPAN class=term><CODE 
+    class=constant>:INIT-ONCE</CODE></SPAN>
+    <DD><A title="31.2.2.&nbsp;Module initialization" 
+    href="http://clisp.cons.org/impnotes/modules.html#modinit">initialization 
+    function</A>
+    <DT><SPAN class=term><CODE class=constant>:FINI</CODE></SPAN>
+    <DD><A title="31.2.3.&nbsp;Module finalization" 
+    href="http://clisp.cons.org/impnotes/modules.html#modfini">finalization 
+    function</A></DD></DL></DIV>
+  <DT><A id=element></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#element"><CODE 
+  class=function>FFI:ELEMENT</CODE></A> <EM 
+  class=replaceable><CODE>c-place</CODE></EM> <EM 
+  class=replaceable><CODE>index<SUB>1</SUB></CODE></EM> ... <EM 
+  class=replaceable><CODE>index<SUB>n</SUB></CODE></EM>)</CODE></SPAN>
+  <DD>Array element: If <EM class=replaceable><CODE>c-place</CODE></EM> is of 
+  foreign type <SPAN class=type><CODE class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-array"><SPAN 
+  class=type>FFI:C-ARRAY</SPAN></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM> (<EM 
+  class=replaceable><CODE>dim<SUB>1</SUB></CODE></EM> ... <EM 
+  class=replaceable><CODE>dim<SUB>n</SUB></CODE></EM>))</CODE></SPAN> and 0 ≤ 
+  <EM class=replaceable><CODE>index<SUB>1</SUB></CODE></EM> &lt; <EM 
+  class=replaceable><CODE>dim<SUB>1</SUB></CODE></EM>, ..., 0 ≤ <EM 
+  class=replaceable><CODE>index<SUB>n</SUB></CODE></EM> &lt; <EM 
+  class=replaceable><CODE>dim<SUB>n</SUB></CODE></EM>, this will be the <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_p.html#place" 
+  target=_top>place</A> corresponding to <CODE class=code>(<A 
+  href="http://www.lisp.org/HyperSpec/Body/acc_aref.html" target=_top><CODE 
+  class=function>AREF</CODE></A> <EM class=replaceable><CODE>c-place</CODE></EM> 
+  <EM class=replaceable><CODE>index<SUB>1</SUB></CODE></EM> ... <EM 
+  class=replaceable><CODE>index<SUB>n</SUB></CODE></EM>)</CODE> or <CODE 
+  class=varname><EM class=replaceable><CODE>c-place</CODE></EM>[<EM 
+  class=replaceable><CODE>index<SUB>1</SUB></CODE></EM>]...[<EM 
+  class=replaceable><CODE>index<SUB>n</SUB></CODE></EM>]</CODE>. It is a <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_p.html#place" 
+  target=_top>place</A> of type <EM class=replaceable><CODE>c-type</CODE></EM>. 
+  If <EM class=replaceable><CODE>c-place</CODE></EM> is of foreign type <SPAN 
+  class=type><CODE class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-array-max"><SPAN 
+  class=type>FFI:C-ARRAY-MAX</SPAN></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM> <EM 
+  class=replaceable><CODE>dim</CODE></EM>)</CODE></SPAN> and 0 ≤ <EM 
+  class=replaceable><CODE>index</CODE></EM> &lt; <EM 
+  class=replaceable><CODE>dim</CODE></EM>, this will be the <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_p.html#place" 
+  target=_top>place</A> corresponding to <CODE class=code>(<A 
+  href="http://www.lisp.org/HyperSpec/Body/acc_aref.html" target=_top><CODE 
+  class=function>AREF</CODE></A> <EM class=replaceable><CODE>c-place</CODE></EM> 
+  <EM class=replaceable><CODE>index</CODE></EM>)</CODE> or <CODE 
+  class=varname><EM class=replaceable><CODE>c-place</CODE></EM>[<EM 
+  class=replaceable><CODE>index</CODE></EM>]</CODE>. It is a <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_p.html#place" 
+  target=_top>place</A> of type <EM class=replaceable><CODE>c-type</CODE></EM>. 
+  <DT><A id=deref></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#deref"><CODE 
+  class=function>FFI:DEREF</CODE></A> <EM 
+  class=replaceable><CODE>c-place</CODE></EM>)</CODE></SPAN>
+  <DD>Dereference pointer: If <EM class=replaceable><CODE>c-place</CODE></EM> is 
+  of foreign type <SPAN class=type><CODE class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-ptr"><SPAN 
+  class=type>FFI:C-PTR</SPAN></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>)</CODE></SPAN>, <SPAN 
+  class=type><CODE class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-ptr-null"><SPAN 
+  class=type>FFI:C-PTR-NULL</SPAN></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>)</CODE></SPAN> or <SPAN 
+  class=type><CODE class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-pointer"><SPAN 
+  class=type>FFI:C-POINTER</SPAN></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>)</CODE></SPAN>, this will be the <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_p.html#place" 
+  target=_top>place</A> the pointer points to. It is a <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_p.html#place" 
+  target=_top>place</A> of type <EM class=replaceable><CODE>c-type</CODE></EM>. 
+  For <SPAN class=type><CODE class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-ptr-null"><SPAN 
+  class=type>FFI:C-PTR-NULL</SPAN></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>)</CODE></SPAN>, the <EM 
+  class=replaceable><CODE>c-place</CODE></EM> may not be <CODE 
+  class=constant>NULL</CODE>. 
+  <DT><A id=slot></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#slot"><CODE 
+  class=function>FFI:SLOT</CODE></A> <EM 
+  class=replaceable><CODE>c-place</CODE></EM> <EM 
+  class=replaceable><CODE>slot-name</CODE></EM>)</CODE></SPAN>
+  <DD>Struct or union component: If <EM 
+  class=replaceable><CODE>c-place</CODE></EM> is of foreign type <SPAN 
+  class=type><CODE class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-struct"><SPAN 
+  class=type>FFI:C-STRUCT</SPAN></A> <EM 
+  class=replaceable><CODE>class</CODE></EM> ... (<EM 
+  class=replaceable><CODE>slot-name</CODE></EM> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>) ...)</CODE></SPAN> or of type 
+  <SPAN class=type><CODE class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-union"><SPAN 
+  class=type>FFI:C-UNION</SPAN></A> ... (<EM 
+  class=replaceable><CODE>slot-name</CODE></EM> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>) ...)</CODE></SPAN>, this will be 
+  of type <EM class=replaceable><CODE>c-type</CODE></EM>.
+  <DT><A id=cast></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#cast"><CODE 
+  class=function>FFI:CAST</CODE></A> <EM 
+  class=replaceable><CODE>c-place</CODE></EM> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>)</CODE></SPAN>
+  <DD>Type change: A <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_p.html#place" 
+  target=_top>place</A> denoting the same memory locations as the original <EM 
+  class=replaceable><CODE>c-place</CODE></EM>, but of type <EM 
+  class=replaceable><CODE>c-type</CODE></EM>. 
+  <DT><A id=offset></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#offset"><CODE 
+  class=function>FFI:OFFSET</CODE></A> <EM 
+  class=replaceable><CODE>c-place</CODE></EM> <EM 
+  class=replaceable><CODE>offset</CODE></EM> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>)</CODE></SPAN>
+  <DD>Type change and displacement: return a <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_p.html#place" 
+  target=_top>place</A> denoting a memory locations displaced from the original 
+  <EM class=replaceable><CODE>c-place</CODE></EM> by an <EM 
+  class=replaceable><CODE>offset</CODE></EM> counted in bytes, with type <EM 
+  class=replaceable><CODE>c-type</CODE></EM>. This can be used to resize an 
+  array, e.g. of <EM class=replaceable><CODE>c-type</CODE></EM> <SPAN 
+  class=type><CODE class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-array"><SPAN 
+  class=type>FFI:C-ARRAY</SPAN></A> <SPAN class=type>uint16</SPAN> <EM 
+  class=replaceable><CODE>n</CODE></EM>)</CODE></SPAN> via <CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#offset"><CODE 
+  class=function>FFI:OFFSET</CODE></A> <EM 
+  class=replaceable><CODE>c-place</CODE></EM> 0 '(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-array"><SPAN 
+  class=type>FFI:C-ARRAY</SPAN></A> <SPAN class=type>uint16</SPAN> <EM 
+  class=replaceable><CODE>k</CODE></EM>))</CODE>. 
+  <DT><A id=c-var-addr></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-var-addr"><CODE 
+  class=function>FFI:C-VAR-ADDRESS</CODE></A> <EM 
+  class=replaceable><CODE>c-place</CODE></EM>)</CODE></SPAN>
+  <DD>Return the address of <EM class=replaceable><CODE>c-place</CODE></EM> as a 
+  Lisp object of type <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#faddr"><CODE 
+  class=classname>FFI:FOREIGN-ADDRESS</CODE></A>. This is useful as an argument 
+  to foreign functions expecting a parameter of <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> type <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-pointer"><SPAN 
+  class=type>FFI:C-POINTER</SPAN></A>. 
+  <DT><A id=c-var-object></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-var-object"><CODE 
+  class=function>FFI:C-VAR-OBJECT</CODE></A> <EM 
+  class=replaceable><CODE>c-place</CODE></EM>)</CODE></SPAN>
+  <DD>Return the <A title="31.3.5.&nbsp;Foreign variables" 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-variables"><CODE 
+  class=classname>FFI:FOREIGN-VARIABLE</CODE></A> object underlying the <EM 
+  class=replaceable><CODE>c-place</CODE></EM>. This is also an acceptable 
+  argument type to a <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-pointer"><SPAN 
+  class=type>FFI:C-POINTER</SPAN></A> declaration.
+  <DT><A id=typeof></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#typeof"><CODE 
+  class=function>FFI:TYPEOF</CODE></A> <EM 
+  class=replaceable><CODE>c-place</CODE></EM>)</CODE></SPAN>
+  <DD>returns the <EM class=replaceable><CODE>c-type</CODE></EM> corresponding 
+  to the <EM class=replaceable><CODE>c-place</CODE></EM>. 
+  <DT><A id=sizeof></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#sizeof"><CODE 
+  class=function>FFI:SIZEOF</CODE></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>)</CODE><BR></SPAN><SPAN 
+  class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#sizeof"><CODE 
+  class=function>FFI:SIZEOF</CODE></A> <EM 
+  class=replaceable><CODE>c-place</CODE></EM>)</CODE></SPAN>
+  <DD>
+  <P>The first form returns the size and alignment of the <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> type <EM 
+  class=replaceable><CODE>c-type</CODE></EM>, measured in bytes.</P>
+  <P>The second form returns the size and alignment of the <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> type of <EM 
+  class=replaceable><CODE>c-place</CODE></EM>, measured in bytes. </P>
+  <DT><A id=bitsizeof></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#bitsizeof"><CODE 
+  class=function>FFI:BITSIZEOF</CODE></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>)</CODE><BR></SPAN><SPAN 
+  class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#bitsizeof"><CODE 
+  class=function>FFI:BITSIZEOF</CODE></A> <EM 
+  class=replaceable><CODE>c-place</CODE></EM>)</CODE></SPAN>
+  <DD>
+  <P>The first form returns the size and alignment of the <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> type <EM 
+  class=replaceable><CODE>c-type</CODE></EM>, measured in bits.</P>
+  <P>The second form returns the size and alignment of the <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> type of <EM 
+  class=replaceable><CODE>c-place</CODE></EM>, measured in bits. </P>
+  <DT><A id=fa-null></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#fa-null"><CODE 
+  class=function>FFI:FOREIGN-ADDRESS-NULL</CODE></A> <EM 
+  class=replaceable><CODE>foreign-entity</CODE></EM>)</CODE></SPAN>
+  <DD>This predicate returns <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_t.html" target=_top><CODE 
+  class=constant>T</CODE></A> if the <EM 
+  class=replaceable><CODE>foreign-entity</CODE></EM> refers to the <CODE 
+  class=constant>NULL</CODE> address (and thus <EM 
+  class=replaceable><CODE>foreign-entity</CODE></EM> should probably not be 
+  passed to most foreign functions). 
+  <DT><A id=faddr-u></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#faddr-u"><CODE 
+  class=function>FFI:FOREIGN-ADDRESS-UNSIGNED</CODE></A> <EM 
+  class=replaceable><CODE>foreign-entity</CODE></EM>)</CODE><BR></SPAN><SPAN 
+  class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#faddr-u"><CODE 
+  class=function>FFI:UNSIGNED-FOREIGN-ADDRESS</CODE></A> <EM 
+  class=replaceable><CODE>number</CODE></EM>)</CODE></SPAN>
+  <DD>
+  <P><A href="http://clisp.cons.org/impnotes/dffi.html#faddr-u"><CODE 
+  class=function>FFI:FOREIGN-ADDRESS-UNSIGNED</CODE></A> returns the <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_integer.html" 
+  target=_top><CODE class=classname>INTEGER</CODE></A> address embodied in the 
+  Lisp object of type <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#faddr"><CODE 
+  class=classname>FFI:FOREIGN-ADDRESS</CODE></A>, <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#fptr"><CODE 
+  class=classname>FFI:FOREIGN-POINTER</CODE></A>, <A 
+  title="31.3.5.&nbsp;Foreign variables" 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-variables"><CODE 
+  class=classname>FFI:FOREIGN-VARIABLE</CODE></A> or <A 
+  title="31.3.&nbsp;The Foreign Function Call Facility" 
+  href="http://clisp.cons.org/impnotes/dffi.html"><CODE 
+  class=classname>FFI:FOREIGN-FUNCTION</CODE></A>.</P>
+  <P><A href="http://clisp.cons.org/impnotes/dffi.html#faddr-u"><CODE 
+  class=function>FFI:UNSIGNED-FOREIGN-ADDRESS</CODE></A> returns a <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#faddr"><CODE 
+  class=classname>FFI:FOREIGN-ADDRESS</CODE></A> object pointing to the given <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_integer.html" 
+  target=_top><CODE class=classname>INTEGER</CODE></A> address. </P>
+  <DT><A id=faddr></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#faddr"><CODE 
+  class=function>FFI:FOREIGN-ADDRESS</CODE></A> <EM 
+  class=replaceable><CODE>foreign-entity</CODE></EM>)</CODE></SPAN>
+  <DD>
+  <P><A href="http://clisp.cons.org/impnotes/dffi.html#faddr"><CODE 
+  class=function>FFI:FOREIGN-ADDRESS</CODE></A> is both a type name and a 
+  selector/constructor function. It is the Lisp object type corresponding to a 
+  <A href="http://clisp.cons.org/impnotes/dffi.html#c-pointer"><SPAN 
+  class=type>FFI:C-POINTER</SPAN></A> external type declaration, e.g. a call-out 
+  function with <CODE class=code>(<CODE class=constant>:RETURN-TYPE</CODE> <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-pointer"><SPAN 
+  class=type>FFI:C-POINTER</SPAN></A>)</CODE> yields a Lisp object of type <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#faddr"><CODE 
+  class=classname>FFI:FOREIGN-ADDRESS</CODE></A>.</P>
+  <P>The function extracts the object of type <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#faddr"><CODE 
+  class=classname>FFI:FOREIGN-ADDRESS</CODE></A> living within any <A 
+  title="31.3.5.&nbsp;Foreign variables" 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-variables"><CODE 
+  class=classname>FFI:FOREIGN-VARIABLE</CODE></A> or <A 
+  title="31.3.&nbsp;The Foreign Function Call Facility" 
+  href="http://clisp.cons.org/impnotes/dffi.html"><CODE 
+  class=classname>FFI:FOREIGN-FUNCTION</CODE></A> object. If the <EM 
+  class=replaceable><CODE>foreign-entity</CODE></EM> already is a <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#faddr"><CODE 
+  class=classname>FFI:FOREIGN-ADDRESS</CODE></A>, it returns it. If it is a <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#fptr"><CODE 
+  class=classname>FFI:FOREIGN-POINTER</CODE></A> (e.g. a base foreign library 
+  address), it encapsulates it into a <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#faddr"><CODE 
+  class=classname>FFI:FOREIGN-ADDRESS</CODE></A> object, as suitable for use 
+  with a <A href="http://clisp.cons.org/impnotes/dffi.html#c-pointer"><SPAN 
+  class=type>FFI:C-POINTER</SPAN></A> external type declaration. It does not 
+  construct addresses out of <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_number.html" target=_top><CODE 
+  class=classname>NUMBER</CODE></A>s, <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#faddr-u"><CODE 
+  class=function>FFI:UNSIGNED-FOREIGN-ADDRESS</CODE></A> must be used for that 
+  purpose. </P>
+  <DT><A id=dffi-make-var></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-make-var"><CODE 
+  class=function>FFI:FOREIGN-VARIABLE</CODE></A> <EM 
+  class=replaceable><CODE>foreign-entity</CODE></EM> <EM 
+  class=replaceable><CODE>c-type-internal</CODE></EM> <A 
+  href="http://www.lisp.org/HyperSpec/Body/sec_3-4-1.html" target=_top><CODE 
+  class=literal>&amp;KEY</CODE></A> <EM 
+  class=replaceable><CODE>name</CODE></EM>)</CODE></SPAN>
+  <DD>This constructor creates a new <A title="31.3.5.&nbsp;Foreign variables" 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-variables"><CODE 
+  class=classname>FFI:FOREIGN-VARIABLE</CODE></A> from the given <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#faddr"><CODE 
+  class=classname>FFI:FOREIGN-ADDRESS</CODE></A> or <A 
+  title="31.3.5.&nbsp;Foreign variables" 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-variables"><CODE 
+  class=classname>FFI:FOREIGN-VARIABLE</CODE></A> and the internal <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> type descriptor (as obtained from <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-type-parse"><CODE 
+  class=function>FFI:PARSE-C-TYPE</CODE></A>). <EM 
+  class=replaceable><CODE>name</CODE></EM>, a <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_string.html" target=_top><CODE 
+  class=classname>STRING</CODE></A>, is mostly useful for documentation and 
+  interactive debugging since it appears in the printed representation of the <A 
+  title="31.3.5.&nbsp;Foreign variables" 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-variables"><CODE 
+  class=classname>FFI:FOREIGN-VARIABLE</CODE></A> object, as in <CODE 
+  class=computeroutput>#&lt;<A title="31.3.5.&nbsp;Foreign variables" 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-variables"><CODE 
+  class=classname>FFI:FOREIGN-VARIABLE</CODE></A> "foo" #x0ADD4E55&gt;</CODE>. 
+  In effect, this is similar to <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#cast"><CODE 
+  class=function>FFI:CAST</CODE></A> (or rather <CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#offset"><CODE 
+  class=function>FFI:OFFSET</CODE></A> ... 0 ...)</CODE> for places), except 
+  that it works with <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#faddr"><CODE 
+  class=function>FFI:FOREIGN-ADDRESS</CODE></A> objects and allows caching of 
+  the internal <A href="http://www.eskimo.com/~scs/C-faq/top.html" 
+  target=_top><SPAN><STRONG class=command>C</STRONG></SPAN></A> types.
+  <DT><A id=dffi-make-func></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-make-func"><CODE 
+  class=function>FFI:FOREIGN-FUNCTION</CODE></A> <EM 
+  class=replaceable><CODE>foreign-entity</CODE></EM> <EM 
+  class=replaceable><CODE>c-type-internal</CODE></EM> <A 
+  href="http://www.lisp.org/HyperSpec/Body/sec_3-4-1.html" target=_top><CODE 
+  class=literal>&amp;KEY</CODE></A> <EM 
+  class=replaceable><CODE>name</CODE></EM>)</CODE></SPAN>
+  <DD>This constructor creates a <A 
+  title="31.3.&nbsp;The Foreign Function Call Facility" 
+  href="http://clisp.cons.org/impnotes/dffi.html"><CODE 
+  class=classname>FFI:FOREIGN-FUNCTION</CODE></A> from the given <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#faddr"><CODE 
+  class=classname>FFI:FOREIGN-ADDRESS</CODE></A> or <A 
+  title="31.3.&nbsp;The Foreign Function Call Facility" 
+  href="http://clisp.cons.org/impnotes/dffi.html"><CODE 
+  class=classname>FFI:FOREIGN-FUNCTION</CODE></A> and the internal <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> type descriptor (as obtained from <CODE 
+  class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-type-parse"><CODE 
+  class=function>FFI:PARSE-C-TYPE</CODE></A> '(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-function"><SPAN 
+  class=type>FFI:C-FUNCTION</SPAN></A> ...))</CODE>, in which case it is 
+  important to specify the <A title="31.3.4.&nbsp;The choice of the C flavor" 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-flavor"><CODE 
+  class=constant>:LANGUAGE</CODE></A> because the expressions are likely to be 
+  evaluated at run time, outside the <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_c.html#compilation_unit" 
+  target=_top>compilation unit</A>). <EM 
+  class=replaceable><CODE>name</CODE></EM>, a <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_string.html" target=_top><CODE 
+  class=classname>STRING</CODE></A>, is mostly useful for documentation and 
+  interactive debugging since it appears in the printed representation of the <A 
+  title="31.3.&nbsp;The Foreign Function Call Facility" 
+  href="http://clisp.cons.org/impnotes/dffi.html"><CODE 
+  class=classname>FFI:FOREIGN-FUNCTION</CODE></A> object, as in <CODE 
+  class=computeroutput>#&lt;<A 
+  title="31.3.&nbsp;The Foreign Function Call Facility" 
+  href="http://clisp.cons.org/impnotes/dffi.html"><CODE 
+  class=classname>FFI:FOREIGN-FUNCTION</CODE></A> "foo" #x0052B060&gt;</CODE>. 
+  It is inherited from the given <A 
+  title="31.3.&nbsp;The Foreign Function Call Facility" 
+  href="http://clisp.cons.org/impnotes/dffi.html"><CODE 
+  class=classname>FFI:FOREIGN-FUNCTION</CODE></A> object when available.
+  <DT><A id=validp></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#validp"><CODE 
+  class=function>FFI:VALIDP</CODE></A> <EM 
+  class=replaceable><CODE>foreign-entity</CODE></EM>)</CODE><BR></SPAN><SPAN 
+  class=term><CODE class=code>(<A 
+  href="http://www.lisp.org/HyperSpec/Body/mac_setfcm_psetf.html" 
+  target=_top><CODE class=function>SETF</CODE></A> (<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#validp"><CODE 
+  class=function>FFI:VALIDP</CODE></A> <EM 
+  class=replaceable><CODE>foreign-entity</CODE></EM>) <EM 
+  class=replaceable><CODE>value</CODE></EM>)</CODE></SPAN>
+  <DD>
+  <P>This predicate returns <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A> if the <EM 
+  class=replaceable><CODE>foreign-entity</CODE></EM> (e.g. the Lisp equivalent 
+  of a <A href="http://clisp.cons.org/impnotes/dffi.html#c-pointer"><SPAN 
+  class=type>FFI:C-POINTER</SPAN></A>) refers to a pointer which is invalid 
+  (e.g., because it comes from a previous Lisp session). It returns <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_t.html" target=_top><CODE 
+  class=constant>T</CODE></A> if <EM 
+  class=replaceable><CODE>foreign-entity</CODE></EM> can be used within the 
+  current Lisp process (thus it returns <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_t.html" target=_top><CODE 
+  class=constant>T</CODE></A> for all non-foreign arguments).</P>
+  <P>You can invalidate a foreign object using <CODE class=code>(<A 
+  href="http://www.lisp.org/HyperSpec/Body/mac_setfcm_psetf.html" 
+  target=_top><CODE class=function>SETF</CODE></A> <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#validp"><CODE 
+  class=function>FFI:VALIDP</CODE></A>)</CODE>. You cannot resurrect a zombie, 
+  nor can you kill a non-foreign object. </P>
+  <DT><A id=fptr></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#fptr"><CODE 
+  class=function>FFI:FOREIGN-POINTER</CODE></A> <EM 
+  class=replaceable><CODE>foreign-entity</CODE></EM>)</CODE></SPAN>
+  <DD><A href="http://clisp.cons.org/impnotes/dffi.html#fptr"><CODE 
+  class=function>FFI:FOREIGN-POINTER</CODE></A> returns the <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#fptr"><CODE 
+  class=classname>FFI:FOREIGN-POINTER</CODE></A> associated with the Lisp object 
+  of type <A href="http://clisp.cons.org/impnotes/dffi.html#faddr"><CODE 
+  class=classname>FFI:FOREIGN-ADDRESS</CODE></A>, <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#fptr"><CODE 
+  class=classname>FFI:FOREIGN-POINTER</CODE></A>, <A 
+  title="31.3.5.&nbsp;Foreign variables" 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-variables"><CODE 
+  class=classname>FFI:FOREIGN-VARIABLE</CODE></A> or <A 
+  title="31.3.&nbsp;The Foreign Function Call Facility" 
+  href="http://clisp.cons.org/impnotes/dffi.html"><CODE 
+  class=classname>FFI:FOREIGN-FUNCTION</CODE></A>. 
+  <DT><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#fptr"><CODE 
+  class=function>FFI:SET-FOREIGN-POINTER</CODE></A> <EM 
+  class=replaceable><CODE>foreign-entity</CODE></EM> {<EM 
+  class=replaceable><CODE>foreign-entity</CODE></EM> | <CODE 
+  class=constant>:COPY</CODE>})</CODE></SPAN>
+  <DD><A href="http://clisp.cons.org/impnotes/dffi.html#fptr"><CODE 
+  class=function>FFI:SET-FOREIGN-POINTER</CODE></A> changes the <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#fptr"><CODE 
+  class=classname>FFI:FOREIGN-POINTER</CODE></A> associated with the Lisp object 
+  of type <A href="http://clisp.cons.org/impnotes/dffi.html#faddr"><CODE 
+  class=classname>FFI:FOREIGN-ADDRESS</CODE></A>, <A 
+  title="31.3.5.&nbsp;Foreign variables" 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-variables"><CODE 
+  class=classname>FFI:FOREIGN-VARIABLE</CODE></A> or <A 
+  title="31.3.&nbsp;The Foreign Function Call Facility" 
+  href="http://clisp.cons.org/impnotes/dffi.html"><CODE 
+  class=classname>FFI:FOREIGN-FUNCTION</CODE></A> to that of the other entity. 
+  With <CODE class=constant>:COPY</CODE>, a <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_f.html#fresh" 
+  target=_top>fresh</A> <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#fptr"><CODE 
+  class=classname>FFI:FOREIGN-POINTER</CODE></A> is allocated. The original <EM 
+  class=replaceable><CODE>foreign-entity</CODE></EM> still points to the same 
+  object and is returned. This is particularly useful with <CODE class=code>(<A 
+  href="http://www.lisp.org/HyperSpec/Body/mac_setfcm_psetf.html" 
+  target=_top><CODE class=function>SETF</CODE></A> <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#validp"><CODE 
+  class=function>FFI:VALIDP</CODE></A>)</CODE>, see <A 
+  title="Example&nbsp;31.10.&nbsp;Controlling validity of resources" 
+  href="http://clisp.cons.org/impnotes/dffi.html#ex-dffi-validity">Example&nbsp;31.10, 
+  “Controlling validity of resources”</A>.
+  <DT><A id=foreign-stack></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-stack"><CODE 
+  class=function>FFI:WITH-FOREIGN-OBJECT</CODE></A> (<EM 
+  class=replaceable><CODE>variable</CODE></EM> <EM 
+  class=replaceable><CODE>c-type</CODE></EM> [<EM 
+  class=replaceable><CODE>initarg</CODE></EM>]) <EM 
+  class=replaceable><CODE>body</CODE></EM>)</CODE><BR></SPAN><SPAN 
+  class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-stack"><CODE 
+  class=function>FFI:WITH-C-VAR</CODE></A> (<EM 
+  class=replaceable><CODE>variable</CODE></EM> <EM 
+  class=replaceable><CODE>c-type</CODE></EM> [<EM 
+  class=replaceable><CODE>initarg</CODE></EM>]) <EM 
+  class=replaceable><CODE>body</CODE></EM>)</CODE></SPAN>
+  <DD>
+  <P>These forms allocate space on the <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> execution stack, bind respectively a <A 
+  title="31.3.5.&nbsp;Foreign variables" 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-variables"><CODE 
+  class=classname>FFI:FOREIGN-VARIABLE</CODE></A> object or a local <A 
+  href="http://www.lisp.org/HyperSpec/Body/mac_define-symbol-macro.html" 
+  target=_top><CODE class=classname>SYMBOL-MACRO</CODE></A> to <EM 
+  class=replaceable><CODE>variable</CODE></EM> and execute <EM 
+  class=replaceable><CODE>body</CODE></EM>.</P>
+  <P>When <EM class=replaceable><CODE>initarg</CODE></EM> is not supplied, they 
+  allocate space only for <CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#sizeof"><CODE 
+  class=function>FFI:SIZEOF</CODE></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>)</CODE> bytes. This space is filled 
+  with zeroes. E.g., using a <EM class=replaceable><CODE>c-type</CODE></EM> of 
+  <A href="http://clisp.cons.org/impnotes/dffi.html#c-string"><SPAN 
+  class=type>FFI:C-STRING</SPAN></A> or even <SPAN class=type><CODE 
+  class=literal>(<A href="http://clisp.cons.org/impnotes/dffi.html#c-ptr"><SPAN 
+  class=type>FFI:C-PTR</SPAN></A> (<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-array"><SPAN 
+  class=type>FFI:C-ARRAY</SPAN></A> <SPAN class=type>uint8</SPAN> 
+  32))</CODE></SPAN> (!) both allocate space for a single pointer, initialized 
+  to <CODE class=constant>NULL</CODE>.</P>
+  <P>When <EM class=replaceable><CODE>initarg</CODE></EM> is supplied, they 
+  allocate space for an arbitrarily complex set of structures rooted in <EM 
+  class=replaceable><CODE>c-type</CODE></EM>. Therefore, <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-array-max"><SPAN 
+  class=type>FFI:C-ARRAY-MAX</SPAN></A>, <SPAN class=data><CODE 
+  class=literal>#()</CODE></SPAN> and <SPAN class=data><CODE 
+  class=literal>""</CODE></SPAN> are your friends for creating a pointer to the 
+  empty arrays: </P><PRE class=programlisting>(with-c-var (v '(c-ptr (c-array-max uint8 32)) #())
+  (setf (element (deref v) 0) 127) v)</PRE>
+  <P><EM class=replaceable><CODE>c-type</CODE></EM> is evaluated, making 
+  creation of variable sized buffers easy: </P><PRE class=programlisting>(with-c-var (fv `(c-array uint8 ,(length my-vector)) my-vector)
+  (print fv))</PRE>
+  <P></P>
+  <DT><A id=foreign-value></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-value"><CODE 
+  class=function>FFI:FOREIGN-VALUE</CODE></A> <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-make-var"><CODE 
+  class=function>FFI:FOREIGN-VARIABLE</CODE></A>)</CODE><BR></SPAN><SPAN 
+  class=term><CODE class=code>(<A 
+  href="http://www.lisp.org/HyperSpec/Body/mac_setfcm_psetf.html" 
+  target=_top><CODE class=function>SETF</CODE></A> (<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-value"><CODE 
+  class=function>FFI:FOREIGN-VALUE</CODE></A> <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-make-var"><CODE 
+  class=function>FFI:FOREIGN-VARIABLE</CODE></A>) ...)</CODE></SPAN>
+  <DD>
+  <P>This functions converts the reference to a <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> data structure which the <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-make-var"><CODE 
+  class=function>FFI:FOREIGN-VARIABLE</CODE></A> describes, to Lisp. Such a 
+  reference is typically obtained from <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-heap"><CODE 
+  class=function>FFI:ALLOCATE-SHALLOW</CODE></A>, <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-heap"><CODE 
+  class=function>FFI:ALLOCATE-DEEP</CODE></A>, <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-heap"><CODE 
+  class=function>FFI:FOREIGN-ALLOCATE</CODE></A> or via a <CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-pointer"><SPAN 
+  class=type>FFI:C-POINTER</SPAN></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>)</CODE> <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> type description. Alternatively, macros 
+  like <A href="http://clisp.cons.org/impnotes/dffi.html#with-c-place"><CODE 
+  class=function>FFI:WITH-C-PLACE</CODE></A> or <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-stack"><CODE 
+  class=function>FFI:WITH-C-VAR</CODE></A> and the concept of foreign <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_p.html#place" 
+  target=_top>place</A> hide many uses of this function.</P>
+  <P>The <A href="http://www.lisp.org/HyperSpec/Body/mac_setfcm_psetf.html" 
+  target=_top><CODE class=function>SETF</CODE></A> form performs conversion from 
+  Lisp to <A href="http://www.eskimo.com/~scs/C-faq/top.html" 
+  target=_top><SPAN><STRONG class=command>C</STRONG></SPAN></A>, following to 
+  the <A href="http://clisp.cons.org/impnotes/dffi.html#dffi-make-var"><CODE 
+  class=function>FFI:FOREIGN-VARIABLE</CODE></A>'s type description. </P>
+  <DT><A id=foreign-stack-string></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-stack-string"><CODE 
+  class=function>FFI:WITH-FOREIGN-STRING</CODE></A> (<EM 
+  class=replaceable><CODE>foreign-address</CODE></EM> <EM 
+  class=replaceable><CODE>char-count</CODE></EM> <EM 
+  class=replaceable><CODE>byte-count</CODE></EM> <EM 
+  class=replaceable><CODE>string</CODE></EM> <A 
+  href="http://www.lisp.org/HyperSpec/Body/sec_3-4-1.html" target=_top><CODE 
+  class=literal>&amp;KEY</CODE></A> <EM 
+  class=replaceable><CODE>encoding</CODE></EM> <EM 
+  class=replaceable><CODE>null-terminated-p</CODE></EM> <EM 
+  class=replaceable><CODE>start</CODE></EM> <EM 
+  class=replaceable><CODE>end</CODE></EM>) <A 
+  href="http://www.lisp.org/HyperSpec/Body/sec_3-4-4.html" target=_top><CODE 
+  class=literal>&amp;BODY</CODE></A> <EM 
+  class=replaceable><CODE>body</CODE></EM>)</CODE></SPAN>
+  <DD>
+  <P>This forms converts a Lisp <EM class=replaceable><CODE>string</CODE></EM> 
+  according to the <EM class=replaceable><CODE>encoding</CODE></EM>, allocating 
+  space on the <A href="http://www.eskimo.com/~scs/C-faq/top.html" 
+  target=_top><SPAN><STRONG class=command>C</STRONG></SPAN></A> execution stack. 
+  <EM class=replaceable><CODE>encoding</CODE></EM> can be any <A 
+  title=30.5.&nbsp;Encodings 
+  href="http://clisp.cons.org/impnotes/encoding.html"><CODE 
+  class=classname>EXT:ENCODING</CODE></A>, e.g. <A 
+  href="http://clisp.cons.org/impnotes/encoding.html#charset-UTF-16"><CODE 
+  class=constant>CHARSET:UTF-16</CODE></A> or <A 
+  href="http://clisp.cons.org/impnotes/encoding.html#charset-UTF-8"><CODE 
+  class=constant>CHARSET:UTF-8</CODE></A>, whereas <A class=olink 
+  href="http://clisp.cons.org/impnotes/encoding.html#foreign-enc"><CODE 
+  class=varname>CUSTOM:*FOREIGN-ENCODING*</CODE></A> must be an <A 
+  href="http://www.cplusplus.com/doc/papers/ascii.html" target=_top><SPAN 
+  class=platform>ASCII</SPAN></A>-compatible encoding. </P>
+  <P><EM class=replaceable><CODE>body</CODE></EM> is then executed with the 
+  three variables <EM class=replaceable><CODE>foreign-address</CODE></EM>, <EM 
+  class=replaceable><CODE>char-count</CODE></EM> and <EM 
+  class=replaceable><CODE>byte-count</CODE></EM> respectively bound to an 
+  untyped <A href="http://clisp.cons.org/impnotes/dffi.html#faddr"><CODE 
+  class=classname>FFI:FOREIGN-ADDRESS</CODE></A> (as known from the <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-pointer"><SPAN 
+  class=type>FFI:C-POINTER</SPAN></A> foreign type specification) pointing to 
+  the stack location, the number of <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_character.html" 
+  target=_top><CODE class=classname>CHARACTER</CODE></A>s of the Lisp <EM 
+  class=replaceable><CODE>string</CODE></EM> that were considered and the number 
+  of <SPAN class=type><CODE class=literal>(<A 
+  href="http://www.lisp.org/HyperSpec/Body/typ_unsigned-byte.html" 
+  target=_top><CODE class=classname>UNSIGNED-BYTE</CODE></A> 8)</CODE></SPAN> 
+  bytes that were allocated for it on the <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> stack.</P>
+  <P>When <EM class=replaceable><CODE>null-terminated-p</CODE></EM> is true, 
+  which is the default, a variable number of zero bytes is appended, depending 
+  on the encoding, e.g. 2 for <A 
+  href="http://clisp.cons.org/impnotes/encoding.html#charset-UTF-16"><CODE 
+  class=constant>CHARSET:UTF-16</CODE></A>, and accounted for in <EM 
+  class=replaceable><CODE>byte-count</CODE></EM>, and <EM 
+  class=replaceable><CODE>char-count</CODE></EM> is incremented by one.</P>
+  <P>The <A href="http://clisp.cons.org/impnotes/dffi.html#faddr"><CODE 
+  class=classname>FFI:FOREIGN-ADDRESS</CODE></A> object bound to <EM 
+  class=replaceable><CODE>foreign-address</CODE></EM> is invalidated upon the 
+  exit from the form.</P>
+  <P>A stupid example (a quite costly interface to <A class=unix 
+  href="http://www.opengroup.org/onlinepubs/007904975/functions/mblen.html"><CODE 
+  class=function>mblen</CODE></A>): </P><PRE class=programlisting>(with-foreign-string (fv elems bytes string
+                      :encoding charset:jis... :null-terminated-p nil
+                      :end 5)
+ (declare (ignore fv elems))
+ (format t "This string would take ~D bytes." bytes))</PRE>
+  <P></P>
+  <DT><A id=c-type-parse></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-type-parse"><CODE 
+  class=function>FFI:PARSE-C-TYPE</CODE></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>)</CODE><BR></SPAN><SPAN 
+  class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-type-parse"><CODE 
+  class=function>FFI:DEPARSE-C-TYPE</CODE></A> <EM 
+  class=replaceable><CODE>c-type-internal</CODE></EM>)</CODE></SPAN>
+  <DD>
+  <P>Convert between the external (<A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_list.html" target=_top><CODE 
+  class=classname>LIST</CODE></A>) and internal (<A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_vector.html" target=_top><CODE 
+  class=classname>VECTOR</CODE></A>) <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> type representations (used by <A 
+  class=olink 
+  href="http://clisp.cons.org/impnotes/environment-dict.html#describe"><CODE 
+  class=function>DESCRIBE</CODE></A>). </P>
+  <DIV class=note style="MARGIN-LEFT: 0.5in; MARGIN-RIGHT: 0.5in">
+  <H3 class=title>Note</H3>
+  <P>Although you can memoize a <EM 
+  class=replaceable><CODE>c-type-internal</CODE></EM> (see <A 
+  title="30.11.3.&nbsp;Macro EXT:MEMOIZED" 
+  href="http://clisp.cons.org/impnotes/macros3.html#memoized">Section&nbsp;30.11.3, 
+  “Macro <CODE class=function>EXT:MEMOIZED</CODE>”</A> - but do not expect type 
+  redefinitions to work across memoization!), you cannot serialize it (write to 
+  disk) because deserialization loses object identity.</P></DIV>
+  <DT><A id=foreign-heap></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-heap"><CODE 
+  class=function>FFI:ALLOCATE-SHALLOW</CODE></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM> <A 
+  href="http://www.lisp.org/HyperSpec/Body/sec_3-4-1.html" target=_top><CODE 
+  class=literal>&amp;KEY</CODE></A> <CODE class=constant>:COUNT</CODE> <CODE 
+  class=constant>:READ-ONLY</CODE>)</CODE><BR></SPAN><SPAN class=term><CODE 
+  class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-heap"><CODE 
+  class=function>FFI:ALLOCATE-DEEP</CODE></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM> <EM 
+  class=replaceable><CODE>contents</CODE></EM> <A 
+  href="http://www.lisp.org/HyperSpec/Body/sec_3-4-1.html" target=_top><CODE 
+  class=literal>&amp;KEY</CODE></A> <CODE class=constant>:COUNT</CODE> <CODE 
+  class=constant>:READ-ONLY</CODE>)</CODE><BR></SPAN><SPAN class=term><CODE 
+  class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-heap"><CODE 
+  class=function>FFI:FOREIGN-FREE</CODE></A> <EM 
+  class=replaceable><CODE>foreign-entity</CODE></EM> <A 
+  href="http://www.lisp.org/HyperSpec/Body/sec_3-4-1.html" target=_top><CODE 
+  class=literal>&amp;KEY</CODE></A> :FULL)</CODE><BR></SPAN><SPAN 
+  class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-heap"><CODE 
+  class=function>FFI:FOREIGN-ALLOCATE</CODE></A> <EM 
+  class=replaceable><CODE>c-type-internal</CODE></EM> <A 
+  href="http://www.lisp.org/HyperSpec/Body/sec_3-4-1.html" target=_top><CODE 
+  class=literal>&amp;KEY</CODE></A> :INITIAL-CONTENTS <CODE 
+  class=constant>:COUNT</CODE> <CODE 
+  class=constant>:READ-ONLY</CODE>)</CODE></SPAN>
+  <DD>
+  <P>Macro <A href="http://clisp.cons.org/impnotes/dffi.html#foreign-heap"><CODE 
+  class=function>FFI:ALLOCATE-SHALLOW</CODE></A> allocates <CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#sizeof"><CODE 
+  class=function>FFI:SIZEOF</CODE></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>)</CODE> bytes on the <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> heap and zeroes them out (like <A 
+  class=unix 
+  href="http://www.opengroup.org/onlinepubs/007904975/functions/calloc.html"><CODE 
+  class=function>calloc</CODE></A>). When <CODE class=constant>:COUNT</CODE> is 
+  supplied, <EM class=replaceable><CODE>c-type</CODE></EM> is substituted with 
+  <SPAN class=type><CODE class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-array"><SPAN 
+  class=type>FFI:C-ARRAY</SPAN></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM> <EM 
+  class=replaceable><CODE>count</CODE></EM>)</CODE></SPAN>, except when <EM 
+  class=replaceable><CODE>c-type</CODE></EM> is <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_character.html" 
+  target=_top><CODE class=classname>CHARACTER</CODE></A>, in which case <SPAN 
+  class=type><CODE class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-array-max"><SPAN 
+  class=type>FFI:C-ARRAY-MAX</SPAN></A> <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_character.html" 
+  target=_top><CODE class=classname>CHARACTER</CODE></A> <EM 
+  class=replaceable><CODE>count</CODE></EM>)</CODE></SPAN> is used instead. When 
+  <CODE class=constant>:READ-ONLY</CODE> is supplied, the Lisp side is prevented 
+  from modifying the memory contents. This can be used as an indication that 
+  some foreign side is going to fill this memory (e.g. via <A class=unix 
+  href="http://www.opengroup.org/onlinepubs/007904975/functions/read.html"><CODE 
+  class=function>read</CODE></A>).</P>
+  <P>Returns a <A title="31.3.5.&nbsp;Foreign variables" 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-variables"><CODE 
+  class=classname>FFI:FOREIGN-VARIABLE</CODE></A> object of the actual <EM 
+  class=replaceable><CODE>c-type</CODE></EM>, whose address part points to the 
+  newly allocated memory.</P>
+  <P><A href="http://clisp.cons.org/impnotes/dffi.html#foreign-heap"><CODE 
+  class=function>FFI:ALLOCATE-DEEP</CODE></A> will call <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> <A class=unix 
+  href="http://www.opengroup.org/onlinepubs/007904975/functions/malloc.html"><CODE 
+  class=function>malloc</CODE></A> as many times as necessary to build a 
+  structure on the <A href="http://www.eskimo.com/~scs/C-faq/top.html" 
+  target=_top><SPAN><STRONG class=command>C</STRONG></SPAN></A> heap of the 
+  given <EM class=replaceable><CODE>c-type</CODE></EM>, initialized from the 
+  given <EM class=replaceable><CODE>contents</CODE></EM>.</P>
+  <P>E.g., <CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-heap"><CODE 
+  class=function>FFI:ALLOCATE-DEEP</CODE></A> '<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-string"><SPAN 
+  class=type>FFI:C-STRING</SPAN></A> "ABCDE")</CODE> performs 2 allocations: one 
+  for a <A href="http://www.eskimo.com/~scs/C-faq/top.html" 
+  target=_top><SPAN><STRONG class=command>C</STRONG></SPAN></A> pointer to a 
+  string, another for the contents of that string. This would be useful in 
+  conjunction with a <SPAN class=type>char**</SPAN> <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> type declaration. <CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-heap"><CODE 
+  class=function>FFI:ALLOCATE-SHALLOW</CODE></A> '<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-string"><SPAN 
+  class=type>FFI:C-STRING</SPAN></A>)</CODE> allocates room for a single pointer 
+  (probably 4 bytes).</P>
+  <P><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-heap"><CODE 
+  class=function>FFI:ALLOCATE-DEEP</CODE></A> '<A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_character.html" 
+  target=_top><CODE class=classname>CHARACTER</CODE></A> "ABCDEF" :count 
+  10)</CODE> allocates and initializes room for the type <SPAN class=type><CODE 
+  class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-array-max"><SPAN 
+  class=type>FFI:C-ARRAY-MAX</SPAN></A> <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_character.html" 
+  target=_top><CODE class=classname>CHARACTER</CODE></A> 10)</CODE></SPAN>, 
+  corresponding to <SPAN class=type>char*</SPAN> or, more specifically, <SPAN 
+  class=type>char[10]</SPAN> in <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A>.</P>
+  <P>Function <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-heap"><CODE 
+  class=function>FFI:FOREIGN-FREE</CODE></A> deallocates memory at the address 
+  held by the given <EM class=replaceable><CODE>foreign-entity</CODE></EM>. If 
+  <CODE class=constant>:FULL</CODE> is supplied and the argument is of type <A 
+  title="31.3.5.&nbsp;Foreign variables" 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-variables"><CODE 
+  class=classname>FFI:FOREIGN-VARIABLE</CODE></A>, recursively frees the whole 
+  complex structure pointed to by this variable.</P>
+  <P>If given a <A title="31.3.&nbsp;The Foreign Function Call Facility" 
+  href="http://clisp.cons.org/impnotes/dffi.html"><CODE 
+  class=classname>FFI:FOREIGN-FUNCTION</CODE></A> object that corresponds to a 
+  <A href="http://clisp.cons.org/" target=_top><SPAN><STRONG 
+  class=command>CLISP</STRONG></SPAN></A> callback, deallocates it. Callbacks 
+  are automatically created each time you pass a Lisp function via the <A 
+  title="31.3.&nbsp;The Foreign Function Call Facility" 
+  href="http://clisp.cons.org/impnotes/dffi.html"><STRONG class=package>“<SPAN 
+  class=quote>FFI</SPAN>”</STRONG></A>.</P>
+  <P>Use <CODE class=code>(<A 
+  href="http://www.lisp.org/HyperSpec/Body/mac_setfcm_psetf.html" 
+  target=_top><CODE class=function>SETF</CODE></A> <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#validp"><CODE 
+  class=function>FFI:VALIDP</CODE></A>)</CODE> to disable further references to 
+  this address from Lisp. This is currently not done automatically. If the given 
+  pointer is already invalid, <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-heap"><CODE 
+  class=function>FFI:FOREIGN-FREE</CODE></A> (currently) <A 
+  href="http://www.lisp.org/HyperSpec/Body/fun_signal.html" target=_top><CODE 
+  class=function>SIGNAL</CODE></A>s an <A 
+  href="http://www.lisp.org/HyperSpec/Body/contyp_error.html" target=_top><CODE 
+  class=classname>ERROR</CODE></A>. This may change to make it easier to 
+  integrate with <A title=30.8.&nbsp;Finalization 
+  href="http://clisp.cons.org/impnotes/final.html"><CODE 
+  class=function>EXT:FINALIZE</CODE></A>.</P>
+  <P>Function <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-heap"><CODE 
+  class=function>FFI:FOREIGN-ALLOCATE</CODE></A> is a lower-level interface as 
+  it requires an internal <A href="http://www.eskimo.com/~scs/C-faq/top.html" 
+  target=_top><SPAN><STRONG class=command>C</STRONG></SPAN></A> type descriptor 
+  as returned by <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-type-parse"><CODE 
+  class=function>FFI:PARSE-C-TYPE</CODE></A>.</P>
+  <DT><A id=with-c-place></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#with-c-place"><CODE 
+  class=function>FFI:WITH-C-PLACE</CODE></A> (<EM 
+  class=replaceable><CODE>variable</CODE></EM> <EM 
+  class=replaceable><CODE>foreign-entity</CODE></EM>) <EM 
+  class=replaceable><CODE>body</CODE></EM>)</CODE></SPAN>
+  <DD>
+  <P>Create a <A href="http://www.lisp.org/HyperSpec/Body/glo_p.html#place" 
+  target=_top>place</A> out of the given <A 
+  title="31.3.5.&nbsp;Foreign variables" 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-variables"><CODE 
+  class=classname>FFI:FOREIGN-VARIABLE</CODE></A> object so operations on places 
+  (e.g. <A href="http://clisp.cons.org/impnotes/dffi.html#cast"><CODE 
+  class=function>FFI:CAST</CODE></A>, <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#deref"><CODE 
+  class=function>FFI:DEREF</CODE></A>, <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#slot"><CODE 
+  class=function>FFI:SLOT</CODE></A> etc.) can be used within <EM 
+  class=replaceable><CODE>body</CODE></EM>. <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-stack"><CODE 
+  class=function>FFI:WITH-C-VAR</CODE></A> appears as a composition of <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-stack"><CODE 
+  class=function>FFI:WITH-FOREIGN-OBJECT</CODE></A> and <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#with-c-place"><CODE 
+  class=function>FFI:WITH-C-PLACE</CODE></A>.</P>
+  <P>Such a <A href="http://www.lisp.org/HyperSpec/Body/glo_p.html#place" 
+  target=_top>place</A> can be used to access memory referenced by a <EM 
+  class=replaceable><CODE>foreign-entity</CODE></EM> object: </P><PRE class=programlisting>(setq foo (allocate-deep '(c-array uint8 3) rgb))
+(with-c-place (place foo) (element place 0))</PRE>
+  <P></P>
+  <DT><A id=ffi-extern-output></A><SPAN class=term><A 
+  href="http://clisp.cons.org/impnotes/dffi.html#ffi-extern-output"><CODE 
+  class=varname>FFI:*OUTPUT-C-FUNCTIONS*</CODE></A><BR></SPAN><SPAN 
+  class=term><CODE class=varname>FFI:*OUTPUT-C-VARIABLES*</CODE></SPAN>
+  <DD><A href="http://clisp.cons.org/" target=_top><SPAN><STRONG 
+  class=command>CLISP</STRONG></SPAN></A> will write the <SPAN 
+  class=type>extern</SPAN> declarations for foreign functions (defined with <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-call-out"><CODE 
+  class=function>FFI:DEF-CALL-OUT</CODE></A>) and foreign variables (defined 
+  with <A href="http://clisp.cons.org/impnotes/dffi.html#def-c-var"><CODE 
+  class=function>FFI:DEF-C-VAR</CODE></A>) into the output <CODE 
+  class=filename>#P".c"</CODE> (when the Lisp file is compiled with <A 
+  class=olink 
+  href="http://clisp.cons.org/impnotes/system-dict.html#compilefile"><CODE 
+  class=function>COMPILE-FILE</CODE></A>) <SPAN 
+  class=emphasis><EM>unless</EM></SPAN> these variables are <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A>. They are <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A> by default, so the <SPAN 
+  class=type>extern</SPAN> declarations are <SPAN 
+  class=strong><STRONG>not</STRONG></SPAN> written; you are encouraged to use <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-lines"><CODE 
+  class=function>FFI:C-LINES</CODE></A> to include the appropriate <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> headers. Set these variables to non-<A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A> if the headers are not available or not usable.
+  <DT><A id=ffi-guard></A><SPAN class=term><A 
+  href="http://clisp.cons.org/impnotes/dffi.html#ffi-guard"><CODE 
+  class=varname>FFI:*FOREIGN-GUARD*</CODE></A></SPAN>
+  <DD>
+  <P>When this variable is non-<A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A> at <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_c.html#compile_time" 
+  target=_top>compile time</A>, <A href="http://clisp.cons.org/" 
+  target=_top><SPAN><STRONG class=command>CLISP</STRONG></SPAN></A> will guard 
+  the <A href="http://www.eskimo.com/~scs/C-faq/top.html" 
+  target=_top><SPAN><STRONG class=command>C</STRONG></SPAN></A> statements in 
+  the output file with <A href="http://gcc.gnu.org/onlinedocs/cpp/" 
+  target=_top><SPAN><STRONG class=command>cpp</STRONG></SPAN></A> conditionals 
+  to take advantage of <A href="http://www.gnu.org/" target=_top>GNU</A> <A 
+  href="http://www.gnu.org/software/autoconf/" target=_top>autoconf</A> feature 
+  detection. E.g., </P><PRE class=programlisting>(eval-when (compile) (setq *foreign-guard* t))
+(def-call-out some-function (:name "function_name") ...)
+</PRE>
+  <P>will produce </P><PRE class=programlisting># if defined(HAVE_FUNCTION_NAME)
+  register_foreign_function((void*)&amp;function_name,"function_name",1024);
+# endif
+</PRE>
+  <P>and will compile and link on any system.</P>
+  <P>This is mostly useful for product delivery when you want your module to 
+  build on any system even if some features will not be available.</P>
+  <P><A href="http://clisp.cons.org/impnotes/dffi.html#ffi-guard"><CODE 
+  class=varname>FFI:*FOREIGN-GUARD*</CODE></A> is initialized to <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A> for backwards compatibility. </P></DD></DL></DIV>
+<DIV class=variablelist><A id=dffi-low></A>
+<P class=title><B>Low-level <A 
+title="31.3.&nbsp;The Foreign Function Call Facility" 
+href="http://clisp.cons.org/impnotes/dffi.html"><STRONG class=package>“<SPAN 
+class=quote>FFI</SPAN>”</STRONG></A> forms</B></P>
+<DL>
+  <DT><A id=memory-as></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#memory-as"><CODE 
+  class=function>FFI:MEMORY-AS</CODE></A> <EM 
+  class=replaceable><CODE>foreign-address</CODE></EM> <EM 
+  class=replaceable><CODE>c-type-internal</CODE></EM> <A 
+  href="http://www.lisp.org/HyperSpec/Body/sec_3-4-1.html" target=_top><CODE 
+  class=literal>&amp;OPTIONAL</CODE></A> <EM 
+  class=replaceable><CODE>offset</CODE></EM>)</CODE><BR></SPAN><SPAN 
+  class=term><CODE class=code>(<A 
+  href="http://www.lisp.org/HyperSpec/Body/mac_setfcm_psetf.html" 
+  target=_top><CODE class=function>SETF</CODE></A> (<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#memory-as"><CODE 
+  class=function>FFI:MEMORY-AS</CODE></A> <EM 
+  class=replaceable><CODE>foreign-address</CODE></EM> <EM 
+  class=replaceable><CODE>c-type-internal</CODE></EM> <A 
+  href="http://www.lisp.org/HyperSpec/Body/sec_3-4-1.html" target=_top><CODE 
+  class=literal>&amp;OPTIONAL</CODE></A> <EM 
+  class=replaceable><CODE>offset</CODE></EM>) <EM 
+  class=replaceable><CODE>value</CODE></EM>)</CODE></SPAN>
+  <DD>
+  <P>This accessor is useful when operating with untyped foreign pointers (<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#faddr"><CODE 
+  class=classname>FFI:FOREIGN-ADDRESS</CODE></A>) as opposed to typed ones 
+  (represented by <A title="31.3.5.&nbsp;Foreign variables" 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-variables"><CODE 
+  class=classname>FFI:FOREIGN-VARIABLE</CODE></A>). It allows to type and 
+  dereference the given pointer without the need to create an object of type <A 
+  title="31.3.5.&nbsp;Foreign variables" 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-variables"><CODE 
+  class=classname>FFI:FOREIGN-VARIABLE</CODE></A>.</P>
+  <P>Alternatively, one could use <CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#foreign-value"><CODE 
+  class=function>FFI:FOREIGN-VALUE</CODE></A> (<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-make-var"><CODE 
+  class=function>FFI:FOREIGN-VARIABLE</CODE></A> <EM 
+  class=replaceable><CODE>foreign-entity</CODE></EM> <EM 
+  class=replaceable><CODE>c-type-internal</CODE></EM>))</CODE> (also <A 
+  href="http://www.lisp.org/HyperSpec/Body/mac_setfcm_psetf.html" 
+  target=_top><CODE class=function>SETF</CODE></A>able).</P>
+  <P>Note that <EM class=replaceable><CODE>c-type-internal</CODE></EM> is the 
+  <SPAN class=emphasis><EM>internal</EM></SPAN> representation of a foreign 
+  type, thus <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-type-parse"><CODE 
+  class=function>FFI:PARSE-C-TYPE</CODE></A> is required with literal names or 
+  types, e.g. <CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#memory-as"><CODE 
+  class=function>FFI:MEMORY-AS</CODE></A> <EM 
+  class=replaceable><CODE>foreign-address</CODE></EM> (<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-type-parse"><CODE 
+  class=function>FFI:PARSE-C-TYPE</CODE></A> '(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-array"><SPAN 
+  class=type>FFI:C-ARRAY</SPAN></A> uint8 3)))</CODE> or <CODE class=code>(<A 
+  href="http://www.lisp.org/HyperSpec/Body/mac_setfcm_psetf.html" 
+  target=_top><CODE class=function>SETF</CODE></A> (<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#memory-as"><CODE 
+  class=function>FFI:MEMORY-AS</CODE></A> <EM 
+  class=replaceable><CODE>foreign-address</CODE></EM> (<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-type-parse"><CODE 
+  class=function>FFI:PARSE-C-TYPE</CODE></A> 'uint32)) 
+0)</CODE>.</P></DD></DL></DIV></DIV>
+<DIV class=section lang=en xml:lang="en">
+<DIV class=titlepage>
+<DIV>
+<DIV>
+<H3 class=title><A id=dffi-types></A>31.3.3.&nbsp;(Foreign) <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A> types</H3></DIV></DIV></DIV>
+<P>Foreign <A href="http://www.eskimo.com/~scs/C-faq/top.html" 
+target=_top><SPAN><STRONG class=command>C</STRONG></SPAN></A> types are used in 
+the <A title="31.3.&nbsp;The Foreign Function Call Facility" 
+href="http://clisp.cons.org/impnotes/dffi.html"><STRONG class=package>“<SPAN 
+class=quote>FFI</SPAN>”</STRONG></A>. They are <SPAN 
+class=strong><STRONG>not</STRONG></SPAN> regular <A href="http://www.lisp.org/" 
+target=_top><SPAN><STRONG class=command>Common Lisp</STRONG></SPAN></A> types or 
+<A href="http://www.lisp.org/HyperSpec/Body/chap-7.html" 
+target=_top><SPAN><STRONG class=command>CLOS</STRONG></SPAN></A> classes.</P>
+<P>A <EM class=replaceable><CODE>c-type</CODE></EM> is either a predefined <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A> type or the name of a type defined by <A 
+href="http://clisp.cons.org/impnotes/dffi.html#def-c-type"><CODE 
+class=function>FFI:DEF-C-TYPE</CODE></A>.</P>
+<DIV class=variablelist>
+<P class=title><B>the predefined <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A> types (<EM 
+class=replaceable><CODE>c-type</CODE></EM>)</B></P>
+<DL>
+  <DT><A id=simple-c-type></A><SPAN class=term><EM 
+  class=replaceable><CODE>simple-c-type</CODE></EM></SPAN>
+  <DD>
+  <P>the simple <A href="http://www.eskimo.com/~scs/C-faq/top.html" 
+  target=_top><SPAN><STRONG class=command>C</STRONG></SPAN></A> types </P>
+  <DIV class=informaltable><A id=simple-c-type-tab></A>
+  <TABLE border=1>
+    <COLGROUP>
+    <COL>
+    <COL>
+    <COL>
+    <COL>
+    <COL></COLGROUP>
+    <THEAD>
+    <TR>
+      <TH align=middle>Lisp name</TH>
+      <TH align=middle>Lisp equivalent</TH>
+      <TH align=middle><A href="http://www.eskimo.com/~scs/C-faq/top.html" 
+        target=_top><SPAN><STRONG class=command>C</STRONG></SPAN></A> 
+      equivalent</TH>
+      <TH align=middle><A href="http://www2.parc.com/istl/projects/ILU/" 
+        target=_top><ACRONYM class=acronym 
+        title="Inter-Language Unification">ILU</ACRONYM></A> equivalent</TH>
+      <TH align=middle>Comment</TH></TR></THEAD>
+    <TBODY>
+    <TR>
+      <TD align=middle><A 
+        href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" 
+        target=_top><CODE class=constant>NIL</CODE></A></TD>
+      <TD align=middle><A 
+        href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" 
+        target=_top><CODE class=constant>NIL</CODE></A></TD>
+      <TD align=middle><SPAN class=type>void</SPAN></TD>
+      <TD align=middle>&nbsp;</TD>
+      <TD align=middle>as a result type only</TD></TR>
+    <TR>
+      <TD align=middle><A 
+        href="http://www.lisp.org/HyperSpec/Body/typ_boolean.html" 
+        target=_top><CODE class=classname>BOOLEAN</CODE></A></TD>
+      <TD align=middle><A 
+        href="http://www.lisp.org/HyperSpec/Body/typ_boolean.html" 
+        target=_top><CODE class=classname>BOOLEAN</CODE></A></TD>
+      <TD align=middle><SPAN class=type>int</SPAN></TD>
+      <TD align=middle><SPAN class=type>BOOLEAN</SPAN></TD>
+      <TD class=auto-generated>&nbsp;</TD></TR>
+    <TR>
+      <TD align=middle><A 
+        href="http://www.lisp.org/HyperSpec/Body/syscla_character.html" 
+        target=_top><CODE class=classname>CHARACTER</CODE></A></TD>
+      <TD align=middle><A 
+        href="http://www.lisp.org/HyperSpec/Body/syscla_character.html" 
+        target=_top><CODE class=classname>CHARACTER</CODE></A></TD>
+      <TD align=middle><SPAN class=type>char</SPAN></TD>
+      <TD align=middle><SPAN class=type>SHORT CHARACTER</SPAN></TD>
+      <TD class=auto-generated>&nbsp;</TD></TR>
+    <TR>
+      <TD align=middle><SPAN class=type>char</SPAN></TD>
+      <TD align=middle><A 
+        href="http://www.lisp.org/HyperSpec/Body/syscla_integer.html" 
+        target=_top><CODE class=classname>INTEGER</CODE></A></TD>
+      <TD align=middle><SPAN class=type>signed char</SPAN></TD>
+      <TD class=auto-generated>&nbsp;</TD>
+      <TD class=auto-generated>&nbsp;</TD></TR>
+    <TR>
+      <TD align=middle><SPAN class=type>uchar</SPAN></TD>
+      <TD align=middle><A 
+        href="http://www.lisp.org/HyperSpec/Body/syscla_integer.html" 
+        target=_top><CODE class=classname>INTEGER</CODE></A></TD>
+      <TD align=middle><SPAN class=type>unsigned char</SPAN></TD>
+      <TD class=auto-generated>&nbsp;</TD>
+      <TD class=auto-generated>&nbsp;</TD></TR>
+    <TR>
+      <TD align=middle><SPAN class=type>short</SPAN></TD>
+      <TD align=middle><A 
+        href="http://www.lisp.org/HyperSpec/Body/syscla_integer.html" 
+        target=_top><CODE class=classname>INTEGER</CODE></A></TD>
+      <TD align=middle><SPAN class=type>short</SPAN></TD>
+      <TD class=auto-generated>&nbsp;</TD>
+      <TD class=auto-generated>&nbsp;</TD></TR>
+    <TR>
+      <TD align=middle><SPAN class=type>ushort</SPAN></TD>
+      <TD align=middle><A 
+        href="http://www.lisp.org/HyperSpec/Body/syscla_integer.html" 
+        target=_top><CODE class=classname>INTEGER</CODE></A></TD>
+      <TD align=middle><SPAN class=type>unsigned short</SPAN></TD>
+      <TD class=auto-generated>&nbsp;</TD>
+      <TD class=auto-generated>&nbsp;</TD></TR>
+    <TR>
+      <TD align=middle><SPAN class=type>int</SPAN></TD>
+      <TD align=middle><A 
+        href="http://www.lisp.org/HyperSpec/Body/syscla_integer.html" 
+        target=_top><CODE class=classname>INTEGER</CODE></A></TD>
+      <TD align=middle><SPAN class=type>int</SPAN></TD>
+      <TD class=auto-generated>&nbsp;</TD>
+      <TD class=auto-generated>&nbsp;</TD></TR>
+    <TR>
+      <TD align=middle><SPAN class=type>uint</SPAN></TD>
+      <TD align=middle><A 
+        href="http://www.lisp.org/HyperSpec/Body/syscla_integer.html" 
+        target=_top><CODE class=classname>INTEGER</CODE></A></TD>
+      <TD align=middle><SPAN class=type>unsigned int</SPAN></TD>
+      <TD class=auto-generated>&nbsp;</TD>
+      <TD class=auto-generated>&nbsp;</TD></TR>
+    <TR>
+      <TD align=middle><SPAN class=type>long</SPAN></TD>
+      <TD align=middle><A 
+        href="http://www.lisp.org/HyperSpec/Body/syscla_integer.html" 
+        target=_top><CODE class=classname>INTEGER</CODE></A></TD>
+      <TD align=middle><SPAN class=type>long</SPAN></TD>
+      <TD class=auto-generated>&nbsp;</TD>
+      <TD class=auto-generated>&nbsp;</TD></TR>
+    <TR>
+      <TD align=middle><SPAN class=type>ulong</SPAN></TD>
+      <TD align=middle><A 
+        href="http://www.lisp.org/HyperSpec/Body/syscla_integer.html" 
+        target=_top><CODE class=classname>INTEGER</CODE></A></TD>
+      <TD align=middle><SPAN class=type>unsigned long</SPAN></TD>
+      <TD class=auto-generated>&nbsp;</TD>
+      <TD class=auto-generated>&nbsp;</TD></TR>
+    <TR>
+      <TD align=middle><SPAN class=type>uint8</SPAN></TD>
+      <TD align=middle><SPAN class=type><CODE class=literal>(<A 
+        href="http://www.lisp.org/HyperSpec/Body/typ_unsigned-byte.html" 
+        target=_top><CODE class=classname>UNSIGNED-BYTE</CODE></A> 
+        8)</CODE></SPAN></TD>
+      <TD align=middle><SPAN class=type>uint8</SPAN></TD>
+      <TD align=middle><SPAN class=type>BYTE</SPAN></TD>
+      <TD class=auto-generated>&nbsp;</TD></TR>
+    <TR>
+      <TD align=middle><SPAN class=type>sint8</SPAN></TD>
+      <TD align=middle><SPAN class=type><CODE class=literal>(<A 
+        href="http://www.lisp.org/HyperSpec/Body/typ_signed-byte.html" 
+        target=_top><CODE class=classname>SIGNED-BYTE</CODE></A> 
+      8)</CODE></SPAN></TD>
+      <TD align=middle><SPAN class=type>sint8</SPAN></TD>
+      <TD class=auto-generated>&nbsp;</TD>
+      <TD class=auto-generated>&nbsp;</TD></TR>
+    <TR>
+      <TD align=middle><SPAN class=type>uint16</SPAN></TD>
+      <TD align=middle><SPAN class=type><CODE class=literal>(<A 
+        href="http://www.lisp.org/HyperSpec/Body/typ_unsigned-byte.html" 
+        target=_top><CODE class=classname>UNSIGNED-BYTE</CODE></A> 
+        16)</CODE></SPAN></TD>
+      <TD align=middle><SPAN class=type>uint16</SPAN></TD>
+      <TD align=middle><SPAN class=type>SHORT CARDINAL</SPAN></TD>
+      <TD class=auto-generated>&nbsp;</TD></TR>
+    <TR>
+      <TD align=middle><SPAN class=type>sint16</SPAN></TD>
+      <TD align=middle><SPAN class=type><CODE class=literal>(<A 
+        href="http://www.lisp.org/HyperSpec/Body/typ_signed-byte.html" 
+        target=_top><CODE class=classname>SIGNED-BYTE</CODE></A> 
+        16)</CODE></SPAN></TD>
+      <TD align=middle><SPAN class=type>sint16</SPAN></TD>
+      <TD align=middle><SPAN class=type>SHORT INTEGER</SPAN></TD>
+      <TD class=auto-generated>&nbsp;</TD></TR>
+    <TR>
+      <TD align=middle><SPAN class=type>uint32</SPAN></TD>
+      <TD align=middle><SPAN class=type><CODE class=literal>(<A 
+        href="http://www.lisp.org/HyperSpec/Body/typ_unsigned-byte.html" 
+        target=_top><CODE class=classname>UNSIGNED-BYTE</CODE></A> 
+        32)</CODE></SPAN></TD>
+      <TD align=middle><SPAN class=type>uint32</SPAN></TD>
+      <TD align=middle><SPAN class=type>CARDINAL</SPAN></TD>
+      <TD class=auto-generated>&nbsp;</TD></TR>
+    <TR>
+      <TD align=middle><SPAN class=type>sint32</SPAN></TD>
+      <TD align=middle><SPAN class=type><CODE class=literal>(<A 
+        href="http://www.lisp.org/HyperSpec/Body/typ_signed-byte.html" 
+        target=_top><CODE class=classname>SIGNED-BYTE</CODE></A> 
+        32)</CODE></SPAN></TD>
+      <TD align=middle><SPAN class=type>sint32</SPAN></TD>
+      <TD align=middle><SPAN class=type>INTEGER</SPAN></TD>
+      <TD class=auto-generated>&nbsp;</TD></TR>
+    <TR>
+      <TD align=middle><SPAN class=type>uint64</SPAN></TD>
+      <TD align=middle><SPAN class=type><CODE class=literal>(<A 
+        href="http://www.lisp.org/HyperSpec/Body/typ_unsigned-byte.html" 
+        target=_top><CODE class=classname>UNSIGNED-BYTE</CODE></A> 
+        64)</CODE></SPAN></TD>
+      <TD align=middle><SPAN class=type>uint64</SPAN></TD>
+      <TD align=middle><SPAN class=type>LONG CARDINAL</SPAN></TD>
+      <TD align=middle>does not work on all platforms</TD></TR>
+    <TR>
+      <TD align=middle><SPAN class=type>sint64</SPAN></TD>
+      <TD align=middle><SPAN class=type><CODE class=literal>(<A 
+        href="http://www.lisp.org/HyperSpec/Body/typ_signed-byte.html" 
+        target=_top><CODE class=classname>SIGNED-BYTE</CODE></A> 
+        64)</CODE></SPAN></TD>
+      <TD align=middle><SPAN class=type>sint64</SPAN></TD>
+      <TD align=middle><SPAN class=type>LONG INTEGER</SPAN></TD>
+      <TD align=middle>does not work on all platforms</TD></TR>
+    <TR>
+      <TD align=middle><A 
+        href="http://www.lisp.org/HyperSpec/Body/typ_short-flo_m_long-float.html" 
+        target=_top><CODE class=classname>SINGLE-FLOAT</CODE></A></TD>
+      <TD align=middle><A 
+        href="http://www.lisp.org/HyperSpec/Body/typ_short-flo_m_long-float.html" 
+        target=_top><CODE class=classname>SINGLE-FLOAT</CODE></A></TD>
+      <TD align=middle><SPAN class=type>float</SPAN></TD>
+      <TD class=auto-generated>&nbsp;</TD>
+      <TD class=auto-generated>&nbsp;</TD></TR>
+    <TR>
+      <TD align=middle><A 
+        href="http://www.lisp.org/HyperSpec/Body/typ_short-flo_m_long-float.html" 
+        target=_top><CODE class=classname>DOUBLE-FLOAT</CODE></A></TD>
+      <TD align=middle><A 
+        href="http://www.lisp.org/HyperSpec/Body/typ_short-flo_m_long-float.html" 
+        target=_top><CODE class=classname>DOUBLE-FLOAT</CODE></A></TD>
+      <TD align=middle><SPAN class=type>double</SPAN></TD>
+      <TD class=auto-generated>&nbsp;</TD>
+      <TD class=auto-generated>&nbsp;</TD></TR></TBODY></TABLE></DIV>
+  <DT><A id=c-pointer></A><SPAN class=term><A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-pointer"><SPAN 
+  class=type>FFI:C-POINTER</SPAN></A></SPAN>
+  <DD>This type corresponds to what <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> calls <SPAN class=type>void*</SPAN>, an 
+  opaque pointer. When used as an argument, <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A> is accepted as a <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-pointer"><SPAN 
+  class=type>FFI:C-POINTER</SPAN></A> and treated as <CODE 
+  class=constant>NULL</CODE>; when a function wants to return a <CODE 
+  class=constant>NULL</CODE> <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-pointer"><SPAN 
+  class=type>FFI:C-POINTER</SPAN></A>, it actually returns <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A>. 
+  <DT><SPAN class=term><SPAN class=type><CODE class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-pointer"><SPAN 
+  class=type>FFI:C-POINTER</SPAN></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>)</CODE></SPAN></SPAN>
+  <DD>This type is equivalent to what <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> calls <SPAN class=type><EM 
+  class=replaceable><CODE>c-type</CODE></EM> *</SPAN>: a pointer to a single 
+  item of the given <EM class=replaceable><CODE>c-type</CODE></EM>. It differs 
+  from <SPAN class=type><CODE class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-ptr-null"><SPAN 
+  class=type>FFI:C-PTR-NULL</SPAN></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>)</CODE></SPAN> (see below) in that 
+  no conversion to and from Lisp will occur (beyond the usual one of the <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> <CODE class=constant>NULL</CODE> pointer 
+  to or from Lisp <A href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" 
+  target=_top><CODE class=constant>NIL</CODE></A>). Instead, an object of type 
+  <A title="31.3.5.&nbsp;Foreign variables" 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-variables"><CODE 
+  class=classname>FFI:FOREIGN-VARIABLE</CODE></A> is used to represent the 
+  foreign <A href="http://www.lisp.org/HyperSpec/Body/glo_p.html#place" 
+  target=_top>place</A>. It is assimilable to a typed pointer.
+  <DT><A id=c-string></A><SPAN class=term><A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-string"><SPAN 
+  class=type>FFI:C-STRING</SPAN></A></SPAN>
+  <DD>This type corresponds to what <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> calls <SPAN class=type>char*</SPAN>, a 
+  zero-terminated string. Its Lisp equivalent is a string, without the trailing 
+  zero character. 
+  <DT><A id=c-struct></A><SPAN class=term><SPAN class=type><CODE 
+  class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-struct"><SPAN 
+  class=type>FFI:C-STRUCT</SPAN></A> <EM 
+  class=replaceable><CODE>class</CODE></EM> (<EM 
+  class=replaceable><CODE>ident<SUB>1</SUB></CODE></EM> <EM 
+  class=replaceable><CODE>c-type<SUB>1</SUB></CODE></EM>) ... (<EM 
+  class=replaceable><CODE>ident<SUB>n</SUB></CODE></EM> <EM 
+  class=replaceable><CODE>c-type<SUB>n</SUB></CODE></EM>))</CODE></SPAN></SPAN>
+  <DD>
+  <P>This type is equivalent to what <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> calls <SPAN class=type>struct { <EM 
+  class=replaceable><CODE>c-type<SUB>1</SUB></CODE></EM> <EM 
+  class=replaceable><CODE>ident<SUB>1</SUB></CODE></EM>; ...; <EM 
+  class=replaceable><CODE>c-type<SUB>n</SUB></CODE></EM> <EM 
+  class=replaceable><CODE>ident<SUB>n</SUB></CODE></EM>; }</SPAN>. Its Lisp 
+  equivalent is: if <EM class=replaceable><CODE>class</CODE></EM> is <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_vector.html" target=_top><CODE 
+  class=classname>VECTOR</CODE></A>, a <A 
+  href="http://www.lisp.org/HyperSpec/Body/typ_simple-vector.html" 
+  target=_top><CODE class=classname>SIMPLE-VECTOR</CODE></A>; if <EM 
+  class=replaceable><CODE>class</CODE></EM> is <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_list.html" target=_top><CODE 
+  class=classname>LIST</CODE></A>, a <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_p.html#proper_list" 
+  target=_top>proper list</A>; if <EM class=replaceable><CODE>class</CODE></EM> 
+  is a symbol naming a structure or <A 
+  href="http://www.lisp.org/HyperSpec/Body/chap-7.html" 
+  target=_top><SPAN><STRONG class=command>CLOS</STRONG></SPAN></A> class, an 
+  instance of this class, with slots of names <EM 
+  class=replaceable><CODE>ident<SUB>1</SUB></CODE></EM>, ..., <EM 
+  class=replaceable><CODE>ident<SUB>n</SUB></CODE></EM>.</P>
+  <P><EM class=replaceable><CODE>class</CODE></EM> may also be a <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_cons.html" target=_top><CODE 
+  class=classname>CONS</CODE></A> of a <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_symbol.html" target=_top><CODE 
+  class=classname>SYMBOL</CODE></A> (as above) and a <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_list.html" target=_top><CODE 
+  class=classname>LIST</CODE></A> of <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-c-struct"><CODE 
+  class=function>FFI:DEF-C-STRUCT</CODE></A> options. </P>
+  <DT><A id=c-union></A><SPAN class=term><SPAN class=type><CODE 
+  class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-union"><SPAN 
+  class=type>FFI:C-UNION</SPAN></A> (<EM 
+  class=replaceable><CODE>ident<SUB>1</SUB></CODE></EM> <EM 
+  class=replaceable><CODE>c-type<SUB>1</SUB></CODE></EM>) ... (<EM 
+  class=replaceable><CODE>ident<SUB>n</SUB></CODE></EM> <EM 
+  class=replaceable><CODE>c-type<SUB>n</SUB></CODE></EM>))</CODE></SPAN></SPAN>
+  <DD>This type is equivalent to what <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> calls <SPAN class=type>union { <EM 
+  class=replaceable><CODE>c-type<SUB>1</SUB></CODE></EM> <EM 
+  class=replaceable><CODE>ident<SUB>1</SUB></CODE></EM>; ...; <EM 
+  class=replaceable><CODE>c-type<SUB>n</SUB></CODE></EM> <EM 
+  class=replaceable><CODE>ident<SUB>n</SUB></CODE></EM>; }</SPAN>. Conversion to 
+  and from Lisp assumes that a value is to be viewed as being of <EM 
+  class=replaceable><CODE>c-type<SUB>1</SUB></CODE></EM>. 
+  <DT><A id=c-array></A><SPAN class=term><SPAN class=type><CODE 
+  class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-array"><SPAN 
+  class=type>FFI:C-ARRAY</SPAN></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM> <EM 
+  class=replaceable><CODE>dim<SUB>1</SUB></CODE></EM>)</CODE></SPAN><BR></SPAN><SPAN 
+  class=term><SPAN class=type><CODE class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-array"><SPAN 
+  class=type>FFI:C-ARRAY</SPAN></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM> (<EM 
+  class=replaceable><CODE>dim<SUB>1</SUB></CODE></EM> ... <EM 
+  class=replaceable><CODE>dim<SUB>n</SUB></CODE></EM>))</CODE></SPAN></SPAN>
+  <DD>This type is equivalent to what <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> calls <SPAN class=type><EM 
+  class=replaceable><CODE>c-type</CODE></EM> [<EM 
+  class=replaceable><CODE>dim<SUB>1</SUB></CODE></EM>] ... [<EM 
+  class=replaceable><CODE>dim<SUB>n</SUB></CODE></EM>]</SPAN>. Note that when an 
+  array is passed as an argument to a function in <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A>, it is actually passed as a pointer; you 
+  therefore have to write <SPAN class=type><CODE class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-ptr"><SPAN 
+  class=type>FFI:C-PTR</SPAN></A> (<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-array"><SPAN 
+  class=type>FFI:C-ARRAY</SPAN></A> ...))</CODE></SPAN> for this argument's 
+type.
+  <DT><A id=c-array-max></A><SPAN class=term><SPAN class=type><CODE 
+  class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-array-max"><SPAN 
+  class=type>FFI:C-ARRAY-MAX</SPAN></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM> <EM 
+  class=replaceable><CODE>maxdimension</CODE></EM>)</CODE></SPAN></SPAN>
+  <DD>This type is equivalent to what <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> calls <SPAN class=type><EM 
+  class=replaceable><CODE>c-type</CODE></EM> [<EM 
+  class=replaceable><CODE>maxdimension</CODE></EM>]</SPAN>, an array containing 
+  up to <EM class=replaceable><CODE>maxdimension</CODE></EM> elements. The array 
+  is zero-terminated if it contains less than <EM 
+  class=replaceable><CODE>maxdimension</CODE></EM> elements. Conversion from 
+  Lisp of an array with more than <EM 
+  class=replaceable><CODE>maxdimension</CODE></EM> elements silently ignores the 
+  superfluous elements. 
+  <DT><A id=c-function></A><SPAN class=term><SPAN class=type><CODE 
+  class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-function"><SPAN 
+  class=type>FFI:C-FUNCTION</SPAN></A> (<CODE class=constant>:ARGUMENTS</CODE> 
+  {(<EM class=replaceable><CODE>argument</CODE></EM> <EM 
+  class=replaceable><CODE>a-c-type</CODE></EM> [<A 
+  title="31.3.9.&nbsp;Parameter Mode" 
+  href="http://clisp.cons.org/impnotes/dffi.html#param-mode"><EM 
+  class=replaceable><CODE>PARAM-MODE</CODE></EM></A> [<A 
+  title="31.3.8.&nbsp;Argument and result passing conventions" 
+  href="http://clisp.cons.org/impnotes/dffi.html#allocation"><EM 
+  class=replaceable><CODE>ALLOCATION</CODE></EM></A>]])}*) (<CODE 
+  class=constant>:RETURN-TYPE</CODE> <EM 
+  class=replaceable><CODE>r-c-type</CODE></EM> [<A 
+  title="31.3.8.&nbsp;Argument and result passing conventions" 
+  href="http://clisp.cons.org/impnotes/dffi.html#allocation"><EM 
+  class=replaceable><CODE>ALLOCATION</CODE></EM></A>]) (<A 
+  title="31.3.4.&nbsp;The choice of the C flavor" 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-flavor"><CODE 
+  class=constant>:LANGUAGE</CODE></A> <EM 
+  class=replaceable><CODE>language</CODE></EM>))</CODE></SPAN></SPAN>
+  <DD>This type designates a <A href="http://www.eskimo.com/~scs/C-faq/top.html" 
+  target=_top><SPAN><STRONG class=command>C</STRONG></SPAN></A> function that 
+  can be called according to the given prototype <CODE class=code>(<EM 
+  class=replaceable><CODE>r-c-type</CODE></EM> (*) (<EM 
+  class=replaceable><CODE>a-c-type<SUB>1</SUB></CODE></EM>, ...))</CODE>. 
+  Conversion between <A href="http://www.eskimo.com/~scs/C-faq/top.html" 
+  target=_top><SPAN><STRONG class=command>C</STRONG></SPAN></A> functions and 
+  Lisp functions is transparent, and <CODE class=constant>NULL</CODE>/<A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A> is recognized and accepted.
+  <DT><A id=c-ptr></A><SPAN class=term><SPAN class=type><CODE class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-ptr"><SPAN 
+  class=type>FFI:C-PTR</SPAN></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>)</CODE></SPAN></SPAN>
+  <DD>This type is equivalent to what <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> calls <SPAN class=type><EM 
+  class=replaceable><CODE>c-type</CODE></EM> *</SPAN>: a pointer to a single 
+  item of the given <EM class=replaceable><CODE>c-type</CODE></EM>.
+  <DT><A id=c-ptr-null></A><SPAN class=term><SPAN class=type><CODE 
+  class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-ptr-null"><SPAN 
+  class=type>FFI:C-PTR-NULL</SPAN></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>)</CODE></SPAN></SPAN>
+  <DD>This type is also equivalent to what <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> calls <SPAN class=type><EM 
+  class=replaceable><CODE>c-type</CODE></EM> *</SPAN>: a pointer to a single 
+  item of the given <EM class=replaceable><CODE>c-type</CODE></EM>, with the 
+  exception that <A href="http://www.eskimo.com/~scs/C-faq/top.html" 
+  target=_top><SPAN><STRONG class=command>C</STRONG></SPAN></A> <CODE 
+  class=constant>NULL</CODE> corresponds to Lisp <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A>.
+  <DT><A id=c-array-ptr></A><SPAN class=term><SPAN class=type><CODE 
+  class=literal>(<A 
+  href="http://clisp.cons.org/impnotes/dffi.html#c-array-ptr"><SPAN 
+  class=type>FFI:C-ARRAY-PTR</SPAN></A> <EM 
+  class=replaceable><CODE>c-type</CODE></EM>)</CODE></SPAN></SPAN>
+  <DD>This type is equivalent to what <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> calls <SPAN class=type><EM 
+  class=replaceable><CODE>c-type</CODE></EM> (*)[]</SPAN>: a pointer to a 
+  zero-terminated array of items of the given <EM 
+  class=replaceable><CODE>c-type</CODE></EM>.</DD></DL></DIV><!--#ifdef UNICODE-->
+<P>The conversion of <A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-string"><SPAN 
+class=type>FFI:C-STRING</SPAN></A>, <SPAN class=type><CODE class=literal>(<A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-array"><SPAN 
+class=type>FFI:C-ARRAY</SPAN></A> <A 
+href="http://www.lisp.org/HyperSpec/Body/syscla_character.html" 
+target=_top><CODE class=classname>CHARACTER</CODE></A> <EM 
+class=replaceable><CODE>dim<SUB>1</SUB></CODE></EM>)</CODE></SPAN>, <SPAN 
+class=type><CODE class=literal>(<A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-array-max"><SPAN 
+class=type>FFI:C-ARRAY-MAX</SPAN></A> <A 
+href="http://www.lisp.org/HyperSpec/Body/syscla_character.html" 
+target=_top><CODE class=classname>CHARACTER</CODE></A> <EM 
+class=replaceable><CODE>maxdimension</CODE></EM>)</CODE></SPAN>, <SPAN 
+class=type><CODE class=literal>(<A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-array-ptr"><SPAN 
+class=type>FFI:C-ARRAY-PTR</SPAN></A> <A 
+href="http://www.lisp.org/HyperSpec/Body/syscla_character.html" 
+target=_top><CODE class=classname>CHARACTER</CODE></A>)</CODE></SPAN> is 
+governed by <A class=olink 
+href="http://clisp.cons.org/impnotes/encoding.html#foreign-enc"><CODE 
+class=varname>CUSTOM:*FOREIGN-ENCODING*</CODE></A> and dimensions are given in 
+<SPAN class=emphasis><EM>bytes</EM></SPAN>. The conversion of <A 
+href="http://www.lisp.org/HyperSpec/Body/syscla_character.html" 
+target=_top><CODE class=classname>CHARACTER</CODE></A>, and as such of <SPAN 
+class=type><CODE class=literal>(<A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-ptr"><SPAN 
+class=type>FFI:C-PTR</SPAN></A> <A 
+href="http://www.lisp.org/HyperSpec/Body/syscla_character.html" 
+target=_top><CODE class=classname>CHARACTER</CODE></A>)</CODE></SPAN>, or <SPAN 
+class=type><CODE class=literal>(<A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-ptr-null"><SPAN 
+class=type>FFI:C-PTR-NULL</SPAN></A> <A 
+href="http://www.lisp.org/HyperSpec/Body/syscla_character.html" 
+target=_top><CODE class=classname>CHARACTER</CODE></A>)</CODE></SPAN>, as well 
+as that of multi-dimensional arrays <SPAN class=type><CODE class=literal>(<A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-array"><SPAN 
+class=type>FFI:C-ARRAY</SPAN></A> <A 
+href="http://www.lisp.org/HyperSpec/Body/syscla_character.html" 
+target=_top><CODE class=classname>CHARACTER</CODE></A> (<EM 
+class=replaceable><CODE>dim<SUB>1</SUB></CODE></EM> ... <EM 
+class=replaceable><CODE>dim<SUB>n</SUB></CODE></EM>))</CODE></SPAN>, are 
+governed by <A class=olink 
+href="http://clisp.cons.org/impnotes/encoding.html#foreign-enc"><CODE 
+class=varname>CUSTOM:*FOREIGN-ENCODING*</CODE></A> if the latter is a 1:1 
+encoding, or by the <A href="http://www.cplusplus.com/doc/papers/ascii.html" 
+target=_top><SPAN class=platform>ASCII</SPAN></A> encoding otherwise.</P><!--#endif-->
+<DIV class=note style="MARGIN-LEFT: 0.5in; MARGIN-RIGHT: 0.5in">
+<H3 class=title>Note</H3>
+<P>Remember that the <A href="http://www.eskimo.com/~scs/C-faq/top.html" 
+target=_top><SPAN><STRONG class=command>C</STRONG></SPAN></A> type <SPAN 
+class=type>char</SPAN> is a <SPAN class=emphasis><EM>numeric</EM></SPAN> type 
+and does not use <A 
+href="http://www.lisp.org/HyperSpec/Body/syscla_character.html" 
+target=_top><CODE class=classname>CHARACTER</CODE></A> <A 
+title=30.5.&nbsp;Encodings 
+href="http://clisp.cons.org/impnotes/encoding.html"><CODE 
+class=classname>EXT:ENCODING</CODE></A>s.</P></DIV></DIV>
+<DIV class=section lang=en xml:lang="en">
+<DIV class=titlepage>
+<DIV>
+<DIV>
+<H3 class=title><A id=c-flavor></A>31.3.4.&nbsp;The choice of the <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A> flavor</H3></DIV></DIV></DIV>
+<P><A href="http://clisp.cons.org/impnotes/dffi.html#c-function"><SPAN 
+class=type>FFI:C-FUNCTION</SPAN></A>, <A 
+href="http://clisp.cons.org/impnotes/dffi.html#def-call-in"><CODE 
+class=function>FFI:DEF-CALL-IN</CODE></A>, <A 
+href="http://clisp.cons.org/impnotes/dffi.html#def-call-out"><CODE 
+class=function>FFI:DEF-CALL-OUT</CODE></A> take a <A 
+title="31.3.4.&nbsp;The choice of the C flavor" 
+href="http://clisp.cons.org/impnotes/dffi.html#c-flavor"><CODE 
+class=constant>:LANGUAGE</CODE></A> argument. The <EM 
+class=replaceable><CODE>language</CODE></EM> is either <CODE 
+class=constant>:C</CODE> (denotes K&amp;R <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A>) or <CODE class=constant>:STDC</CODE> 
+(denotes <A href="http://www.ansi.org/" target=_top><ACRONYM class=acronym 
+title="The American National Standards Institute">ANSI</ACRONYM></A> <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A>) or <CODE 
+class=constant>:STDC-STDCALL</CODE> (denotes <A href="http://www.ansi.org/" 
+target=_top><ACRONYM class=acronym 
+title="The American National Standards Institute">ANSI</ACRONYM></A> <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A> with the <A class=dict 
+href="http://foldoc.org/?query=stdcall">“<SPAN class=quote>stdcall</SPAN>”</A> 
+calling convention). It specifies whether the <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A> function (caller or callee) has been 
+compiled by a K&amp;R <A href="http://www.eskimo.com/~scs/C-faq/top.html" 
+target=_top><SPAN><STRONG class=command>C</STRONG></SPAN></A> compiler or by an 
+<A href="http://www.ansi.org/" target=_top><ACRONYM class=acronym 
+title="The American National Standards Institute">ANSI</ACRONYM></A> <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A> compiler, and possibly the calling 
+convention.</P>
+<P>The default language is set using the macro <STRONG class=first><EM 
+class=firstterm><CODE class=function>FFI:DEFAULT-FOREIGN-LANGUAGE</CODE> <A 
+class=indexterm id=dflt-ffi-lang></A></EM></STRONG>. If this macro has not been 
+called in the current <A 
+href="http://www.lisp.org/HyperSpec/Body/glo_c.html#compilation_unit" 
+target=_top>compilation unit</A> (usually a file), a warning is issued and <CODE 
+class=constant>:STDC</CODE> is used for the rest of the unit.</P></DIV>
+<DIV class=section lang=en xml:lang="en">
+<DIV class=titlepage>
+<DIV>
+<DIV>
+<H3 class=title><A id=dffi-variables></A>31.3.5.&nbsp;Foreign 
+variables</H3></DIV></DIV></DIV>
+<P>Foreign variables are variables whose storage is allocated in the foreign 
+language module. They can nevertheless be evaluated and modified through <A 
+href="http://www.lisp.org/HyperSpec/Body/spefor_setq.html" target=_top><CODE 
+class=function>SETQ</CODE></A>, just as normal variables can, except that the 
+range of allowed values is limited according to the variable's foreign type.</P>
+<DIV class=warning style="MARGIN-LEFT: 0.5in; MARGIN-RIGHT: 0.5in">
+<H3 class=title><A id=dffi-eq></A>Equality of foreign values.</H3>
+<P>For a foreign variable <EM class=replaceable><CODE>x</CODE></EM> the form 
+<CODE class=code>(<A href="http://www.lisp.org/HyperSpec/Body/fun_eql.html" 
+target=_top><CODE class=function>EQL</CODE></A> <EM 
+class=replaceable><CODE>x</CODE></EM> <EM 
+class=replaceable><CODE>x</CODE></EM>)</CODE> is not necessarily true, since 
+every time <EM class=replaceable><CODE>x</CODE></EM> is evaluated its foreign 
+value is converted to a <A 
+href="http://www.lisp.org/HyperSpec/Body/glo_f.html#fresh" target=_top>fresh</A> 
+Lisp value. Ergo, <CODE class=code>(<A 
+href="http://www.lisp.org/HyperSpec/Body/mac_setfcm_psetf.html" 
+target=_top><CODE class=function>SETF</CODE></A> (<A 
+href="http://www.lisp.org/HyperSpec/Body/acc_aref.html" target=_top><CODE 
+class=function>AREF</CODE></A> <EM class=replaceable><CODE>x</CODE></EM> <EM 
+class=replaceable><CODE>n</CODE></EM>) <EM 
+class=replaceable><CODE>y</CODE></EM>)</CODE> modifies this <A 
+href="http://www.lisp.org/HyperSpec/Body/glo_f.html#fresh" target=_top>fresh</A> 
+Lisp value (immediately discarded), <SPAN 
+class=strong><STRONG>not</STRONG></SPAN> the foreign data. Use <A 
+href="http://clisp.cons.org/impnotes/dffi.html#element"><CODE 
+class=function>FFI:ELEMENT</CODE></A> et al instead, see <A 
+title="31.3.6.&nbsp;Operations on foreign places" 
+href="http://clisp.cons.org/impnotes/dffi.html#dffi-places">Section&nbsp;31.3.6, 
+“Operations on foreign places”</A>. </P></DIV>
+<P>Foreign variables are defined using <A 
+href="http://clisp.cons.org/impnotes/dffi.html#def-c-var"><CODE 
+class=function>FFI:DEF-C-VAR</CODE></A> and <A 
+href="http://clisp.cons.org/impnotes/dffi.html#foreign-stack"><CODE 
+class=function>FFI:WITH-C-VAR</CODE></A>.</P></DIV>
+<DIV class=section lang=en xml:lang="en">
+<DIV class=titlepage>
+<DIV>
+<DIV>
+<H3 class=title><A id=dffi-places></A>31.3.6.&nbsp;Operations on foreign 
+places</H3></DIV></DIV></DIV>
+<P>A <A title="31.3.5.&nbsp;Foreign variables" 
+href="http://clisp.cons.org/impnotes/dffi.html#dffi-variables"><CODE 
+class=classname>FFI:FOREIGN-VARIABLE</CODE></A> <EM 
+class=replaceable><CODE>name</CODE></EM> defined by <A 
+href="http://clisp.cons.org/impnotes/dffi.html#def-c-var"><CODE 
+class=function>FFI:DEF-C-VAR</CODE></A>, <A 
+href="http://clisp.cons.org/impnotes/dffi.html#foreign-stack"><CODE 
+class=function>FFI:WITH-C-VAR</CODE></A> or <A 
+href="http://clisp.cons.org/impnotes/dffi.html#with-c-place"><CODE 
+class=function>FFI:WITH-C-PLACE</CODE></A> defines a <A 
+href="http://www.lisp.org/HyperSpec/Body/glo_p.html#place" 
+target=_top>place</A>, i.e., a form which can also be used as argument to <A 
+href="http://www.lisp.org/HyperSpec/Body/mac_setfcm_psetf.html" 
+target=_top><CODE class=function>SETF</CODE></A>. (An <A class=dict 
+href="http://foldoc.org/?query=lvalue">“<SPAN class=quote>lvalue</SPAN>”</A> in 
+<A href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A> terminology.) The following operations are 
+available on foreign places: </P>
+<TABLE class=simplelist summary="Simple list" border=0>
+  <TBODY>
+  <TR>
+    <TD><A href="http://clisp.cons.org/impnotes/dffi.html#element"><CODE 
+      class=function>FFI:ELEMENT</CODE></A></TD>
+    <TD><A href="http://clisp.cons.org/impnotes/dffi.html#c-var-addr"><CODE 
+      class=function>FFI:C-VAR-ADDRESS</CODE></A></TD></TR>
+  <TR>
+    <TD><A href="http://clisp.cons.org/impnotes/dffi.html#deref"><CODE 
+      class=function>FFI:DEREF</CODE></A></TD>
+    <TD><A href="http://clisp.cons.org/impnotes/dffi.html#c-var-object"><CODE 
+      class=function>FFI:C-VAR-OBJECT</CODE></A></TD></TR>
+  <TR>
+    <TD><A href="http://clisp.cons.org/impnotes/dffi.html#slot"><CODE 
+      class=function>FFI:SLOT</CODE></A></TD>
+    <TD><A href="http://clisp.cons.org/impnotes/dffi.html#typeof"><CODE 
+      class=function>FFI:TYPEOF</CODE></A></TD></TR>
+  <TR>
+    <TD><A href="http://clisp.cons.org/impnotes/dffi.html#cast"><CODE 
+      class=function>FFI:CAST</CODE></A></TD>
+    <TD><A href="http://clisp.cons.org/impnotes/dffi.html#sizeof"><CODE 
+      class=function>FFI:SIZEOF</CODE></A></TD></TR>
+  <TR>
+    <TD><A href="http://clisp.cons.org/impnotes/dffi.html#offset"><CODE 
+      class=function>FFI:OFFSET</CODE></A></TD>
+    <TD><A href="http://clisp.cons.org/impnotes/dffi.html#bitsizeof"><CODE 
+      class=function>FFI:BITSIZEOF</CODE></A></TD></TR></TBODY></TABLE></DIV>
+<DIV class=section lang=en xml:lang="en">
+<DIV class=titlepage>
+<DIV>
+<DIV>
+<H3 class=title><A id=dffi-functions></A>31.3.7.&nbsp;Foreign 
+functions</H3></DIV></DIV></DIV>
+<P>Foreign functions are functions which are defined in the foreign language. 
+There are <STRONG class=first><EM class=firstterm>named foreign 
+functions</EM></STRONG> (imported via <A 
+href="http://clisp.cons.org/impnotes/dffi.html#def-call-out"><CODE 
+class=function>FFI:DEF-CALL-OUT</CODE></A> or created via <A 
+href="http://clisp.cons.org/impnotes/dffi.html#def-call-in"><CODE 
+class=function>FFI:DEF-CALL-IN</CODE></A>) and <STRONG class=first><EM 
+class=firstterm>anonymous foreign functions</EM></STRONG>; they arise through 
+conversion of function pointers.</P>
+<P>A <STRONG class=first><EM class=firstterm>call-out function</EM></STRONG> is 
+a foreign function called from Lisp: control flow temporarily leaves Lisp. A 
+<STRONG class=first><EM class=firstterm>call-in function</EM></STRONG> is a Lisp 
+function called from the foreign language: control flow temporary enters 
+Lisp.</P>
+<P>The following operators define foreign functions: </P>
+<TABLE class=simplelist summary="Simple list" border=0>
+  <TBODY>
+  <TR>
+    <TD><A href="http://clisp.cons.org/impnotes/dffi.html#def-call-in"><CODE 
+      class=function>FFI:DEF-CALL-IN</CODE></A></TD>
+    <TD><A 
+      href="http://clisp.cons.org/impnotes/dffi.html#dffi-make-func"><CODE 
+      class=function>FFI:FOREIGN-FUNCTION</CODE></A></TD></TR>
+  <TR>
+    <TD><A href="http://clisp.cons.org/impnotes/dffi.html#def-call-out"><CODE 
+      class=function>FFI:DEF-CALL-OUT</CODE></A></TD>
+    <TD>&nbsp;</TD></TR></TBODY></TABLE></DIV>
+<DIV class=section lang=en xml:lang="en">
+<DIV class=titlepage>
+<DIV>
+<DIV>
+<H3 class=title><A id=allocation></A>31.3.8.&nbsp;Argument and result passing 
+conventions</H3></DIV></DIV></DIV>
+<P>When passed to and from functions, allocation of arguments and results is 
+handled as follows:</P>
+<P>Values of <A 
+href="http://clisp.cons.org/impnotes/dffi.html#simple-c-type"><EM 
+class=replaceable><CODE>SIMPLE-C-TYPE</CODE></EM></A>, <A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-pointer"><SPAN 
+class=type>FFI:C-POINTER</SPAN></A> are passed on the stack, with dynamic 
+extent. The <A title="31.3.8.&nbsp;Argument and result passing conventions" 
+href="http://clisp.cons.org/impnotes/dffi.html#allocation"><EM 
+class=replaceable><CODE>ALLOCATION</CODE></EM></A> is effectively ignored.</P>
+<P>Values of type <A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-string"><SPAN 
+class=type>FFI:C-STRING</SPAN></A>, <A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-ptr"><SPAN 
+class=type>FFI:C-PTR</SPAN></A>, <A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-ptr-null"><SPAN 
+class=type>FFI:C-PTR-NULL</SPAN></A>, <A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-array-ptr"><SPAN 
+class=type>FFI:C-ARRAY-PTR</SPAN></A> need storage. The <A 
+title="31.3.8.&nbsp;Argument and result passing conventions" 
+href="http://clisp.cons.org/impnotes/dffi.html#allocation"><EM 
+class=replaceable><CODE>ALLOCATION</CODE></EM></A> specifies the allocation 
+policy: </P>
+<DIV class=variablelist>
+<DL>
+  <DT><SPAN class=term><CODE class=constant>:NONE</CODE></SPAN>
+  <DD>no storage is allocated. 
+  <DT><SPAN class=term><CODE class=constant>:ALLOCA</CODE></SPAN>
+  <DD>allocation of storage on the stack, which has dynamic extent.
+  <DT><SPAN class=term><CODE class=constant>:MALLOC-FREE</CODE></SPAN>
+  <DD>storage will be allocated via <A class=unix 
+  href="http://www.opengroup.org/onlinepubs/007904975/functions/malloc.html"><CODE 
+  class=function>malloc</CODE></A> and released via <A class=unix 
+  href="http://www.opengroup.org/onlinepubs/007904975/functions/free.html"><CODE 
+  class=function>free</CODE></A>.</DD></DL></DIV>
+<P>If no <A title="31.3.8.&nbsp;Argument and result passing conventions" 
+href="http://clisp.cons.org/impnotes/dffi.html#allocation"><EM 
+class=replaceable><CODE>ALLOCATION</CODE></EM></A> is specified, the default <A 
+title="31.3.8.&nbsp;Argument and result passing conventions" 
+href="http://clisp.cons.org/impnotes/dffi.html#allocation"><EM 
+class=replaceable><CODE>ALLOCATION</CODE></EM></A> is <CODE 
+class=constant>:NONE</CODE> for most types, but <CODE 
+class=constant>:ALLOCA</CODE> for <A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-string"><SPAN 
+class=type>FFI:C-STRING</SPAN></A> and <A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-ptr"><SPAN 
+class=type>FFI:C-PTR</SPAN></A> and <A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-ptr-null"><SPAN 
+class=type>FFI:C-PTR-NULL</SPAN></A> and <A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-array-ptr"><SPAN 
+class=type>FFI:C-ARRAY-PTR</SPAN></A> and for <CODE class=constant>:OUT</CODE> 
+arguments. The <CODE class=constant>:MALLOC-FREE</CODE> policy provides the 
+ability to pass arbitrarily nested structures within a single conversion.</P>
+<P><A id=dffi-allocation-out></A><B>Call-out function arguments:&nbsp;</B></P>
+<DIV class=variablelist>
+<DL>
+  <DT><SPAN class=term>For arguments passed from Lisp to <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A>:</SPAN>
+  <DD>
+  <DIV class=variablelist>
+  <DL>
+    <DT><SPAN class=term><CODE class=constant>:MALLOC-FREE</CODE></SPAN>
+    <DD>Lisp allocates the storage using <A class=unix 
+    href="http://www.opengroup.org/onlinepubs/007904975/functions/malloc.html"><CODE 
+    class=function>malloc</CODE></A> and never deallocates it. The <A 
+    href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+    class=command>C</STRONG></SPAN></A> function is supposed to call <A 
+    class=unix 
+    href="http://www.opengroup.org/onlinepubs/007904975/functions/free.html"><CODE 
+    class=function>free</CODE></A> when done with it.
+    <DT><SPAN class=term><CODE class=constant>:ALLOCA</CODE></SPAN>
+    <DD>Lisp allocates the storage on the stack, with dynamic extent. It is 
+    freed when the <A href="http://www.eskimo.com/~scs/C-faq/top.html" 
+    target=_top><SPAN><STRONG class=command>C</STRONG></SPAN></A> function 
+    returns. 
+    <DT><SPAN class=term><CODE class=constant>:NONE</CODE></SPAN>
+    <DD>
+    <P>Lisp assumes that the pointer already points to a valid area of the 
+    proper size and puts the result value there.</P>
+    <P>This is dangerous and deprecated.</P></DD></DL></DIV>
+  <DT><SPAN class=term>For results passed from <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> to Lisp:</SPAN>
+  <DD>
+  <DIV class=variablelist>
+  <DL>
+    <DT><SPAN class=term><CODE class=constant>:MALLOC-FREE</CODE></SPAN>
+    <DD>Lisp calls <A class=unix 
+    href="http://www.opengroup.org/onlinepubs/007904975/functions/free.html"><CODE 
+    class=function>free</CODE></A> on it when done. 
+    <DT><SPAN class=term><CODE class=constant>:NONE</CODE></SPAN>
+    <DD>Lisp does nothing. </DD></DL></DIV></DD></DL></DIV>
+<P><A id=dffi-allocation-in></A><B>Call-in function arguments:&nbsp;</B></P>
+<DIV class=variablelist>
+<DL>
+  <DT><SPAN class=term>For arguments passed from <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A> to Lisp:</SPAN>
+  <DD>
+  <DIV class=variablelist>
+  <DL>
+    <DT><SPAN class=term><CODE class=constant>:MALLOC-FREE</CODE></SPAN>
+    <DD>Lisp calls <A class=unix 
+    href="http://www.opengroup.org/onlinepubs/007904975/functions/free.html"><CODE 
+    class=function>free</CODE></A> on it when done. 
+    <DT><SPAN class=term><CODE class=constant>:ALLOCA</CODE><BR></SPAN><SPAN 
+    class=term><CODE class=constant>:NONE</CODE></SPAN>
+    <DD>Lisp does nothing. </DD></DL></DIV>
+  <DT><SPAN class=term>For results passed from Lisp to <A 
+  href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+  class=command>C</STRONG></SPAN></A>:</SPAN>
+  <DD>
+  <DIV class=variablelist>
+  <DL>
+    <DT><SPAN class=term><CODE class=constant>:MALLOC-FREE</CODE></SPAN>
+    <DD>Lisp allocates the storage using <A class=unix 
+    href="http://www.opengroup.org/onlinepubs/007904975/functions/malloc.html"><CODE 
+    class=function>malloc</CODE></A> and never deallocates it. The <A 
+    href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+    class=command>C</STRONG></SPAN></A> function is supposed to call <A 
+    class=unix 
+    href="http://www.opengroup.org/onlinepubs/007904975/functions/free.html"><CODE 
+    class=function>free</CODE></A> when done with it.
+    <DT><SPAN class=term><CODE class=constant>:NONE</CODE></SPAN>
+    <DD>
+    <P>Lisp assumes that the pointer already points to a valid area of the 
+    proper size and puts the result value there.</P>
+    <P>This is dangerous and deprecated.</P></DD></DL></DIV></DD></DL></DIV>
+<DIV class=warning style="MARGIN-LEFT: 0.5in; MARGIN-RIGHT: 0.5in">
+<H3 class=title><A id=ffi-struct-arg></A>Warning</H3>
+<P>Passing <A href="http://clisp.cons.org/impnotes/dffi.html#c-struct"><SPAN 
+class=type>FFI:C-STRUCT</SPAN></A>, <A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-union"><SPAN 
+class=type>FFI:C-UNION</SPAN></A>, <A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-array"><SPAN 
+class=type>FFI:C-ARRAY</SPAN></A>, <A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-array-max"><SPAN 
+class=type>FFI:C-ARRAY-MAX</SPAN></A> values as arguments (not via pointers) is 
+only possible to the extent the <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A> compiler supports it. Most <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A> compilers do it right, but some <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A> compilers (such as <A 
+href="http://gcc.gnu.org/" target=_top><SPAN><STRONG 
+class=command>gcc</STRONG></SPAN></A> on <SPAN class=platform>hppa</SPAN>, <SPAN 
+class=platform>x86_64</SPAN> and <A href="http://winehq.com/" target=_top><SPAN 
+class=platform>Win32</SPAN></A>) have problems with this. The recommended 
+workaround is to pass pointers; this is fully supported. See also this <CODE 
+class=email>&lt;<A 
+href="mailto:clisp-list@lists.sourceforge.net">clisp-list@lists.sourceforge.net</A>&gt;</CODE> 
+(<A href="http://lists.sourceforge.net/lists/listinfo/clisp-list" 
+target=_top>http://lists.sourceforge.net/lists/listinfo/clisp-list</A>) <A 
+href="http://article.gmane.org/gmane.lisp.clisp.devel/10089" 
+target=_top>message</A>.</P></DIV></DIV>
+<DIV class=section lang=en xml:lang="en">
+<DIV class=titlepage>
+<DIV>
+<DIV>
+<H3 class=title><A id=param-mode></A>31.3.9.&nbsp;Parameter 
+Mode</H3></DIV></DIV></DIV>
+<P>A function parameter's <A title="31.3.9.&nbsp;Parameter Mode" 
+href="http://clisp.cons.org/impnotes/dffi.html#param-mode"><EM 
+class=replaceable><CODE>PARAM-MODE</CODE></EM></A> may be</P>
+<DIV class=variablelist>
+<DL>
+  <DT><SPAN class=term><CODE class=constant>:IN</CODE> (means: 
+read-only):</SPAN>
+  <DD>The caller passes information to the callee. 
+  <DT><SPAN class=term><CODE class=constant>:OUT</CODE> (means: 
+  write-only):</SPAN>
+  <DD>The callee passes information back to the caller on return. When viewed as 
+  a Lisp function, there is no Lisp argument corresponding to this, instead it 
+  means an additional return value. Requires <A 
+  title="31.3.8.&nbsp;Argument and result passing conventions" 
+  href="http://clisp.cons.org/impnotes/dffi.html#allocation"><EM 
+  class=replaceable><CODE>ALLOCATION</CODE></EM></A> = <CODE 
+  class=constant>:ALLOCA</CODE>.
+  <DT><SPAN class=term><CODE class=constant>:IN-OUT</CODE> (means: 
+  read-write):</SPAN>
+  <DD>Information is passed from the caller to the callee and then back to the 
+  caller. When viewed as a Lisp function, the <CODE class=constant>:OUT</CODE> 
+  value is returned as an additional multiple value. </DD></DL></DIV>
+<P>The default is <CODE class=constant>:IN</CODE>.</P></DIV>
+<DIV class=section lang=en xml:lang="en">
+<DIV class=titlepage>
+<DIV>
+<DIV>
+<H3 class=title><A 
+id=dffi-examples></A>31.3.10.&nbsp;Examples</H3></DIV></DIV></DIV>
+<DIV class=toc>
+<DL>
+  <DT><SPAN class=section><A 
+  href="http://clisp.cons.org/impnotes/dffi.html#dffi-ex-more">31.3.10.1. More 
+  examples</A></SPAN></DT></DL></DIV>
+<DIV class=example><A id=dffi-simple></A>
+<P class=title><B>Example&nbsp;31.1.&nbsp;Simple declarations and access</B></P>
+<DIV class=example-contents>
+<P>The <A href="http://www.eskimo.com/~scs/C-faq/top.html" 
+target=_top><SPAN><STRONG class=command>C</STRONG></SPAN></A> declaration </P><PRE class=programlisting>struct foo {
+    int a;
+    struct foo * b[100];
+};
+</PRE>
+<P>corresponds to </P><PRE class=programlisting>(def-c-struct foo
+  (a int)
+  (b (c-array (c-ptr foo) 100)))
+</PRE>
+<P>The element access </P><PRE class=programlisting>struct foo f;
+f.b[7].a
+</PRE>
+<P>corresponds to </P><PRE class=programlisting>(declare (type foo f))
+(foo-a (aref (foo-b f) 7)) or (slot-value (aref (slot-value f 'b) 7) 'a)
+</PRE></DIV></DIV><BR class=example-break>
+<DIV class=example><A id=dffi-extern-var></A>
+<P class=title><B>Example&nbsp;31.2.&nbsp;external <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A> variable and some accesses</B></P>
+<DIV class=example-contents><PRE class=programlisting>struct bar {
+    short x, y;
+    char a, b;
+    int z;
+    struct bar * n;
+};
+
+extern struct bar * my_struct;
+
+my_struct-&gt;x++;
+my_struct-&gt;a = 5;
+my_struct = my_struct-&gt;n;
+</PRE>
+<P>corresponds to </P><PRE class=programlisting>(def-c-struct bar
+  (x short)
+  (y short)
+  (a char)
+  (b char) ; or (b character) if it represents a character, not a number
+  (z int)
+  (n (c-ptr bar)))
+
+(def-c-var my_struct (:type (c-ptr bar)))
+
+(setq my_struct (let ((s my_struct)) (incf (slot-value s 'x)) s))
+or (incf (slot my_struct 'x))
+(setq my_struct (let ((s my_struct)) (setf (slot-value s 'a) 5) s))
+or (setf (slot my_struct 'a) 5)
+(setq my_struct (slot-value my_struct 'n))
+or (setq my_struct (deref (slot my_struct 'n)))
+</PRE></DIV></DIV><BR class=example-break>
+<DIV class=example><A id=dffi-extern-func1></A>
+<P class=title><B>Example&nbsp;31.3.&nbsp;Calling an external function</B></P>
+<DIV class=example-contents>
+<P>On <A href="http://www.ansi.org/" target=_top><ACRONYM class=acronym 
+title="The American National Standards Institute">ANSI</ACRONYM></A> <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A> systems, <A class=unix 
+href="http://www.opengroup.org/onlinepubs/007904975/basedefs/stdlib.h.html">&lt;<CODE 
+class=filename>stdlib.h</CODE>&gt;</A> contains the declarations: </P><PRE class=programlisting>typedef struct {
+  int quot;   /* Quotient */
+  int rem;    /* Remainder */
+} div_t;
+extern div_t div (int numer, int denom);
+</PRE>
+<P>This translates to </P><PRE class=programlisting>(def-c-struct (div_t :typedef)
+  (quot int)
+  (rem int))
+(default-foreign-language :stdc)
+(def-call-out div (:arguments (numer int) (denom int))
+  (:return-type div_t))
+</PRE>
+<P>Sample call from within Lisp (after running <A title=31.2.1.&nbsp;Overview 
+href="http://clisp.cons.org/impnotes/modules.html#mod-overview"><SPAN><STRONG 
+class=command>clisp-link</STRONG></SPAN></A>): </P><PRE class=programlisting>(div 20 3)
+⇒&nbsp;<CODE class=computeroutput>#S(DIV_T :QUOT 6 :REM 2)</CODE>
+</PRE></DIV></DIV><BR class=example-break>
+<DIV class=example><A id=dffi-extern-func2></A>
+<P class=title><B>Example&nbsp;31.4.&nbsp;Another example for calling an 
+external function</B></P>
+<DIV class=example-contents>
+<P>Suppose the following is defined in a file <CODE 
+class=filename>cfun.c</CODE>: </P><PRE class=programlisting>struct cfunr { int x; char *s; };
+struct cfunr * cfun (int i,char *s,struct cfunr * r,int a[10]) {
+  int j;
+  struct cfunr * r2;
+  printf("i = %d\n", i);
+  printf("s = %s\n", s);
+  printf("r-&gt;x = %d\n", r-&gt;x);
+  printf("r-&gt;s = %s\n", r-&gt;s);
+  for (j = 0; j &lt; 10; j++) printf("a[%d] = %d.\n", j, a[j]);
+  r2 = (struct cfunr *) malloc (sizeof (struct cfunr));
+  r2-&gt;x = i+5;
+  r2-&gt;s = "A C string";
+  return r2;
+}
+</PRE>
+<P>It is possible to call this function from Lisp using the file <CODE 
+class=filename>callcfun.lisp</CODE> (do not call it <CODE 
+class=filename>cfun.lisp</CODE> - <A class=olink 
+href="http://clisp.cons.org/impnotes/system-dict.html#compilefile"><CODE 
+class=function>COMPILE-FILE</CODE></A> will <A 
+href="http://clisp.cons.org/impnotes/system-dict.html#c-file-overwrite">overwrite</A> 
+<CODE class=filename>cfun.c</CODE>) whose contents is: </P><PRE class=programlisting>(<A href="http://www.lisp.org/HyperSpec/Body/mac_defpackage.html" target=_top><CODE class=function>DEFPACKAGE</CODE></A> "TEST-C-CALL" (:use <A href="http://www.lisp.org/HyperSpec/Body/sec_11-1-2-1.html" target=_top><STRONG class=package>“<SPAN class=quote>COMMON-LISP</SPAN>”</STRONG></A> <A title="31.3.&nbsp;The Foreign Function Call Facility" href="http://clisp.cons.org/impnotes/dffi.html"><STRONG class=package>“<SPAN class=quote>FFI</SPAN>”</STRONG></A>))
+(<A href="http://www.lisp.org/HyperSpec/Body/mac_in-package.html" target=_top><CODE class=function>IN-PACKAGE</CODE></A> "TEST-C-CALL")
+(eval-when (compile) (setq <A href="http://clisp.cons.org/impnotes/dffi.html#ffi-extern-output"><CODE class=varname>FFI:*OUTPUT-C-FUNCTIONS*</CODE></A> t))
+(def-c-struct cfunr (x int) (s c-string))
+(default-foreign-language :stdc)
+(def-call-out cfun
+    (:arguments (i int)
+                (s c-string)
+                (r (c-ptr cfunr) :in :alloca)
+                (a (c-ptr (c-array int 10)) :in :alloca))
+  (:return-type (c-ptr cfunr)))
+(defun call-cfun ()
+  (cfun 5 "A Lisp string" (make-cfunr :x 10 :s "Another Lisp string")
+        '#(0 1 2 3 4 5 6 7 8 9)))
+</PRE>
+<P>Use the <A title="31.2.&nbsp;External Modules" 
+href="http://clisp.cons.org/impnotes/modules.html">module</A> facility: </P><PRE class=screen><CODE class=prompt>$</CODE> <A title=31.2.1.&nbsp;Overview href="http://clisp.cons.org/impnotes/modules.html#mod-overview"><SPAN><STRONG class=command>clisp-link</STRONG></SPAN></A> create-module-set cfun callcfun.c
+<CODE class=prompt>$</CODE> cc -O -c cfun.c
+<CODE class=prompt>$</CODE> cd cfun
+<CODE class=prompt>$</CODE> ln -s ../cfun.o cfun.o
+Add cfun.o to NEW_LIBS and NEW_FILES in <A class=olink href="http://clisp.cons.org/impnotes/modules.html#modset"><SPAN><STRONG class=command>link.sh</STRONG></SPAN></A>.
+<CODE class=prompt>$</CODE> cd ..
+<CODE class=prompt>$</CODE> base/lisp.run -M base/lispinit.mem -c callcfun.lisp
+<CODE class=prompt>$</CODE> <A title=31.2.1.&nbsp;Overview href="http://clisp.cons.org/impnotes/modules.html#mod-overview"><SPAN><STRONG class=command>clisp-link</STRONG></SPAN></A> add-module-set cfun base base+cfun
+<CODE class=prompt>$</CODE> base+cfun/lisp.run -M base+cfun/lispinit.mem -i callcfun
+&gt; (test-c-call::call-cfun)
+i = 5
+s = A Lisp string
+r-&gt;x = 10
+r-&gt;s = Another Lisp string
+a[0] = 0.
+a[1] = 1.
+a[2] = 2.
+a[3] = 3.
+a[4] = 4.
+a[5] = 5.
+a[6] = 6.
+a[7] = 7.
+a[8] = 8.
+a[9] = 9.
+#S(TEST-C-CALL::CFUNR :X 10 :S "A C string")
+&gt;
+<CODE class=prompt>$</CODE> rm -r base+cfun
+</PRE>
+<P>Note that there is a memory leak here: The return value <CODE 
+class=varname>r2</CODE> of <CODE class=function>cfun()</CODE> is <A class=unix 
+href="http://www.opengroup.org/onlinepubs/007904975/functions/malloc.html"><CODE 
+class=function>malloc</CODE></A>ed but never <A class=unix 
+href="http://www.opengroup.org/onlinepubs/007904975/functions/free.html"><CODE 
+class=function>free</CODE></A>d. Specifying</P><PRE class=programlisting>(:return-type (c-ptr cfunr) :malloc-free)
+</PRE>
+<P>is not an alternative because this would also <CODE 
+class=function>free(r2-&gt;x)</CODE> but <CODE class=varname>r2-&gt;x</CODE> is 
+a pointer to static data.</P>
+<P>The memory leak can be avoided using </P><PRE class=programlisting>(:return-type (c-pointer cfunr))
+</PRE>
+<P>instead, in conjunction with </P><PRE class=programlisting>(defun call-cfun ()
+  (let ((data (cfun ...)))
+    (prog1 (<A href="http://clisp.cons.org/impnotes/dffi.html#foreign-value"><CODE class=function>FFI:FOREIGN-VALUE</CODE></A> data)
+      (<A href="http://clisp.cons.org/impnotes/dffi.html#foreign-heap"><CODE class=function>FFI:FOREIGN-FREE</CODE></A> data :FULL nil))))
+</PRE></DIV></DIV><BR class=example-break>
+<DIV class=example><A id=dffi-ex-macro></A>
+<P class=title><B>Example&nbsp;31.5.&nbsp;Accessing <A 
+href="http://gcc.gnu.org/onlinedocs/cpp/" target=_top><SPAN><STRONG 
+class=command>cpp</STRONG></SPAN></A> macros</B></P>
+<DIV class=example-contents>
+<P>Suppose you are interfacing to a library <CODE class=filename>mylib.so</CODE> 
+which defines macros and <CODE class=literal>inline</CODE> functions in <CODE 
+class=filename>mylib.h</CODE>:</P><PRE class=programlisting>#define FOO(x)  .....
+inline int bar (int x) { ... }
+</PRE>
+<P>To make them available from <A href="http://clisp.cons.org/" 
+target=_top><SPAN><STRONG class=command>CLISP</STRONG></SPAN></A>, write these 
+forms into the lisp file <CODE class=filename>my.lisp</CODE>:</P><PRE class=programlisting>(<A href="http://clisp.cons.org/impnotes/dffi.html#c-lines"><CODE class=function>FFI:C-LINES</CODE></A> "#include &lt;mylib.h&gt;
+int my_foo (int x) { return FOO(x); }
+int my_bar (int x) { return bar(x); }~%")
+(<A href="http://clisp.cons.org/impnotes/dffi.html#def-call-out"><CODE class=function>FFI:DEF-CALL-OUT</CODE></A> my-foo (:name "my_foo") (:arguments (x int)) (:return-type int))
+(<A href="http://clisp.cons.org/impnotes/dffi.html#def-call-out"><CODE class=function>FFI:DEF-CALL-OUT</CODE></A> my-bar (:name "my_bar") (:arguments (x int)) (:return-type int))
+</PRE>
+<P>Compiling this file will produce <CODE class=filename>my.c</CODE> and <CODE 
+class=filename>my.fas</CODE> and you have two options: </P>
+<DIV class=orderedlist>
+<OL type=1>
+  <LI>
+  <P>Compile <CODE class=filename>my.c</CODE> into <CODE 
+  class=filename>my.o</CODE> with </P><PRE class=screen><CODE class=prompt>$</CODE> gcc -c my.c -lmylib
+</PRE>
+  <P>and use <A title=31.2.1.&nbsp;Overview 
+  href="http://clisp.cons.org/impnotes/modules.html#mod-overview"><SPAN><STRONG 
+  class=command>clisp-link</STRONG></SPAN></A> to create a new <A 
+  href="http://clisp.cons.org/" target=_top><SPAN><STRONG 
+  class=command>CLISP</STRONG></SPAN></A> <A class=olink 
+  href="http://clisp.cons.org/impnotes/modules.html#linkset">linking set</A>. 
+  </P>
+  <LI>
+  <P>Add <CODE class=code>(:library "my.dll")</CODE> to the <A 
+  href="http://clisp.cons.org/impnotes/dffi.html#def-call-out"><CODE 
+  class=function>FFI:DEF-CALL-OUT</CODE></A> forms, compile <CODE 
+  class=filename>my.c</CODE> into <CODE class=filename>my.so</CODE> (or <CODE 
+  class=filename>my.dll</CODE> on <A href="http://winehq.com/" target=_top><SPAN 
+  class=platform>Win32</SPAN></A>) with </P><PRE class=screen><CODE class=prompt>$</CODE> gcc -shared -o my.so my.c -lmylib
+</PRE>
+  <P>and load <CODE class=filename>my.fas</CODE>. </P></LI></OL></DIV>
+<P>Of course, you could have created <CODE class=filename>my1.c</CODE> 
+containing</P><PRE class=programlisting>#include &lt;mylib.h&gt;
+int my_foo (int x) { return FOO(x); }
+int my_bar (int x) { return bar(x); }
+</PRE>
+<P>manually, but <A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-lines"><CODE 
+class=function>FFI:C-LINES</CODE></A> allows you to keep the definitions of 
+<CODE class=function>my_foo</CODE> and <CODE class=function>my-foo</CODE> close 
+together for easier maintenance.</P></DIV></DIV><BR class=example-break>
+<DIV class=example><A id=ex-call-in></A>
+<P class=title><B>Example&nbsp;31.6.&nbsp;Calling Lisp from <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A></B></P>
+<DIV class=example-contents>
+<P>To sort an array of double-floats using the Lisp function <A 
+href="http://www.lisp.org/HyperSpec/Body/fun_sortcm_stable-sort.html" 
+target=_top><CODE class=function>SORT</CODE></A> instead of the <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A> library function <A class=unix 
+href="http://www.opengroup.org/onlinepubs/007904975/functions/qsort.html"><CODE 
+class=function>qsort</CODE></A>, one can use the following interface code <CODE 
+class=filename>sort1.c</CODE>. The main problem is to pass a variable-sized 
+array. </P><PRE class=programlisting>extern void lispsort_begin (int);
+void* lispsort_function;
+void lispsort_double (int n, double * array) {
+    double * sorted_array;
+    int i;
+    lispsort_begin(n); /* store #'sort2 in lispsort_function */
+    sorted_array = ((double * (*) (double *)) lispsort_function) (array);
+    for (i = 0; i &lt; n; i++) array[i] = sorted_array[i];
+    free(sorted_array);
+}
+</PRE>
+<P>This is accompanied by <CODE class=filename>sort2.lisp</CODE>: </P><PRE class=programlisting>(<A href="http://www.lisp.org/HyperSpec/Body/mac_defpackage.html" target=_top><CODE class=function>DEFPACKAGE</CODE></A> "FFI-TEST" (:use <A href="http://www.lisp.org/HyperSpec/Body/sec_11-1-2-1.html" target=_top><STRONG class=package>“<SPAN class=quote>COMMON-LISP</SPAN>”</STRONG></A> <A title="31.3.&nbsp;The Foreign Function Call Facility" href="http://clisp.cons.org/impnotes/dffi.html"><STRONG class=package>“<SPAN class=quote>FFI</SPAN>”</STRONG></A>))
+(<A href="http://www.lisp.org/HyperSpec/Body/mac_in-package.html" target=_top><CODE class=function>IN-PACKAGE</CODE></A> "FFI-TEST")
+(eval-when (compile) (setq <A href="http://clisp.cons.org/impnotes/dffi.html#ffi-extern-output"><CODE class=varname>FFI:*OUTPUT-C-FUNCTIONS*</CODE></A> t))
+(def-call-in lispsort_begin (:arguments (n int))
+  (:return-type nil)
+  (:language :stdc))
+(def-c-var lispsort_function (:type c-pointer))
+(defun lispsort_begin (n)
+  (setf (cast lispsort_function
+              `(c-function
+                 (:arguments (v (c-ptr (c-array double-float ,n))))
+                 (:return-type (c-ptr (c-array double-float ,n))
+                               :malloc-free)))
+        #'sort2))
+(defun sort2 (v)
+  (declare (type vector v))
+  (sort v #'&lt;))
+</PRE>
+<P>To test this, use the following test file <CODE 
+class=filename>sorttest.lisp</CODE>: </P><PRE class=programlisting>(eval-when (compile) (setq <A href="http://clisp.cons.org/impnotes/dffi.html#ffi-extern-output"><CODE class=varname>FFI:*OUTPUT-C-FUNCTIONS*</CODE></A> t))
+(def-call-out sort10
+  (:name "lispsort_double")
+  (:language :stdc)
+  (:arguments (n int)
+              (array (c-ptr (c-array double-float 10)) :in-out)))
+</PRE>
+<P>Now try </P><PRE class=screen><CODE class=prompt>$</CODE> <A title=31.2.1.&nbsp;Overview href="http://clisp.cons.org/impnotes/modules.html#mod-overview"><SPAN><STRONG class=command>clisp-link</STRONG></SPAN></A> create-module-set sort sort2.c sorttest.c
+<CODE class=prompt>$</CODE> cc -O -c sort1.c
+<CODE class=prompt>$</CODE> cd sort
+<CODE class=prompt>$</CODE> ln -s ../sort1.o sort1.o
+</PRE>
+<P>Add <CODE class=filename>sort1.o</CODE> to <CODE class=envar>NEW_LIBS</CODE> 
+and <CODE class=envar>NEW_FILES</CODE> in <A class=olink 
+href="http://clisp.cons.org/impnotes/modules.html#modset"><SPAN><STRONG 
+class=command>link.sh</STRONG></SPAN></A>. Create a file <CODE 
+class=filename>package.lisp</CODE> containing the form </P><PRE class=programlisting>(<A href="http://www.lisp.org/HyperSpec/Body/fun_make-package.html" target=_top><CODE class=function>MAKE-PACKAGE</CODE></A> "FFI-TEST" :use '(<A href="http://www.lisp.org/HyperSpec/Body/sec_11-1-2-1.html" target=_top><STRONG class=package>“<SPAN class=quote>COMMON-LISP</SPAN>”</STRONG></A> <A title="31.3.&nbsp;The Foreign Function Call Facility" href="http://clisp.cons.org/impnotes/dffi.html"><STRONG class=package>“<SPAN class=quote>FFI</SPAN>”</STRONG></A>))</PRE>
+<P>and add <CODE class=filename>package.lisp</CODE> to <A 
+href="http://clisp.cons.org/impnotes/modules.html#mod-preload"><CODE 
+class=envar>TO_PRELOAD</CODE></A> in <A class=olink 
+href="http://clisp.cons.org/impnotes/modules.html#modset"><SPAN><STRONG 
+class=command>link.sh</STRONG></SPAN></A>. Proceed: </P><PRE class=screen><CODE class=prompt>$</CODE> cd ..
+<CODE class=prompt>$</CODE> base/lisp.run -M base/lispinit.mem -c sort2.lisp sorttest.lisp
+<CODE class=prompt>$</CODE> <A title=31.2.1.&nbsp;Overview href="http://clisp.cons.org/impnotes/modules.html#mod-overview"><SPAN><STRONG class=command>clisp-link</STRONG></SPAN></A> add-module-set sort base base+sort
+<CODE class=prompt>$</CODE> base+sort/lisp.run -M base+sort/lispinit.mem -i sort2 sorttest
+&gt; (sort10 10 '#(0.501d0 0.528d0 0.615d0 0.550d0 0.711d0
+                0.523d0 0.585d0 0.670d0 0.271d0 0.063d0))
+#(0.063d0 0.271d0 0.501d0 0.523d0 0.528d0 0.55d0 0.585d0 0.615d0 0.67d0 0.711d0)
+<CODE class=prompt>$</CODE> rm -r base+sort
+</PRE></DIV></DIV><BR class=example-break>
+<DIV class=example><A id=ex-call-in-dll></A>
+<P class=title><B>Example&nbsp;31.7.&nbsp;Calling Lisp from <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A> dynamically</B></P>
+<DIV class=example-contents>
+<P>Create a dynamic library <CODE class=filename>lispdll</CODE> (<CODE 
+class=filename>#P".dll"</CODE> on <A href="http://winehq.com/" target=_top><SPAN 
+class=platform>Win32</SPAN></A>, <CODE class=filename>#P".so"</CODE> on <A 
+href="http://www.unix-systems.org/online.html" target=_top><SPAN 
+class=strong><STRONG>UNIX</STRONG></SPAN></A>) with the following function:</P><PRE class=programlisting>typedef int (*LispFunc)(int parameter);
+int CallInFunc(LispFunc f) {
+  return f(5)+11;
+}
+</PRE>
+<P>and call it from Lisp: </P><PRE class=programlisting>(ffi:def-call-out callout
+  (:name "CallInFunc")
+  (:library "lispdll.dll")
+  (:arguments (function-arg
+               (ffi:c-function (:arguments (number ffi:int))
+                               (:return-type ffi:int) (:language :stdc))))
+  (:return-type ffi:int)
+  (:language :stdc))
+(defun f (x) (* x 2))
+⇒&nbsp;<CODE class=computeroutput>F</CODE>
+(callout #'f)
+⇒&nbsp;<CODE class=computeroutput>21</CODE>
+</PRE></DIV></DIV><BR class=example-break>
+<DIV class=example><A id=dffi-gethostname></A>
+<P class=title><B>Example&nbsp;31.8.&nbsp;Variable size arguments: calling <A 
+class=unix 
+href="http://www.opengroup.org/onlinepubs/007904975/functions/gethostname.html"><CODE 
+class=function>gethostname</CODE></A> from <A href="http://clisp.cons.org/" 
+target=_top><SPAN><STRONG class=command>CLISP</STRONG></SPAN></A></B></P>
+<DIV class=example-contents>
+<DIV class=funcsynopsis><A id=gethostname-synopsis></A>
+<TABLE style="PADDING-BOTTOM: 1em" cellSpacing=0 cellPadding=0 
+summary="Function synopsis" border=0>
+  <TBODY>
+  <TR>
+    <TD><CODE class=funcdef>int <B class=fsfunc>gethostname</B>(</CODE></TD>
+    <TD><VAR class=pdparam>name</VAR>, </TD>
+    <TD>&nbsp;</TD></TR>
+  <TR>
+    <TD>&nbsp;</TD>
+    <TD><VAR class=pdparam>namelen</VAR><CODE>)</CODE>;</TD>
+    <TD>&nbsp;</TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 summary="Function argument synopsis" 
+border=0>
+  <TBODY>
+  <TR>
+    <TD><CODE>char* </CODE>&nbsp;</TD>
+    <TD><CODE><VAR class=pdparam>name</VAR>;</CODE></TD></TR>
+  <TR>
+    <TD><CODE>size_t </CODE>&nbsp;</TD>
+    <TD><CODE><VAR 
+class=pdparam>namelen</VAR>;</CODE></TD></TR></TBODY></TABLE></DIV>
+<P>follows a typical pattern of <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A> "out"-parameter convention - it expects a 
+pointer to a buffer it is going to fill. So you must view this parameter as 
+either <CODE class=constant>:OUT</CODE> or <CODE class=constant>:IN-OUT</CODE>. 
+Additionally, one must tell the function the size of the buffer. Here <EM 
+class=replaceable><CODE>namelen</CODE></EM> is just an <CODE 
+class=constant>:IN</CODE> parameter. Sometimes this will be an <CODE 
+class=constant>:IN-OUT</CODE> parameter, returning the number of bytes actually 
+filled in.</P>
+<P>So <EM class=replaceable><CODE>name</CODE></EM> is actually a pointer to an 
+array of up to <EM class=replaceable><CODE>namelen</CODE></EM> characters, 
+regardless of what the poor <SPAN class=type>char*</SPAN> <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A> prototype says, to be used like a <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A> <SPAN class=type>string</SPAN> (<CODE 
+class=constant>NULL</CODE>-termination). <A 
+href="http://www.unix-systems.org/online.html" target=_top><SPAN 
+class=strong><STRONG>UNIX</STRONG></SPAN></A> specifies that “<SPAN 
+class=quote>host names are limited to <CODE class=constant>HOST_NAME_MAX</CODE> 
+bytes</SPAN>”, which is, of course, system dependent, but it appears that 256 is 
+sufficient.</P>
+<P>In the present example, you can use allocation <CODE 
+class=constant>:ALLOCA</CODE>, like you would do in <A 
+href="http://www.eskimo.com/~scs/C-faq/top.html" target=_top><SPAN><STRONG 
+class=command>C</STRONG></SPAN></A>: stack-allocate a temporary.</P><PRE class=programlisting>(<A href="http://clisp.cons.org/impnotes/dffi.html#def-call-out"><CODE class=function>FFI:DEF-CALL-OUT</CODE></A> gethostname
+  (:arguments (name (<A href="http://clisp.cons.org/impnotes/dffi.html#c-ptr"><SPAN class=type>FFI:C-PTR</SPAN></A> (<A href="http://clisp.cons.org/impnotes/dffi.html#c-array-max"><SPAN class=type>FFI:C-ARRAY-MAX</SPAN></A> ffi:char 256))
+                    <CODE class=constant>:OUT</CODE> <CODE class=constant>:ALLOCA</CODE>)
+              (len ffi:int))
+  (:language :stdc)
+  (:return-type ffi:int))
+
+(defun myhostname ()
+  (multiple-value-bind (success name)
+      ;; <CODE class=constant>:OUT</CODE> and <CODE class=constant>:IN-OUT</CODE> parameters are returned as <A href="http://www.lisp.org/HyperSpec/Body/glo_m.html#multiple_values" target=_top>multiple values</A>
+      (gethostname 256)
+    (if (zerop success) name
+        (error ...)))) ;; <A class=unix href="http://www.opengroup.org/onlinepubs/007904975/functions/strerror.html"><CODE class=function>strerror</CODE></A>(<A class=unix href="http://www.opengroup.org/onlinepubs/007904975/functions/errno.html"><CODE class=varname>errno</CODE></A>)
+
+(defvar hostname (myhostname))
+</PRE></DIV></DIV><BR class=example-break>
+<DIV class=example><A id=dffi-dll-var></A>
+<P class=title><B>Example&nbsp;31.9.&nbsp;Accessing variables in shared 
+libraries</B></P>
+<DIV class=example-contents>
+<P>Suppose one wants to access and modify variables that reside in shared 
+libraries: </P><PRE class=programlisting>struct bar {
+  double x, y;
+  double out;
+};
+
+struct bar my_struct = {10.0, 20.5, 0.0};
+
+double test_dll(struct bar *ptr)
+{
+  return ptr-&gt;out = ptr-&gt;out + ptr-&gt;x + ptr-&gt;y;
+}
+</PRE>
+<P>This is compiled to <CODE class=filename>libtest.so</CODE> (or <CODE 
+class=filename>libtest.dll</CODE>, depending on your platform).</P>
+<P>Use the following lisp code: </P><PRE class=programlisting>(<A href="http://www.lisp.org/HyperSpec/Body/fun_use-package.html" target=_top><CODE class=function>USE-PACKAGE</CODE></A> <A title="31.3.&nbsp;The Foreign Function Call Facility" href="http://clisp.cons.org/impnotes/dffi.html"><STRONG class=package>“<SPAN class=quote>FFI</SPAN>”</STRONG></A>)
+
+(<A href="http://clisp.cons.org/impnotes/dffi.html#def-c-struct"><CODE class=function>FFI:DEF-C-STRUCT</CODE></A> bar
+  (x double-float)
+  (y double-float)
+  (out double-float))
+
+(<A href="http://clisp.cons.org/impnotes/dffi.html#def-call-out"><CODE class=function>FFI:DEF-CALL-OUT</CODE></A> get-own-c-float
+  (:library "libtest.so")
+  (:language :stdc)
+  (:name "test_dll")
+  (:arguments (ptr c-pointer :in :alloca))
+  (:return-type double-float))
+
+(<A href="http://clisp.cons.org/impnotes/dffi.html#def-c-var"><CODE class=function>FFI:DEF-C-VAR</CODE></A> my-c-var (:name "my_struct")
+  (:library "libtest.so") (:type (c-ptr bar)))
+</PRE>
+<P>Note that <CODE class=function>get-own-c-float</CODE> takes a <A 
+href="http://clisp.cons.org/impnotes/dffi.html#c-pointer"><SPAN 
+class=type>FFI:C-POINTER</SPAN></A>, not a <SPAN class=type><CODE 
+class=literal>(<A href="http://clisp.cons.org/impnotes/dffi.html#c-ptr"><SPAN 
+class=type>FFI:C-PTR</SPAN></A> bar)</CODE></SPAN> as the argument.</P>
+<P>Now you can access call <CODE class=function>get-own-c-float</CODE> on <CODE 
+class=varname>my-c-var</CODE>: </P><PRE class=programlisting>(<A href="http://clisp.cons.org/impnotes/dffi.html#c-var-addr"><CODE class=function>FFI:C-VAR-ADDRESS</CODE></A> my-c-var)
+⇒&nbsp;<CODE class=computeroutput>#&lt;FOREIGN-ADDRESS #x282935D8&gt;</CODE>
+(get-own-c-float (<A href="http://clisp.cons.org/impnotes/dffi.html#c-var-addr"><CODE class=function>FFI:C-VAR-ADDRESS</CODE></A> my-c-var))
+⇒&nbsp;<CODE class=computeroutput>30.5d0</CODE>
+(get-own-c-float (<A href="http://clisp.cons.org/impnotes/dffi.html#c-var-addr"><CODE class=function>FFI:C-VAR-ADDRESS</CODE></A> my-c-var))
+⇒&nbsp;<CODE class=computeroutput>61.0d0</CODE>
+(get-own-c-float (<A href="http://clisp.cons.org/impnotes/dffi.html#c-var-addr"><CODE class=function>FFI:C-VAR-ADDRESS</CODE></A> my-c-var))
+⇒&nbsp;<CODE class=computeroutput>91.5d0</CODE>
+(get-own-c-float (<A href="http://clisp.cons.org/impnotes/dffi.html#c-var-addr"><CODE class=function>FFI:C-VAR-ADDRESS</CODE></A> my-c-var))
+⇒&nbsp;<CODE class=computeroutput>122.0d0</CODE>
+</PRE></DIV></DIV><BR class=example-break>
+<DIV class=example><A id=ex-dffi-validity></A>
+<P class=title><B>Example&nbsp;31.10.&nbsp;Controlling validity of 
+resources</B></P>
+<DIV class=example-contents>
+<P><A href="http://clisp.cons.org/impnotes/dffi.html#fptr"><CODE 
+class=function>FFI:SET-FOREIGN-POINTER</CODE></A> is useful in conjunction with 
+<CODE class=code>(<A 
+href="http://www.lisp.org/HyperSpec/Body/mac_setfcm_psetf.html" 
+target=_top><CODE class=function>SETF</CODE></A> <A 
+href="http://clisp.cons.org/impnotes/dffi.html#validp"><CODE 
+class=function>FFI:VALIDP</CODE></A>)</CODE> to limit the extent of external 
+resources. Closing twice can be avoided by checking <A 
+href="http://clisp.cons.org/impnotes/dffi.html#validp"><CODE 
+class=function>FFI:VALIDP</CODE></A>. All pointers depending on this resource 
+can be disabled at once upon close by sharing their <A 
+href="http://clisp.cons.org/impnotes/dffi.html#fptr"><CODE 
+class=function>FFI:FOREIGN-POINTER</CODE></A> using <A 
+href="http://clisp.cons.org/impnotes/dffi.html#fptr"><CODE 
+class=function>FFI:SET-FOREIGN-POINTER</CODE></A>. </P><PRE class=programlisting>(def-c-type PGconn c-pointer) ; opaque pointer
+(def-call-out PQconnectdb (:return-type PGconn)
+  (:arguments (conninfo c-string)))
+(defun sql-connect (conninfo)
+  (let ((conn (PQconnectdb conninfo)))
+    (unless conn (error "NULL pointer"))
+    ;; may wish to use <A title=30.8.&nbsp;Finalization href="http://clisp.cons.org/impnotes/final.html"><CODE class=function>EXT:FINALIZE</CODE></A> as well
+    (<A href="http://clisp.cons.org/impnotes/dffi.html#fptr"><CODE class=function>FFI:SET-FOREIGN-POINTER</CODE></A> conn <CODE class=constant>:COPY</CODE>)))
+(defun sql-dependent-resource (conn arg1)
+  (let ((res (PQxxx conn arg1)))
+    (<A href="http://clisp.cons.org/impnotes/dffi.html#fptr"><CODE class=function>FFI:SET-FOREIGN-POINTER</CODE></A> res conn)))
+(defun sql-close (connection)
+  (when (<A href="http://clisp.cons.org/impnotes/dffi.html#validp"><CODE class=function>FFI:VALIDP</CODE></A> connection)
+    (PQfinish connection)
+    (setf (<A href="http://clisp.cons.org/impnotes/dffi.html#validp"><CODE class=function>FFI:VALIDP</CODE></A> connection) nil)
+    T))
+</PRE>
+<P></P>
+<DIV class=warning style="MARGIN-LEFT: 0.5in; MARGIN-RIGHT: 0.5in">
+<H3 class=title>Warning</H3>
+<P>Sharing <A href="http://clisp.cons.org/impnotes/dffi.html#fptr"><CODE 
+class=function>FFI:FOREIGN-POINTER</CODE></A> goes both ways: invalidating the 
+dependent resource will invalidate the primary one.</P></DIV>
+<P></P>
+<DIV class=note style="MARGIN-LEFT: 0.5in; MARGIN-RIGHT: 0.5in">
+<H3 class=title>Note</H3>
+<P>An alternative approach to resource management, more suitable to non-<A 
+title="31.3.&nbsp;The Foreign Function Call Facility" 
+href="http://clisp.cons.org/impnotes/dffi.html"><STRONG class=package>“<SPAN 
+class=quote>FFI</SPAN>”</STRONG></A> <A title="31.2.&nbsp;External Modules" 
+href="http://clisp.cons.org/impnotes/modules.html">module</A>s, is implemented 
+in the <A title="32.4.&nbsp;Berkeley DB access" 
+href="http://clisp.cons.org/impnotes/berkeley-db.html">berkeley-db</A> module, 
+see <A title="32.4.2.&nbsp;Closing handles" 
+href="http://clisp.cons.org/impnotes/berkeley-db.html#bdb-close">Section&nbsp;32.4.2, 
+“Closing handles”</A>.</P></DIV></DIV></DIV><BR class=example-break>
+<DIV class=example><A id=ex-dffi-float></A>
+<P class=title><B>Example&nbsp;31.11.&nbsp;Float point array 
+computations</B></P>
+<DIV class=example-contents>
+<P>Save this code into <CODE class=filename>sum.c</CODE>: </P><PRE class=programlisting>double sum (int len, double *vec) {
+  int i;
+  double s=0;
+  for (i=0; i&lt;len; i++) s+= vec[i];
+  return s;
+}
+</PRE>
+<P>and compile it with </P><PRE class=screen><CODE class=prompt>$</CODE> gcc -shared -o libsum.so sum.c</PRE>
+<P>Now you can sum doubles: </P><PRE class=programlisting>(<A href="http://clisp.cons.org/impnotes/dffi.html#def-call-out"><CODE class=function>FFI:DEF-CALL-OUT</CODE></A> sum (:name "sum") (:library "libsum.so") (:language :stdc)
+  (:return-type double-float)
+  (:arguments (len int) (vec (<A href="http://clisp.cons.org/impnotes/dffi.html#c-array-ptr"><SPAN class=type>FFI:C-ARRAY-PTR</SPAN></A> double-float))))
+(sum 3 #(1d0 2d0 3d0))
+⇒&nbsp;<CODE class=computeroutput>6d0</CODE>
+</PRE>
+<P></P></DIV></DIV><BR class=example-break>
+<DIV class=section lang=en xml:lang="en">
+<DIV class=titlepage>
+<DIV>
+<DIV>
+<H4 class=title><A id=dffi-ex-more></A>31.3.10.1.&nbsp;More 
+examples</H4></DIV></DIV></DIV>
+<P>You can find more information and examples of the <A 
+href="http://clisp.cons.org/" target=_top><SPAN><STRONG 
+class=command>CLISP</STRONG></SPAN></A> <A 
+title="31.3.&nbsp;The Foreign Function Call Facility" 
+href="http://clisp.cons.org/impnotes/dffi.html"><STRONG class=package>“<SPAN 
+class=quote>FFI</SPAN>”</STRONG></A> in the following <CODE class=email>&lt;<A 
+href="mailto:clisp-list@lists.sourceforge.net">clisp-list@lists.sourceforge.net</A>&gt;</CODE> 
+(<A href="http://lists.sourceforge.net/lists/listinfo/clisp-list" 
+target=_top>http://lists.sourceforge.net/lists/listinfo/clisp-list</A>) 
+messages: </P>
+<DIV class=itemizedlist>
+<UL type=disc>
+  <LI><A href="http://article.gmane.org/gmane.lisp.clisp.general/7278" 
+  target=_top>"variable size values"</A>
+  <LI><A href="http://article.gmane.org/gmane.lisp.clisp.general/6626" 
+  target=_top>"variable length arrays"</A></LI></UL></DIV>
+<P></P>
+<P>Even more examples can be found in the file <A class=clisp-cvs 
+href="http://clisp.cvs.sourceforge.net/*checkout*/clisp/clisp/tests/ffi.tst"><CODE 
+class=filename>tests/ffi.tst</CODE></A> in the <A href="http://clisp.cons.org/" 
+target=_top><SPAN><STRONG class=command>CLISP</STRONG></SPAN></A> source 
+distribution.</P></DIV></DIV></DIV>
+<DIV class=bookinfo>
+<HR width="100%">
+
+<TABLE width="100%" summary="impnotes meta info">
+  <TBODY>
+  <TR>
+    <TH>
+    <TD align=left>These notes document <A href="http://clisp.cons.org/" 
+      target=_top><SPAN><STRONG class=command>CLISP</STRONG></SPAN></A> version 
+      2.41</TD>
+    <TD align=right>Last modified: 2006-10-13</TD></TH></TR></TBODY></TABLE></DIV>
+<DIV class=custom-footer>
+<HR width="100%">
+
+<TABLE width="100%">
+  <TBODY>
+  <TR>
+    <TD align=left><A href="http://clisp.cons.org/"><IMG height=48 
+      alt="[CLISP home]" 
+      src="31_3_&nbsp;The Foreign Function Call Facility_files/clisp.png" 
+      width=48></A></TD>
+    <TD align=middle><A 
+      href="http://sourceforge.net/donate/index.php?group_id=1355"><IMG 
+      height=32 alt="[Support This Project]" 
+      src="31_3_&nbsp;The Foreign Function Call Facility_files/project-support.jpg" 
+      width=88 border=0></A></TD>
+    <TD align=right><A href="http://sourceforge.net/"><IMG height=37 
+      alt=[SourceForge] 
+      src="31_3_&nbsp;The Foreign Function Call Facility_files/sflogo.png" 
+      width=125></A></TD></TR></TBODY></TABLE></DIV>
+<DIV class=navfooter>
+<HR>
+
+<TABLE width="100%" summary="Navigation footer">
+  <TBODY>
+  <TR>
+    <TD align=left width="40%"><A accessKey=p 
+      href="http://clisp.cons.org/impnotes/modules.html">Prev</A>&nbsp;</TD>
+    <TD align=middle width="20%"><A accessKey=u 
+      href="http://clisp.cons.org/impnotes/ext-platform.html">Up</A></TD>
+    <TD align=right width="40%">&nbsp;<A accessKey=n 
+      href="http://clisp.cons.org/impnotes/affi.html">Next</A></TD></TR>
+  <TR>
+    <TD vAlign=top align=left width="40%">31.2.&nbsp;External Modules&nbsp;</TD>
+    <TD align=middle width="20%"><A accessKey=h 
+      href="http://clisp.cons.org/impnotes/index.html">Home</A></TD>
+    <TD vAlign=top align=right width="40%">&nbsp;31.4.&nbsp;The Amiga Foreign 
+      Function Call Facility</TD></TR></TBODY></TABLE></DIV></BODY></HTML>

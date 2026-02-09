@@ -1,0 +1,32 @@
+Student propunator : Egri David
+Grupa : 221
+Email : davidegri72@gmail.com
+
+
+
+class FindOutput
+    {
+         static void Main(string[] args)
+         {
+          
+        String a = "TechBeamers";
+        String b = "TECHBEAMERS";
+        int val;
+        val = b.CompareTo(a);
+        Console.WriteLine(val);
+    
+        }       
+    }
+
+Care este rezultatul executiei codului urmator ?
+
+Explicatia data este :
+Metoda C# CompareTo() este utilizat? pentru a compara instan?a String cu un obiect String specificat. Indic? dac? aceast? instan?? ?ir precede, urmeaz? sau apare în aceea?i pozi?ie în ordinea de sortare ca ?irul specificat sau nu.
+
+Si variantele de raspuns :
+1 (Raspuns corect )
+0
+-1
+Error
+
+Nivel dificultate : Easy

@@ -1,0 +1,15 @@
+descSum(N) =
+	- searchSum(N, 0, 2)
+
+searchSum(N, S, CPN) =
+	- [], N == S
+	1. CPN (+) searchSum(N, S + CPN, CPN + 1), S + CPN <= N SI prim(CpN)
+	2. searchSum(N, S, CPN + 1), S + CPN <= N 
+
+prim(N) = 
+	- searchDiv(N, 2)
+
+searchDiv(N, I) = 
+	- true, N == I
+	- false, N % I = 0 SAU I > N
+	- searchDiv(N, I + 1), altfel

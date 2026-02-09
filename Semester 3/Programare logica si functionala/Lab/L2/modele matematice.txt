@@ -1,0 +1,27 @@
+parcurg_st(l1...lk, nv, nm) =
+	nil, daca k = 0
+       	nil, daca nv = 1 + nm
+        l1 (+) l2 (+) parcurg_st(l3...lk, nv + 1, nm + l2) altfel
+
+stang(l1...ln) =
+	parcurg_st(l3...ln, 0, 0)
+
+parcurg_d(l1...lk, nv, nm) =
+	nil, daca k = 0
+        (l1,...lk), daca nv = 1 + nm
+        parcurg_d(l3...lk, nv + 1, nm + l2)
+
+drept(l1...ln) =
+	parcurg_d(l3...ln, 0, 0)
+
+afisare(l1...ln, k) =
+	nil, daca n = 0
+	[l1], daca k = 0
+        afisare(stang(l1...ln), k - 1) (+) afisare(drept(l1...ln), k - 1)
+
+(afisare '(a 2 b 2 c 1 i 0 f 1 g 0 d 2 e 0 h 0) '0)
+(afisare '(a 2 b 2 c 1 i 0 f 1 g 0 d 2 e 0 h 0) '1)
+(afisare '(a 2 b 2 c 1 i 0 f 1 g 0 d 2 e 0 h 0) '2)
+(afisare '(a 2 b 2 c 1 i 0 f 1 g 0 d 2 e 0 h 0) '3)
+
+(afisare '(1 2 2 2 4 1 6 1 7 2 8 0 9 1 10 1 1 0 5 0 3 2 12 0 13 2 14 0 15 1 16 1 17 1 18 2 19 0 20 0) '0)

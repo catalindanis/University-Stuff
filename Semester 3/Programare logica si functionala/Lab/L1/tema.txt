@@ -1,0 +1,16 @@
+(defun main l
+	(cond 
+	)
+)
+
+(defun cmmmc (a b)
+	
+)
+
+(defun cmmdc(a b)
+	(cond 
+		((= a b) a)
+		((> a b) (cmmdc (- a b) b))
+		(t (cmmdc a (- b a)))
+	)
+)

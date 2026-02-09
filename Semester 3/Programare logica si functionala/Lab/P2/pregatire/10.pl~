@@ -1,0 +1,24 @@
+adaugare(L, E, Rez) :-
+	adaugare_aux(L, E, 1, 1, Rez).
+
+adaugare_aux([], _, _, _, []).
+adaugare_aux([H | T], E, P, P, [H, E | Rez]) :- !,
+	P1 is 2 * P + 1,
+	P2 is P + 1,
+	adaugare_aux(T, E, P2, P1, Rez).
+adaugare_aux([H | T], E, P1, P2, [H | Rez]) :-
+	P3 is P1 + 1,
+	adaugare_aux(T, E, P3, P2, Rez).
+
+inserare([H | T], Rez) :-
+	inserare_aux([H | T], H, Rez).
+
+inserare_aux([], _, []) :- !.
+inserare_aux([H | T], E, [H1 | Rez]) :- !,
+	is_list(H),
+	adaugare(H, E, H1),
+	inserare_aux(T, E, Rez).
+inserare_aux([H | T], _, [H | Rez]) :-
+	E1 = H,
+	inserare_aux(T, E1, Rez).
+

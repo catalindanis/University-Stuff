@@ -1,0 +1,42 @@
+LI P {
+	MARGIN: 0pt
+}
+TD P {
+	MARGIN: 0pt
+}
+DD P {
+	MARGIN: 0pt
+}
+H1 {
+	TEXT-ALIGN: center
+}
+H2 {
+	TEXT-ALIGN: center
+}
+H3 {
+	TEXT-ALIGN: center
+}
+H4 {
+	TEXT-ALIGN: center
+}
+H5 {
+	TEXT-ALIGN: center
+}
+H6 {
+	TEXT-ALIGN: center
+}
+P.center {
+	TEXT-ALIGN: center
+}
+IMG {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px
+}
+A:hover {
+	COLOR: red; BACKGROUND-COLOR: transparent
+}
+P {
+	TEXT-ALIGN: justify
+}
+TABLE {
+	MARGIN-LEFT: auto; MARGIN-RIGHT: auto
+}

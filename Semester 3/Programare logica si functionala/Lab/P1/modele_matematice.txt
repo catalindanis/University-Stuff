@@ -1,0 +1,20 @@
+11.
+
+a)
+
+main(l1,l2...ln) = vale(l1,l2,...ln, 0, 0, 0)
+
+vale(l1,l2...ln, monotonie, c, d) = 
+		- false		n = 0
+		- true		n == 1 SI monotonie == 1 SI c >= 1 SI d >= 1
+		- false 	n == 1
+		- vale(l2,l3...ln, 1, c + 1, d) l1 < l2
+		- vale(l2,l3...ln, 0, c, d + 1) l1 > l2
+		- false		altfel
+
+b)
+
+sumaAlternanta(l1,l2,...ln) =
+		- 0	n = 0
+		- l1	n = 1
+		- l1 - l2 + sumaAlternanta(l3,...ln) altfel

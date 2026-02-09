@@ -1,0 +1,93 @@
+BODY {
+	COLOR: black; BACKGROUND-COLOR: white
+}
+LI {
+	MARGIN: 0pt
+}
+TD {
+	MARGIN: 0pt
+}
+DD P {
+	MARGIN: 0pt
+}
+.code {
+	COLOR: darkblue
+}
+.programlisting {
+	COLOR: darkblue
+}
+.screen {
+	COLOR: darkblue
+}
+.method {
+	COLOR: darkblue; BACKGROUND-COLOR: lightcyan
+}
+.computeroutput {
+	COLOR: darkred; BACKGROUND-COLOR: lightblue
+}
+.returnvalue {
+	COLOR: darkred; BACKGROUND-COLOR: lightblue
+}
+.data {
+	COLOR: darkred; BACKGROUND-COLOR: lightblue
+}
+.byte {
+	COLOR: darkred
+}
+.type {
+	COLOR: darkgreen; BACKGROUND-COLOR: lightcyan
+}
+.classname {
+	COLOR: darkgreen; BACKGROUND-COLOR: lightcyan
+}
+.superclass {
+	COLOR: darkgreen; BACKGROUND-COLOR: lightcyan
+}
+.package {
+	COLOR: navy; BACKGROUND-COLOR: lightgreen
+}
+IMG {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px
+}
+.epigraph {
+	MARGIN-LEFT: 50%; TEXT-ALIGN: right
+}
+.cmdsynopsis {
+	MARGIN-LEFT: 40px; TEXT-INDENT: -40px
+}
+H1 {
+	FONT-SIZE: 177%
+}
+H2 {
+	FONT-SIZE: 161%
+}
+H3 {
+	FONT-SIZE: 146%
+}
+H4 {
+	FONT-SIZE: 133%
+}
+H5 {
+	FONT-SIZE: 121%
+}
+H6 {
+	FONT-SIZE: 110%
+}
+.programlisting {
+	TEXT-ALIGN: left
+}
+.plat-dep {
+	COLOR: darkred; BACKGROUND-COLOR: lightcyan
+}
+.platform {
+	FONT-WEIGHT: bold
+}
+.question {
+	BACKGROUND-COLOR: lightyellow
+}
+TD SPAN.term {
+	FONT-WEIGHT: bold
+}
+DT SPAN.term {
+	FONT-WEIGHT: bold
+}

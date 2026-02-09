@@ -1,0 +1,775 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0042)http://clisp.cons.org/impnotes/socket.html -->
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><HTML 
+xmlns="http://www.w3.org/1999/xhtml"><HEAD><TITLE>31.5. Socket Streams</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8"><LINK 
+href="31_5_&nbsp;Socket Streams_files/impnotes.css" type=text/css 
+rel=stylesheet><LINK rev=made href="mailto:clisp-list@lists.sourceforge.net">
+<META content="MSHTML 6.00.2900.3020" name=GENERATOR><LINK 
+title="Implementation Notes for GNU CLISP" href="index.html" rel=start><LINK 
+title="Chapter&nbsp;31.&nbsp;Platform Specific Extensions" 
+href="ext-platform.html" rel=up><LINK 
+title="31.4.&nbsp;The Amiga Foreign Function Call Facility" href="affi.html" 
+rel=prev><LINK title="31.6.&nbsp;Quickstarting delivery with CLISP" 
+href="quickstart.html" rel=next><LINK 
+title="Legal Status of the CLISP Implementation Notes" href="ln-legalese.html" 
+rel=copyright>
+<META content="'generated: 2006-10-13&nbsp;02:05:01-04:00'" name=date><LINK 
+title=Authors href="index.html#authors" rel=author><LINK 
+title="Table of Contents" href="index.html" rel=contents><LINK 
+href="glossary.html" rel=glossary><LINK title="How do I ask for help?" 
+href="faq.html#faq-help" rel=help><LINK title=Home href="http://clisp.cons.org" 
+rel=home><LINK href="idx.html" rel=index></HEAD>
+<BODY>
+<DIV class=navheader>
+<TABLE width="100%" summary="Navigation header">
+  <TBODY>
+  <TR>
+    <TH align=middle colSpan=3>31.5.&nbsp;Socket Streams</TH></TR>
+  <TR>
+    <TD align=left width="20%"><A accessKey=p 
+      href="http://clisp.cons.org/impnotes/affi.html">Prev</A>&nbsp;</TD>
+    <TH align=middle width="60%">Chapter&nbsp;31.&nbsp;Platform Specific 
+      Extensions</TH>
+    <TD align=right width="20%">&nbsp;<A accessKey=n 
+      href="http://clisp.cons.org/impnotes/quickstart.html">Next</A></TD></TR></TBODY></TABLE>
+<HR>
+</DIV>
+<DIV class=section lang=en xml:lang="en">
+<DIV class=titlepage>
+<DIV>
+<DIV>
+<H2 class=title style="CLEAR: both"><A id=socket></A>31.5.&nbsp;Socket 
+Streams</H2></DIV>
+<DIV>
+<H3 class=subtitle><SPAN class=plat-dep>Platform Dependent: <SPAN 
+class=plat-dep><A href="http://www.unix-systems.org/online.html" 
+target=_top><SPAN class=strong><STRONG>UNIX</STRONG></SPAN></A>, <A 
+href="http://winehq.com/" target=_top><SPAN class=platform>Win32</SPAN></A> 
+platforms only.</SPAN></SPAN></H3></DIV></DIV></DIV>
+<DIV class=toc>
+<DL>
+  <DT><SPAN class=section><A 
+  href="http://clisp.cons.org/impnotes/socket.html#socket-intro">31.5.1. 
+  Introduction</A></SPAN>
+  <DT><SPAN class=section><A 
+  href="http://clisp.cons.org/impnotes/socket.html#socket-api">31.5.2. Socket 
+  API Reference</A></SPAN></DT></DL></DIV><!--#ifdef SOCKET_STREAMS-->
+<DIV class=section lang=en xml:lang="en">
+<DIV class=titlepage>
+<DIV>
+<DIV>
+<H3 class=title><A 
+id=socket-intro></A>31.5.1.&nbsp;Introduction</H3></DIV></DIV></DIV>
+<P>Sockets are used for interprocess communications by processes running on the 
+same host as well as by processes running on different hosts over a computer 
+network. The most common kind of sockets is Internet stream sockets, and a 
+high-level interface to them is described here. A more low level interface that 
+closely follows the <A href="http://www.eskimo.com/~scs/C-faq/top.html" 
+target=_top><SPAN><STRONG class=command>C</STRONG></SPAN></A> system calls is 
+also available, see <A title="32.14.&nbsp;Raw Socket Access" 
+href="http://clisp.cons.org/impnotes/rawsock.html">Section&nbsp;32.14, “Raw 
+Socket Access”</A>.</P>
+<P>Two main varieties of sockets are interfaced to: </P>
+<DIV class=itemizedlist>
+<UL type=disc>
+  <LI>“<SPAN class=quote>active</SPAN>” sockets correspond to <A 
+  title="31.5.&nbsp;Socket Streams" 
+  href="http://clisp.cons.org/impnotes/socket.html"><CODE 
+  class=classname>SOCKET:SOCKET-STREAM</CODE></A>s which are <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_b.html#bidirectional" 
+  target=_top>bidirectional</A> <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_stream.html" target=_top><CODE 
+  class=classname>STREAM</CODE></A>s 
+  <LI>“<SPAN class=quote>passive</SPAN>” sockets correspond to <A 
+  title="31.5.&nbsp;Socket Streams" 
+  href="http://clisp.cons.org/impnotes/socket.html"><CODE 
+  class=classname>SOCKET:SOCKET-SERVER</CODE></A>s which are a special kind of 
+  objects that are used to allow the other side to initiate interaction with 
+  lisp. </LI></UL></DIV>
+<DIV class=example><A id=socket-ex-server></A>
+<P class=title><B>Example&nbsp;31.16.&nbsp;Lisp <A 
+href="http://www.lisp.org/HyperSpec/Body/sec_25-1-1.html" 
+target=_top>read-eval-print loop</A> server</B></P>
+<DIV class=example-contents>
+<P>Here is a simple lisp <A 
+href="http://www.lisp.org/HyperSpec/Body/sec_25-1-1.html" 
+target=_top>read-eval-print loop</A> server that waits for a remote connection 
+and evaluates forms read from it: </P><PRE class=programlisting>(<A href="http://www.lisp.org/HyperSpec/Body/speope_letcm_letst.html" target=_top><CODE class=function>LET</CODE></A> ((server (<A href="http://clisp.cons.org/impnotes/socket.html#sose"><CODE class=function>SOCKET:SOCKET-SERVER</CODE></A>)))
+  (<A href="http://www.lisp.org/HyperSpec/Body/fun_format.html" target=_top><CODE class=function>FORMAT</CODE></A> t "~&amp;Waiting for a connection on ~S:~D~%"
+          (<A href="http://clisp.cons.org/impnotes/socket.html#sose-hopo"><CODE class=function>SOCKET:SOCKET-SERVER-HOST</CODE></A> server) (<A href="http://clisp.cons.org/impnotes/socket.html#sose-hopo"><CODE class=function>SOCKET:SOCKET-SERVER-PORT</CODE></A> server))
+  (<A href="http://www.lisp.org/HyperSpec/Body/speope_unwind-protect.html" target=_top><CODE class=function>UNWIND-PROTECT</CODE></A>
+      ;; infinite loop, terminate with <SPAN><STRONG class=keycap>Control</STRONG></SPAN>-<SPAN class=keysym>C</SPAN>
+      (<A href="http://www.lisp.org/HyperSpec/Body/mac_loop.html" target=_top><CODE class=function>LOOP</CODE></A> (<A href="http://www.lisp.org/HyperSpec/Body/mac_with-open-stream.html" target=_top><CODE class=function>WITH-OPEN-STREAM</CODE></A> (socket (<A href="http://clisp.cons.org/impnotes/socket.html#so-accept"><CODE class=function>SOCKET:SOCKET-ACCEPT</CODE></A> server))
+              (<A href="http://www.lisp.org/HyperSpec/Body/mac_multiple-value-bind.html" target=_top><CODE class=function>MULTIPLE-VALUE-BIND</CODE></A> (local-host local-port) (<A href="http://clisp.cons.org/impnotes/socket.html#sost-local"><CODE class=function>SOCKET:SOCKET-STREAM-LOCAL</CODE></A> socket)
+                (<A href="http://www.lisp.org/HyperSpec/Body/mac_multiple-value-bind.html" target=_top><CODE class=function>MULTIPLE-VALUE-BIND</CODE></A> (remote-host remote-port) (<A href="http://clisp.cons.org/impnotes/socket.html#sost-peer"><CODE class=function>SOCKET:SOCKET-STREAM-PEER</CODE></A> socket)
+                  (<A href="http://www.lisp.org/HyperSpec/Body/fun_format.html" target=_top><CODE class=function>FORMAT</CODE></A> <A href="http://www.lisp.org/HyperSpec/Body/convar_t.html" target=_top><CODE class=constant>T</CODE></A> "~&amp;Connection: ~S:~D -- ~S:~D~%"
+                          remote-host remote-port local-host local-port)))
+              ;; loop is terminated when the remote host closes the connection or on <A title="30.3.&nbsp;Quitting CLISP" href="http://clisp.cons.org/impnotes/quit.html"><CODE class=function>EXT:EXIT</CODE></A>
+              (<A href="http://www.lisp.org/HyperSpec/Body/mac_loop.html" target=_top><CODE class=function>LOOP</CODE></A> (<A href="http://www.lisp.org/HyperSpec/Body/mac_whencm_unless.html" target=_top><CODE class=function>WHEN</CODE></A> (<A href="http://www.lisp.org/HyperSpec/Body/fun_eq.html" target=_top><CODE class=function>EQ</CODE></A> :eof (<A href="http://clisp.cons.org/impnotes/socket.html#so-status"><CODE class=function>SOCKET:SOCKET-STATUS</CODE></A> (cons socket :input))) (<A href="http://www.lisp.org/HyperSpec/Body/mac_return.html" target=_top><CODE class=function>RETURN</CODE></A>))
+                    (<A href="http://www.lisp.org/HyperSpec/Body/fun_writecm_p_rintcm_princ.html" target=_top><CODE class=function>PRINT</CODE></A> (<A href="http://www.lisp.org/HyperSpec/Body/fun_eval.html" target=_top><CODE class=function>EVAL</CODE></A> (<A href="http://www.lisp.org/HyperSpec/Body/fun_readcm_re_g-whitespace.html" target=_top><CODE class=function>READ</CODE></A> socket)) socket)
+                    ;; flush everything left in socket
+                    (<A href="http://www.lisp.org/HyperSpec/Body/mac_loop.html" target=_top><CODE class=function>LOOP</CODE></A> :for c = (<A href="http://www.lisp.org/HyperSpec/Body/fun_read-char-no-hang.html" target=_top><CODE class=function>READ-CHAR-NO-HANG</CODE></A> socket nil nil) :while c)
+                    (<A href="http://www.lisp.org/HyperSpec/Body/fun_terpricm_fresh-line.html" target=_top><CODE class=function>TERPRI</CODE></A> socket))))
+    ;; make sure server is closed
+    (<A href="http://clisp.cons.org/impnotes/socket.html#sose-close"><CODE class=function>SOCKET:SOCKET-SERVER-CLOSE</CODE></A> server)))
+</PRE>
+<P></P>
+<DIV class=warning style="MARGIN-LEFT: 0.5in; MARGIN-RIGHT: 0.5in">
+<H3 class=title>This opens a gaping security hole!</H3>
+<P>Functions like <A class=olink 
+href="http://clisp.cons.org/impnotes/shell.html#exec"><CODE 
+class=function>EXT:SHELL</CODE></A>, <A title=31.7.1.&nbsp;Shell 
+href="http://clisp.cons.org/impnotes/shell.html#exec"><CODE 
+class=function>EXT:EXECUTE</CODE></A>, <A 
+href="http://clisp.cons.org/impnotes/shell.html#run-prog"><CODE 
+class=function>EXT:RUN-SHELL-COMMAND</CODE></A> will allow the remote host to 
+execute arbitrary code with your permissions. While functions defined in lisp 
+(like <A href="http://clisp.cons.org/impnotes/shell.html#run-prog"><CODE 
+class=function>EXT:RUN-SHELL-COMMAND</CODE></A>) can be removed (using <A 
+href="http://www.lisp.org/HyperSpec/Body/fun_fmakunbound.html" target=_top><CODE 
+class=function>FMAKUNBOUND</CODE></A>), the built-in functions (like <A 
+class=olink href="http://clisp.cons.org/impnotes/shell.html#exec"><CODE 
+class=function>EXT:SHELL</CODE></A> and <A title=31.7.1.&nbsp;Shell 
+href="http://clisp.cons.org/impnotes/shell.html#exec"><CODE 
+class=function>EXT:EXECUTE</CODE></A>) cannot be permanently removed from the 
+run-time, and an experienced hacker will be able to invoke them even if you <A 
+href="http://www.lisp.org/HyperSpec/Body/fun_fmakunbound.html" target=_top><CODE 
+class=function>FMAKUNBOUND</CODE></A> their names. </P>
+<P>You should limit the socket server to local connections by passing string 
+<SPAN class=data><CODE class=literal>"127.0.0.1"</CODE></SPAN> as the <CODE 
+class=constant>:INTERFACE</CODE> argument.</P></DIV></DIV></DIV><BR 
+class=example-break>
+<DIV class=example><A id=socket-ex-client></A>
+<P class=title><B>Example&nbsp;31.17.&nbsp;Lisp <A 
+href="http://www.w3.org/Protocols/" target=_top><SPAN><STRONG 
+class=command>HTTP</STRONG></SPAN></A> client</B></P>
+<DIV class=example-contents>
+<P>Here are a couple of simple lisp <A href="http://www.w3.org/Protocols/" 
+target=_top><SPAN><STRONG class=command>HTTP</STRONG></SPAN></A> clients that 
+fetch a web page and a binary file, and upload a file: </P><PRE class=programlisting>(<A href="http://www.lisp.org/HyperSpec/Body/mac_defun.html" target=_top><CODE class=function>DEFUN</CODE></A> wget-text (host page file <A href="http://www.lisp.org/HyperSpec/Body/sec_3-4-1.html" target=_top><CODE class=literal>&amp;OPTIONAL</CODE></A> (port 80))
+  ;; <A href="http://www.w3.org/Protocols/" target=_top><SPAN><STRONG class=command>HTTP</STRONG></SPAN></A> requires the <CODE class=constant>:DOS</CODE> <A title="30.5.3.&nbsp;Line Terminators" href="http://clisp.cons.org/impnotes/encoding.html#newline">line terminator</A>
+  (<A href="http://www.lisp.org/HyperSpec/Body/mac_with-open-stream.html" target=_top><CODE class=function>WITH-OPEN-STREAM</CODE></A> (socket (<A href="http://clisp.cons.org/impnotes/socket.html#so-connect"><CODE class=function>SOCKET:SOCKET-CONNECT</CODE></A> port host <A href="http://clisp.cons.org/impnotes/stream-dict.html#extfmt"><CODE class=constant>:EXTERNAL-FORMAT</CODE></A> <CODE class=constant>:DOS</CODE>))
+     (<A href="http://www.lisp.org/HyperSpec/Body/fun_format.html" target=_top><CODE class=function>FORMAT</CODE></A> socket "GET ~A HTTP/1.0~2%" page)
+     ;; dump the whole thing - header+data - into the output file
+     (<A href="http://www.lisp.org/HyperSpec/Body/mac_with-open-file.html" target=_top><CODE class=function>WITH-OPEN-FILE</CODE></A> (out file :direction :output)
+       (<A href="http://www.lisp.org/HyperSpec/Body/mac_loop.html" target=_top><CODE class=function>LOOP</CODE></A> :for line = (<A href="http://www.lisp.org/HyperSpec/Body/fun_read-line.html" target=_top><CODE class=function>READ-LINE</CODE></A> socket nil nil) :while line
+          :do (<A href="http://www.lisp.org/HyperSpec/Body/fun_write-str_m_write-line.html" target=_top><CODE class=function>WRITE-LINE</CODE></A> line out)))))
+(<A href="http://www.lisp.org/HyperSpec/Body/mac_defun.html" target=_top><CODE class=function>DEFUN</CODE></A> wget-binary (host page file <A href="http://www.lisp.org/HyperSpec/Body/sec_3-4-1.html" target=_top><CODE class=literal>&amp;OPTIONAL</CODE></A> (port 80))
+  (<A href="http://www.lisp.org/HyperSpec/Body/mac_with-open-stream.html" target=_top><CODE class=function>WITH-OPEN-STREAM</CODE></A> (socket (<A href="http://clisp.cons.org/impnotes/socket.html#so-connect"><CODE class=function>SOCKET:SOCKET-CONNECT</CODE></A> port host <A href="http://clisp.cons.org/impnotes/stream-dict.html#extfmt"><CODE class=constant>:EXTERNAL-FORMAT</CODE></A> <CODE class=constant>:DOS</CODE>))
+    (<A href="http://www.lisp.org/HyperSpec/Body/fun_format.html" target=_top><CODE class=function>FORMAT</CODE></A> socket "GET ~A HTTP/1.0~2%" page)
+    (<A href="http://www.lisp.org/HyperSpec/Body/mac_loop.html" target=_top><CODE class=function>LOOP</CODE></A> :with content-length :for line = (<A href="http://www.lisp.org/HyperSpec/Body/fun_read-line.html" target=_top><CODE class=function>READ-LINE</CODE></A> socket nil nil)
+      ;; header is separated from the data with a blank line
+      :until (<A href="http://www.lisp.org/HyperSpec/Body/fun_zerop.html" target=_top><CODE class=function>ZEROP</CODE></A> (<A href="http://www.lisp.org/HyperSpec/Body/fun_length.html" target=_top><CODE class=function>LENGTH</CODE></A> line)) :do
+      (<A href="http://www.lisp.org/HyperSpec/Body/mac_whencm_unless.html" target=_top><CODE class=function>WHEN</CODE></A> (<A href="http://www.lisp.org/HyperSpec/Body/fun_stringeqc_ng-not-lessp.html" target=_top><CODE class=function>STRING=</CODE></A> line #1="Content-length: " :end1 #2=#.(<A href="http://www.lisp.org/HyperSpec/Body/fun_length.html" target=_top><CODE class=function>LENGTH</CODE></A> #1#))
+        (<A href="http://www.lisp.org/HyperSpec/Body/spefor_setq.html" target=_top><CODE class=function>SETQ</CODE></A> content-length (<A href="http://www.lisp.org/HyperSpec/Body/fun_parse-integer.html" target=_top><CODE class=function>PARSE-INTEGER</CODE></A> line :start #2#))
+      ;; this will not work if the server does not supply the content-length header
+      :finally (<A href="http://www.lisp.org/HyperSpec/Body/mac_return.html" target=_top><CODE class=function>RETURN</CODE></A> (<A href="http://www.lisp.org/HyperSpec/Body/speope_letcm_letst.html" target=_top><CODE class=function>LET</CODE></A> ((data (<A href="http://www.lisp.org/HyperSpec/Body/fun_make-array.html" target=_top><CODE class=function>MAKE-ARRAY</CODE></A> content-length
+                                               :element-type '<SPAN class=type><CODE class=literal>(<A href="http://www.lisp.org/HyperSpec/Body/typ_unsigned-byte.html" target=_top><CODE class=classname>UNSIGNED-BYTE</CODE></A> 8)</CODE></SPAN>)))
+                           ;; switch to binary i/o on socket
+                           (<A href="http://www.lisp.org/HyperSpec/Body/mac_setfcm_psetf.html" target=_top><CODE class=function>SETF</CODE></A> (<A href="http://www.lisp.org/HyperSpec/Body/fun_stream-element-type.html" target=_top><CODE class=function>STREAM-ELEMENT-TYPE</CODE></A> socket) '<SPAN class=type><CODE class=literal>(<A href="http://www.lisp.org/HyperSpec/Body/typ_unsigned-byte.html" target=_top><CODE class=classname>UNSIGNED-BYTE</CODE></A> 8)</CODE></SPAN>)
+                           ;; read the whole file in one system call
+                           (<A href="http://clisp.cons.org/impnotes/stream-dict.html#rd-by-seq"><CODE class=function>EXT:READ-BYTE-SEQUENCE</CODE></A> data socket)
+                           (<A href="http://www.lisp.org/HyperSpec/Body/mac_with-open-file.html" target=_top><CODE class=function>WITH-OPEN-FILE</CODE></A> (out file :direction :output
+                                                <A href="http://clisp.cons.org/impnotes/stream-dict.html#eltype"><CODE class=constant>:ELEMENT-TYPE</CODE></A> '<SPAN class=type><CODE class=literal>(<A href="http://www.lisp.org/HyperSpec/Body/typ_unsigned-byte.html" target=_top><CODE class=classname>UNSIGNED-BYTE</CODE></A> 8)</CODE></SPAN>)
+                             ;; write the whole file in one system call
+                             (<A href="http://clisp.cons.org/impnotes/stream-dict.html#wr-by-seq"><CODE class=function>EXT:WRITE-BYTE-SEQUENCE</CODE></A> data out))
+                           data))))))
+(<A href="http://www.lisp.org/HyperSpec/Body/mac_defun.html" target=_top><CODE class=function>DEFUN</CODE></A> wput (host page file <A href="http://www.lisp.org/HyperSpec/Body/sec_3-4-1.html" target=_top><CODE class=literal>&amp;OPTIONAL</CODE></A> (port 80))
+  (<A href="http://www.lisp.org/HyperSpec/Body/mac_with-open-stream.html" target=_top><CODE class=function>WITH-OPEN-STREAM</CODE></A> (socket (<A href="http://clisp.cons.org/impnotes/socket.html#so-connect"><CODE class=function>SOCKET:SOCKET-CONNECT</CODE></A> port host <A href="http://clisp.cons.org/impnotes/stream-dict.html#extfmt"><CODE class=constant>:EXTERNAL-FORMAT</CODE></A> <CODE class=constant>:DOS</CODE>))
+    (<A href="http://www.lisp.org/HyperSpec/Body/mac_with-open-file.html" target=_top><CODE class=function>WITH-OPEN-FILE</CODE></A> (in file :direction :inptut <A href="http://clisp.cons.org/impnotes/stream-dict.html#eltype"><CODE class=constant>:ELEMENT-TYPE</CODE></A> '<SPAN class=type><CODE class=literal>(<A href="http://www.lisp.org/HyperSpec/Body/typ_unsigned-byte.html" target=_top><CODE class=classname>UNSIGNED-BYTE</CODE></A> 8)</CODE></SPAN>)
+      (<A href="http://www.lisp.org/HyperSpec/Body/speope_letcm_letst.html" target=_top><CODE class=function>LET*</CODE></A> ((length (<A href="http://www.lisp.org/HyperSpec/Body/fun_file-length.html" target=_top><CODE class=function>FILE-LENGTH</CODE></A> in))
+             (data (<A href="http://www.lisp.org/HyperSpec/Body/fun_make-array.html" target=_top><CODE class=function>MAKE-ARRAY</CODE></A> length :element-type '<SPAN class=type><CODE class=literal>(<A href="http://www.lisp.org/HyperSpec/Body/typ_unsigned-byte.html" target=_top><CODE class=classname>UNSIGNED-BYTE</CODE></A> 8)</CODE></SPAN>)))
+        ;; some servers may not understand the "Content-length" header
+        (<A href="http://www.lisp.org/HyperSpec/Body/fun_format.html" target=_top><CODE class=function>FORMAT</CODE></A> socket "PUT ~A HTTP/1.0~%Content-length: ~D~2%" page length)
+        (<A href="http://www.lisp.org/HyperSpec/Body/mac_setfcm_psetf.html" target=_top><CODE class=function>SETF</CODE></A> (<A href="http://www.lisp.org/HyperSpec/Body/fun_stream-element-type.html" target=_top><CODE class=function>STREAM-ELEMENT-TYPE</CODE></A> socket) '<SPAN class=type><CODE class=literal>(<A href="http://www.lisp.org/HyperSpec/Body/typ_unsigned-byte.html" target=_top><CODE class=classname>UNSIGNED-BYTE</CODE></A> 8)</CODE></SPAN>)
+        (<A href="http://clisp.cons.org/impnotes/stream-dict.html#rd-by-seq"><CODE class=function>EXT:READ-BYTE-SEQUENCE</CODE></A> data in)
+        (<A href="http://clisp.cons.org/impnotes/stream-dict.html#wr-by-seq"><CODE class=function>EXT:WRITE-BYTE-SEQUENCE</CODE></A> data socket)))
+    ;; not necessary if the server understands the "Content-length" header
+    (<A href="http://clisp.cons.org/impnotes/socket.html#sost-shut"><CODE class=function>SOCKET:SOCKET-STREAM-SHUTDOWN</CODE></A> socket :output)
+    ;; get the server response
+    (<A href="http://www.lisp.org/HyperSpec/Body/mac_loop.html" target=_top><CODE class=function>LOOP</CODE></A> :for line = (<A href="http://www.lisp.org/HyperSpec/Body/fun_read-line.html" target=_top><CODE class=function>READ-LINE</CODE></A> socket nil nil) :while line :collect line)))
+</PRE></DIV></DIV><BR class=example-break></DIV>
+<DIV class=section lang=en xml:lang="en">
+<DIV class=titlepage>
+<DIV>
+<DIV>
+<H3 class=title><A id=socket-api></A>31.5.2.&nbsp;Socket API 
+Reference</H3></DIV></DIV></DIV>
+<DIV class=variablelist>
+<DL>
+  <DT><A id=sose></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/socket.html#sose"><CODE 
+  class=function>SOCKET:SOCKET-SERVER</CODE></A> <A 
+  href="http://www.lisp.org/HyperSpec/Body/sec_3-4-1.html" target=_top><CODE 
+  class=literal>&amp;OPTIONAL</CODE></A> <EM 
+  class=replaceable><CODE>port</CODE></EM> <A 
+  href="http://www.lisp.org/HyperSpec/Body/sec_3-4-1.html" target=_top><CODE 
+  class=literal>&amp;KEY</CODE></A> <CODE class=constant>:INTERFACE</CODE> <CODE 
+  class=constant>:BACKLOG</CODE>)</CODE></SPAN>
+  <DD>This function creates a socket an binds a port to the socket. The server 
+  exists to watch for client connect attempts. The optional argument is the port 
+  to use (non-negative <A 
+  href="http://www.lisp.org/HyperSpec/Body/typ_fixnum.html" target=_top><CODE 
+  class=classname>FIXNUM</CODE></A>). The <CODE class=constant>:BACKLOG</CODE> 
+  parameter defines maximum length of queue of pending connections (see <A 
+  class=unix 
+  href="http://www.opengroup.org/onlinepubs/007904975/functions/listen.html"><CODE 
+  class=function>listen</CODE></A>) and defaults to 1. The <CODE 
+  class=constant>:INTERFACE</CODE> is either a <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_string.html" target=_top><CODE 
+  class=classname>STRING</CODE></A>, interpreted as the IP address that will be 
+  bound, or a socket, from whose peer the connections will be made. Default is 
+  (for backward compatibility) to bind to all local interfaces, but for security 
+  reasons it is advisable to bind to loopback <SPAN class=data><CODE 
+  class=literal>"127.0.0.1"</CODE></SPAN> if you need only local connections.
+  <DT><A id=sose-close></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/socket.html#sose-close"><CODE 
+  class=function>SOCKET:SOCKET-SERVER-CLOSE</CODE></A> <EM 
+  class=replaceable><CODE>socket-server</CODE></EM>)</CODE></SPAN>
+  <DD>Closes down the server socket. <A title="21.3.10.&nbsp;Function CLOSE" 
+  href="http://clisp.cons.org/impnotes/stream-dict.html#close">Just like 
+  streams</A>, <A title="31.5.&nbsp;Socket Streams" 
+  href="http://clisp.cons.org/impnotes/socket.html"><CODE 
+  class=classname>SOCKET:SOCKET-SERVER</CODE></A>s are closed at <A class=olink 
+  href="http://clisp.cons.org/impnotes/gc.html">garbage-collect</A>ion. You 
+  should not rely on this however, because <A class=olink 
+  href="http://clisp.cons.org/impnotes/gc.html">garbage-collect</A>ion times are 
+  not deterministic. 
+  <DT><A id=sose-hopo></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/socket.html#sose-hopo"><CODE 
+  class=function>SOCKET:SOCKET-SERVER-HOST</CODE></A> <EM 
+  class=replaceable><CODE>socket-server</CODE></EM>)</CODE><BR></SPAN><SPAN 
+  class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/socket.html#sose-hopo"><CODE 
+  class=function>SOCKET:SOCKET-SERVER-PORT</CODE></A> <EM 
+  class=replaceable><CODE>socket-server</CODE></EM>)</CODE></SPAN>
+  <DD>Returns the host mask indicating which hosts can connect to this server 
+  and the port which was bound using <A 
+  href="http://clisp.cons.org/impnotes/socket.html#sose"><CODE 
+  class=function>SOCKET:SOCKET-SERVER</CODE></A>. 
+  <DT><A id=so-wait></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/socket.html#so-wait"><CODE 
+  class=function>SOCKET:SOCKET-WAIT</CODE></A> <EM 
+  class=replaceable><CODE>socket-server</CODE></EM> <A 
+  href="http://www.lisp.org/HyperSpec/Body/sec_3-4-1.html" target=_top><CODE 
+  class=literal>&amp;OPTIONAL</CODE></A> <A 
+  href="http://clisp.cons.org/impnotes/socket.html#timeout-opt">[<EM 
+  class=replaceable><CODE>seconds</CODE></EM> [<EM 
+  class=replaceable><CODE>microseconds</CODE></EM>]]</A>)</CODE></SPAN>
+  <DD>Wait for a fixed time for a connection on the <EM 
+  class=replaceable><CODE>socket-server</CODE></EM> (a <A 
+  title="31.5.&nbsp;Socket Streams" 
+  href="http://clisp.cons.org/impnotes/socket.html"><CODE 
+  class=classname>SOCKET:SOCKET-SERVER</CODE></A>). Without a timeout argument, 
+  <A href="http://clisp.cons.org/impnotes/socket.html#so-wait"><CODE 
+  class=function>SOCKET:SOCKET-WAIT</CODE></A> blocks indefinitely. When timeout 
+  is zero, poll. Returns <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_t.html" target=_top><CODE 
+  class=constant>T</CODE></A> when a connection is available (i.e., <A 
+  href="http://clisp.cons.org/impnotes/socket.html#so-accept"><CODE 
+  class=function>SOCKET:SOCKET-ACCEPT</CODE></A> will not block) and <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A> on timeout.
+  <DT><A id=so-accept></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/socket.html#so-accept"><CODE 
+  class=function>SOCKET:SOCKET-ACCEPT</CODE></A> <EM 
+  class=replaceable><CODE>socket-server</CODE></EM> <A 
+  href="http://www.lisp.org/HyperSpec/Body/sec_3-4-1.html" target=_top><CODE 
+  class=literal>&amp;KEY</CODE></A> <A 
+  href="http://clisp.cons.org/impnotes/stream-dict.html#eltype"><CODE 
+  class=constant>:ELEMENT-TYPE</CODE></A> <A 
+  href="http://clisp.cons.org/impnotes/stream-dict.html#extfmt"><CODE 
+  class=constant>:EXTERNAL-FORMAT</CODE></A> <A 
+  href="http://clisp.cons.org/impnotes/stream-dict.html#buffered"><CODE 
+  class=constant>:BUFFERED</CODE></A> <A 
+  href="http://clisp.cons.org/impnotes/socket.html#timeout-k"><CODE 
+  class=constant>:TIMEOUT</CODE></A>)</CODE></SPAN>
+  <DD>Creates the server-side <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_b.html#bidirectional" 
+  target=_top>bidirectional</A> <A title="31.5.&nbsp;Socket Streams" 
+  href="http://clisp.cons.org/impnotes/socket.html"><CODE 
+  class=classname>SOCKET:SOCKET-STREAM</CODE></A> for the connection. Waits for 
+  an attempt to connect to the server for no more than <A 
+  href="http://clisp.cons.org/impnotes/socket.html#timeout-k"><CODE 
+  class=constant>:TIMEOUT</CODE></A> <A 
+  href="http://www.lisp.org/HyperSpec/Body/sec_25-1-4-4.html" 
+  target=_top>seconds</A> (which may be a non-negative <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_real.html" target=_top><CODE 
+  class=classname>REAL</CODE></A> or a list <SPAN class=data><CODE 
+  class=literal>(sec usec)</CODE></SPAN> or a pair <SPAN class=data><CODE 
+  class=literal>(sec . usec)</CODE></SPAN>). <A 
+  href="http://www.lisp.org/HyperSpec/Body/fun_signal.html" target=_top><CODE 
+  class=function>SIGNAL</CODE></A>s an <A 
+  href="http://www.lisp.org/HyperSpec/Body/contyp_error.html" target=_top><CODE 
+  class=classname>ERROR</CODE></A> if no connection is made in that time. 
+  <DT><A id=so-connect></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/socket.html#so-connect"><CODE 
+  class=function>SOCKET:SOCKET-CONNECT</CODE></A> <EM 
+  class=replaceable><CODE>port</CODE></EM> <A 
+  href="http://www.lisp.org/HyperSpec/Body/sec_3-4-1.html" target=_top><CODE 
+  class=literal>&amp;OPTIONAL</CODE></A> [<EM 
+  class=replaceable><CODE>host</CODE></EM>] <A 
+  href="http://www.lisp.org/HyperSpec/Body/sec_3-4-1.html" target=_top><CODE 
+  class=literal>&amp;KEY</CODE></A> <A 
+  href="http://clisp.cons.org/impnotes/stream-dict.html#eltype"><CODE 
+  class=constant>:ELEMENT-TYPE</CODE></A> <A 
+  href="http://clisp.cons.org/impnotes/stream-dict.html#extfmt"><CODE 
+  class=constant>:EXTERNAL-FORMAT</CODE></A> <A 
+  href="http://clisp.cons.org/impnotes/stream-dict.html#buffered"><CODE 
+  class=constant>:BUFFERED</CODE></A> <A 
+  href="http://clisp.cons.org/impnotes/socket.html#timeout-k"><CODE 
+  class=constant>:TIMEOUT</CODE></A>)</CODE></SPAN>
+  <DD>Attempts to create a client-side <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_b.html#bidirectional" 
+  target=_top>bidirectional</A> <A title="31.5.&nbsp;Socket Streams" 
+  href="http://clisp.cons.org/impnotes/socket.html"><CODE 
+  class=classname>SOCKET:SOCKET-STREAM</CODE></A>. Blocks until the server 
+  accepts the connection, for no more than <A 
+  href="http://clisp.cons.org/impnotes/socket.html#timeout-k"><CODE 
+  class=constant>:TIMEOUT</CODE></A> <A 
+  href="http://www.lisp.org/HyperSpec/Body/sec_25-1-4-4.html" 
+  target=_top>seconds</A>. If it is 0, returns immediately and (probably) blocks 
+  on the next i/o operation (you can use <A 
+  href="http://clisp.cons.org/impnotes/socket.html#so-status"><CODE 
+  class=function>SOCKET:SOCKET-STATUS</CODE></A> to check whether it will 
+  actually block). 
+  <DT><A id=so-status></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/socket.html#so-status"><CODE 
+  class=function>SOCKET:SOCKET-STATUS</CODE></A> <EM 
+  class=replaceable><CODE>socket-stream-or-list</CODE></EM> <A 
+  href="http://www.lisp.org/HyperSpec/Body/sec_3-4-1.html" target=_top><CODE 
+  class=literal>&amp;OPTIONAL</CODE></A> <A 
+  href="http://clisp.cons.org/impnotes/socket.html#timeout-opt">[<EM 
+  class=replaceable><CODE>seconds</CODE></EM> [<EM 
+  class=replaceable><CODE>microseconds</CODE></EM>]]</A>)</CODE></SPAN>
+  <DD>
+  <P>Checks whether it is possible to read from or write to a <A 
+  title="31.5.&nbsp;Socket Streams" 
+  href="http://clisp.cons.org/impnotes/socket.html"><CODE 
+  class=classname>SOCKET:SOCKET-STREAM</CODE></A> or whether a connection is 
+  available on a <A title="31.5.&nbsp;Socket Streams" 
+  href="http://clisp.cons.org/impnotes/socket.html"><CODE 
+  class=classname>SOCKET:SOCKET-SERVER</CODE></A> without blocking.</P>
+  <P>This is similar to <A 
+  href="http://www.lisp.org/HyperSpec/Body/fun_listen.html" target=_top><CODE 
+  class=function>LISTEN</CODE></A>, which checks only one <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_stream.html" target=_top><CODE 
+  class=classname>STREAM</CODE></A> and only for input, and <A 
+  href="http://clisp.cons.org/impnotes/socket.html#so-wait"><CODE 
+  class=function>SOCKET:SOCKET-WAIT</CODE></A>, which works only with <A 
+  title="31.5.&nbsp;Socket Streams" 
+  href="http://clisp.cons.org/impnotes/socket.html"><CODE 
+  class=classname>SOCKET:SOCKET-SERVER</CODE></A>s.</P>
+  <P>We define <EM class=replaceable><CODE>status</CODE></EM> for a <A 
+  title="31.5.&nbsp;Socket Streams" 
+  href="http://clisp.cons.org/impnotes/socket.html"><CODE 
+  class=classname>SOCKET:SOCKET-SERVER</CODE></A> or a <A 
+  title="31.5.&nbsp;Socket Streams" 
+  href="http://clisp.cons.org/impnotes/socket.html"><CODE 
+  class=classname>SOCKET:SOCKET-STREAM</CODE></A> to be <CODE 
+  class=constant>:ERROR</CODE> if any i/o operation will cause an <A 
+  href="http://www.lisp.org/HyperSpec/Body/contyp_error.html" target=_top><CODE 
+  class=classname>ERROR</CODE></A>.</P>
+  <P>Additionally, for a <A title="31.5.&nbsp;Socket Streams" 
+  href="http://clisp.cons.org/impnotes/socket.html"><CODE 
+  class=classname>SOCKET:SOCKET-SERVER</CODE></A>, we define <EM 
+  class=replaceable><CODE>status</CODE></EM> to be <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_t.html" target=_top><CODE 
+  class=constant>T</CODE></A> if a connection is available, i.e., is <A 
+  href="http://clisp.cons.org/impnotes/socket.html#so-accept"><CODE 
+  class=function>SOCKET:SOCKET-ACCEPT</CODE></A> will not block, and <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A> otherwise.</P>
+  <P>Additionally, for a <A title="31.5.&nbsp;Socket Streams" 
+  href="http://clisp.cons.org/impnotes/socket.html"><CODE 
+  class=classname>SOCKET:SOCKET-STREAM</CODE></A>, we define <EM 
+  class=replaceable><CODE>status</CODE></EM> in the given <EM 
+  class=replaceable><CODE>direction</CODE></EM> (one of <CODE 
+  class=constant>:INPUT</CODE>, <CODE class=constant>:OUTPUT</CODE>, and <CODE 
+  class=constant>:IO</CODE>) to be </P>
+  <DIV class=variablelist><A id=so-status-values></A>
+  <P class=title><B>Possible status values for various directions:</B></P>
+  <TABLE border=0>
+    <COLGROUP>
+    <COL vAlign=top align=left>
+    <TBODY>
+    <TR>
+      <TD><SPAN class=term><CODE class=constant>:INPUT</CODE> 
+status:</SPAN></TD>
+      <TD>
+        <DIV class=variablelist>
+        <TABLE border=0>
+          <COLGROUP>
+          <COL vAlign=top align=left>
+          <TBODY>
+          <TR>
+            <TD><SPAN class=term><A 
+              href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" 
+              target=_top><CODE class=constant>NIL</CODE></A></SPAN></TD>
+            <TD>reading will block </TD></TR>
+          <TR>
+            <TD><SPAN class=term><CODE class=constant>:INPUT</CODE></SPAN></TD>
+            <TD>some input is available </TD></TR>
+          <TR>
+            <TD><SPAN class=term><CODE class=constant>:EOF</CODE></SPAN></TD>
+            <TD>the stream has reached its end 
+</TD></TR></TBODY></TABLE></DIV></TD></TR>
+    <TR>
+      <TD><SPAN class=term><CODE class=constant>:OUTPUT</CODE> 
+      status:</SPAN></TD>
+      <TD>
+        <DIV class=variablelist>
+        <TABLE border=0>
+          <COLGROUP>
+          <COL vAlign=top align=left>
+          <TBODY>
+          <TR>
+            <TD><SPAN class=term><A 
+              href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" 
+              target=_top><CODE class=constant>NIL</CODE></A></SPAN></TD>
+            <TD>writing will block </TD></TR>
+          <TR>
+            <TD><SPAN class=term><CODE class=constant>:OUTPUT</CODE></SPAN></TD>
+            <TD>output to the stream will not block 
+      </TD></TR></TBODY></TABLE></DIV></TD></TR>
+    <TR>
+      <TD><SPAN class=term><CODE class=constant>:IO</CODE> status:</SPAN></TD>
+      <TD>
+        <DIV class=informaltable><A id=so-status-i-o></A>
+        <TABLE border=1>
+          <COLGROUP>
+          <COL align=middle>
+          <COL align=middle>
+          <COL align=middle>
+          <COL align=middle></COLGROUP>
+          <THEAD>
+          <TR>
+            <TH vAlign=bottom align=middle rowSpan=2>output status</TH>
+            <TH align=middle colSpan=3>input status</TH></TR>
+          <TR>
+            <TH align=middle><A 
+              href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" 
+              target=_top><CODE class=constant>NIL</CODE></A></TH>
+            <TH align=middle><CODE class=constant>:INPUT</CODE></TH>
+            <TH align=middle><CODE class=constant>:EOF</CODE></TH></TR></THEAD>
+          <TBODY>
+          <TR>
+            <TD align=middle><A 
+              href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" 
+              target=_top><CODE class=constant>NIL</CODE></A></TD>
+            <TD align=middle><A 
+              href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" 
+              target=_top><CODE class=constant>NIL</CODE></A></TD>
+            <TD align=middle><CODE class=constant>:INPUT</CODE></TD>
+            <TD align=middle><CODE class=constant>:EOF</CODE></TD></TR>
+          <TR>
+            <TD align=middle><CODE class=constant>:OUTPUT</CODE></TD>
+            <TD align=middle><CODE class=constant>:OUTPUT</CODE></TD>
+            <TD align=middle><CODE class=constant>:IO</CODE></TD>
+            <TD align=middle><CODE 
+        class=constant>:APPEND</CODE></TD></TR></TBODY></TABLE></DIV></TD></TR></TBODY></TABLE></DIV>
+  <DIV class=variablelist>
+  <P class=title><B>Possible values of <EM 
+  class=replaceable><CODE>socket-stream-or-list</CODE></EM>:</B></P>
+  <DL>
+    <DT><SPAN class=term><A title="31.5.&nbsp;Socket Streams" 
+    href="http://clisp.cons.org/impnotes/socket.html"><CODE 
+    class=classname>SOCKET:SOCKET-STREAM</CODE></A> or <A 
+    title="31.5.&nbsp;Socket Streams" 
+    href="http://clisp.cons.org/impnotes/socket.html"><CODE 
+    class=classname>SOCKET:SOCKET-SERVER</CODE></A></SPAN>
+    <DD>Returns the appropriate status, as defined above (<CODE 
+    class=constant>:IO</CODE> status for <A title="31.5.&nbsp;Socket Streams" 
+    href="http://clisp.cons.org/impnotes/socket.html"><CODE 
+    class=classname>SOCKET:SOCKET-STREAM</CODE></A>) 
+    <DT><SPAN class=term><CODE class=code>(<A title="31.5.&nbsp;Socket Streams" 
+    href="http://clisp.cons.org/impnotes/socket.html"><CODE 
+    class=classname>SOCKET:SOCKET-STREAM</CODE></A> . <EM 
+    class=replaceable><CODE>direction</CODE></EM>)</CODE></SPAN>
+    <DD>Return the status in the specified direction 
+    <DT><SPAN class=term>a non-empty list of the above</SPAN>
+    <DD>Return a list of values, one for each element of the argument list (a la 
+    <A href="http://www.lisp.org/HyperSpec/Body/fun_mapccm_ma_istcm_mapcon.html" 
+    target=_top><CODE class=function>MAPCAR</CODE></A>)</DD></DL></DIV>
+  <P>If you want to avoid <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_c.html#cons" 
+  target=_top>consing[3]</A> up a <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_f.html#fresh" 
+  target=_top>fresh</A> list, you can make the elements of <EM 
+  class=replaceable><CODE>socket-stream-or-list</CODE></EM> to be <SPAN 
+  class=data><CODE class=literal>(<EM 
+  class=replaceable><CODE>socket-stream</CODE></EM> <EM 
+  class=replaceable><CODE>direction</CODE></EM> . <EM 
+  class=replaceable><CODE>x</CODE></EM>)</CODE></SPAN> or <SPAN class=data><CODE 
+  class=literal>(<EM class=replaceable><CODE>socket-server</CODE></EM> . <EM 
+  class=replaceable><CODE>x</CODE></EM>)</CODE></SPAN>. Then <A 
+  href="http://clisp.cons.org/impnotes/socket.html#so-status"><CODE 
+  class=function>SOCKET:SOCKET-STATUS</CODE></A> will destructively modify its 
+  argument and replace <EM class=replaceable><CODE>x</CODE></EM> or <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A> with the status and return the modified list. 
+  You can pass this modified list to <A 
+  href="http://clisp.cons.org/impnotes/socket.html#so-status"><CODE 
+  class=function>SOCKET:SOCKET-STATUS</CODE></A> again.</P>
+  <P>The optional arguments specify the timeout. <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A> means wait forever, <CODE class=literal>0</CODE> 
+  means poll.</P>
+  <P>The second value returned is the number of objects with non-<A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A> status, i.e., “<SPAN 
+  class=quote>actionable</SPAN>” objects. <A 
+  href="http://clisp.cons.org/impnotes/socket.html#so-status"><CODE 
+  class=function>SOCKET:SOCKET-STATUS</CODE></A> returns either due to a timeout 
+  or when this number is positive, i.e., if the timeout was <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A> and <A 
+  href="http://clisp.cons.org/impnotes/socket.html#so-status"><CODE 
+  class=function>SOCKET:SOCKET-STATUS</CODE></A> did return, then the second 
+  value is positive (this is the reason <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A> is <SPAN 
+  class=strong><STRONG>not</STRONG></SPAN> treated as an empty <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_list.html" target=_top><CODE 
+  class=classname>LIST</CODE></A>, but as an invalid argument).</P>
+  <P>This is the interface to <A class=unix 
+  href="http://www.opengroup.org/onlinepubs/007904975/functions/select.html"><CODE 
+  class=function>select</CODE></A> (on some platforms, <A class=unix 
+  href="http://www.opengroup.org/onlinepubs/007904975/functions/poll.html"><CODE 
+  class=function>poll</CODE></A>), so it will work on any <A 
+  href="http://clisp.cons.org/" target=_top><SPAN><STRONG 
+  class=command>CLISP</STRONG></SPAN></A> <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_stream.html" target=_top><CODE 
+  class=classname>STREAM</CODE></A> which is based on a <A class=unix 
+  href="http://www.opengroup.org/onlinepubs/007904975/basedefs/xbd_chap03.html#tag_03_165">file 
+  descriptor</A>, e.g., <A class=olink 
+  href="http://clisp.cons.org/impnotes/terminal.html#with-kbd"><CODE 
+  class=varname>EXT:*KEYBOARD-INPUT*</CODE></A> and <A 
+  title="21.3.9.&nbsp;Function OPEN" 
+  href="http://clisp.cons.org/impnotes/stream-dict.html#open">file</A>/<A 
+  title=31.7.2.&nbsp;Pipes 
+  href="http://clisp.cons.org/impnotes/shell.html#pipe">pipe</A>/<A 
+  title="31.5.&nbsp;Socket Streams" 
+  href="http://clisp.cons.org/impnotes/socket.html">socket</A> <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_stream.html" target=_top><CODE 
+  class=classname>STREAM</CODE></A>s, as well as on <A 
+  title="32.14.&nbsp;Raw Socket Access" 
+  href="http://clisp.cons.org/impnotes/rawsock.html">raw sockets</A>.</P>
+  <DT><A id=sost-hopo></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/socket.html#sost-hopo"><CODE 
+  class=function>SOCKET:SOCKET-STREAM-HOST</CODE></A> <EM 
+  class=replaceable><CODE>socket-stream</CODE></EM>)</CODE><BR></SPAN><SPAN 
+  class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/socket.html#sost-hopo"><CODE 
+  class=function>SOCKET:SOCKET-STREAM-PORT</CODE></A> <EM 
+  class=replaceable><CODE>socket-stream</CODE></EM>)</CODE></SPAN>
+  <DD>These two functions return information about the <A 
+  title="31.5.&nbsp;Socket Streams" 
+  href="http://clisp.cons.org/impnotes/socket.html"><CODE 
+  class=classname>SOCKET:SOCKET-STREAM</CODE></A>.
+  <DT><A id=sost-peer></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/socket.html#sost-peer"><CODE 
+  class=function>SOCKET:SOCKET-STREAM-PEER</CODE></A> <EM 
+  class=replaceable><CODE>socket-stream</CODE></EM> [<EM 
+  class=replaceable><CODE>do-not-resolve-p</CODE></EM>])</CODE></SPAN>
+  <DD>
+  <P>Given a <A title="31.5.&nbsp;Socket Streams" 
+  href="http://clisp.cons.org/impnotes/socket.html"><CODE 
+  class=classname>SOCKET:SOCKET-STREAM</CODE></A>, this function returns the 
+  name of the host on the opposite side of the connection and its port number; 
+  the server-side can use this to see who connected.</P>
+  <P>When the optional second argument is non-<A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A>, the hostname resolution is disabled and just 
+  the IP address is returned, without the <ACRONYM class=acronym 
+  title="Fully Qualified Domain Name">FQDN</ACRONYM>. </P>
+  <P>The <EM class=replaceable><CODE>socket-stream</CODE></EM> argument can also 
+  be a <A title="32.14.&nbsp;Raw Socket Access" 
+  href="http://clisp.cons.org/impnotes/rawsock.html">raw socket</A>.</P>
+  <DT><A id=sost-local></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/socket.html#sost-local"><CODE 
+  class=function>SOCKET:SOCKET-STREAM-LOCAL</CODE></A> <EM 
+  class=replaceable><CODE>socket-stream</CODE></EM> [<EM 
+  class=replaceable><CODE>do-not-resolve-p</CODE></EM>])</CODE></SPAN>
+  <DD>
+  <P>The dual to <A 
+  href="http://clisp.cons.org/impnotes/socket.html#sost-peer"><CODE 
+  class=function>SOCKET:SOCKET-STREAM-PEER</CODE></A> - same information, host 
+  name and port number, but for the local host. The difference from <A 
+  href="http://clisp.cons.org/impnotes/socket.html#sost-hopo"><CODE 
+  class=function>SOCKET:SOCKET-STREAM-HOST</CODE></A> and <A 
+  href="http://clisp.cons.org/impnotes/socket.html#sost-hopo"><CODE 
+  class=function>SOCKET:SOCKET-STREAM-PORT</CODE></A> is that this function asks 
+  the OS (and thus returns the correct trusted values) while the other two are 
+  just accessors to the internal data structure, and basically return the 
+  arguments given to the function which created the <EM 
+  class=replaceable><CODE>socket-stream</CODE></EM>.</P>
+  <P>The <EM class=replaceable><CODE>socket-stream</CODE></EM> argument can also 
+  be a <A title="32.14.&nbsp;Raw Socket Access" 
+  href="http://clisp.cons.org/impnotes/rawsock.html">raw socket</A>.</P>
+  <DT><A id=sost-shut></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/socket.html#sost-shut"><CODE 
+  class=function>SOCKET:SOCKET-STREAM-SHUTDOWN</CODE></A> <EM 
+  class=replaceable><CODE>socket-stream</CODE></EM> <EM 
+  class=replaceable><CODE>direction</CODE></EM>)</CODE></SPAN>
+  <DD>
+  <P>Some protocols provide for closing the connection in one <EM 
+  class=replaceable><CODE>direction</CODE></EM> using <A class=unix 
+  href="http://www.opengroup.org/onlinepubs/007904975/functions/shutdown.html"><CODE 
+  class=function>shutdown</CODE></A>. This function provides an interface to 
+  this <A href="http://www.unix-systems.org/online.html" target=_top><SPAN 
+  class=strong><STRONG>UNIX</STRONG></SPAN></A> system call. <EM 
+  class=replaceable><CODE>direction</CODE></EM> should be <CODE 
+  class=constant>:INPUT</CODE> or <CODE class=constant>:OUTPUT</CODE>. Note that 
+  you should still call <A 
+  href="http://www.lisp.org/HyperSpec/Body/fun_close.html" target=_top><CODE 
+  class=function>CLOSE</CODE></A> after you are done with your <EM 
+  class=replaceable><CODE>socket-stream</CODE></EM>; this is best accomplished 
+  by using <A 
+  href="http://www.lisp.org/HyperSpec/Body/mac_with-open-stream.html" 
+  target=_top><CODE class=function>WITH-OPEN-STREAM</CODE></A>.</P>
+  <P>All <A title="31.5.&nbsp;Socket Streams" 
+  href="http://clisp.cons.org/impnotes/socket.html"><CODE 
+  class=classname>SOCKET:SOCKET-STREAM</CODE></A>s are <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_b.html#bidirectional" 
+  target=_top>bidirectional</A> <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_stream.html" target=_top><CODE 
+  class=classname>STREAM</CODE></A>s (i.e., both <A 
+  href="http://www.lisp.org/HyperSpec/Body/fun_input-str_put-stream-p.html" 
+  target=_top><CODE class=function>INPUT-STREAM-P</CODE></A> and <A 
+  href="http://www.lisp.org/HyperSpec/Body/fun_input-str_put-stream-p.html" 
+  target=_top><CODE class=function>OUTPUT-STREAM-P</CODE></A> return <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_t.html" target=_top><CODE 
+  class=constant>T</CODE></A> for them). <A 
+  href="http://clisp.cons.org/impnotes/socket.html#sost-shut"><CODE 
+  class=function>SOCKET:SOCKET-STREAM-SHUTDOWN</CODE></A> <SPAN 
+  class=emphasis><EM>breaks</EM></SPAN> this and turns its argument stream into 
+  an <A href="http://www.lisp.org/HyperSpec/Body/glo_i.html#input" 
+  target=_top>input</A> <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_stream.html" target=_top><CODE 
+  class=classname>STREAM</CODE></A> (if <EM 
+  class=replaceable><CODE>direction</CODE></EM> is <CODE 
+  class=constant>:OUTPUT</CODE>) or <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_o.html#output" 
+  target=_top>output</A> <A 
+  href="http://www.lisp.org/HyperSpec/Body/syscla_stream.html" target=_top><CODE 
+  class=classname>STREAM</CODE></A> (if <EM 
+  class=replaceable><CODE>direction</CODE></EM> is <CODE 
+  class=constant>:INPUT</CODE>). Thus, the following important invariant is 
+  preserved: whenever </P>
+  <DIV class=itemizedlist>
+  <UL type=disc>
+    <LI>a <A href="http://www.lisp.org/HyperSpec/Body/syscla_stream.html" 
+    target=_top><CODE class=classname>STREAM</CODE></A> is open (i.e., <A 
+    href="http://www.lisp.org/HyperSpec/Body/fun_open-stream-p.html" 
+    target=_top><CODE class=function>OPEN-STREAM-P</CODE></A> returns <A 
+    href="http://www.lisp.org/HyperSpec/Body/convar_t.html" target=_top><CODE 
+    class=constant>T</CODE></A>) and
+    <LI>a <A href="http://www.lisp.org/HyperSpec/Body/syscla_stream.html" 
+    target=_top><CODE class=classname>STREAM</CODE></A> is an <A 
+    href="http://www.lisp.org/HyperSpec/Body/glo_i.html#input" 
+    target=_top>input</A> <A 
+    href="http://www.lisp.org/HyperSpec/Body/syscla_stream.html" 
+    target=_top><CODE class=classname>STREAM</CODE></A> (i.e., <A 
+    href="http://www.lisp.org/HyperSpec/Body/fun_input-str_put-stream-p.html" 
+    target=_top><CODE class=function>INPUT-STREAM-P</CODE></A> returns <A 
+    href="http://www.lisp.org/HyperSpec/Body/convar_t.html" target=_top><CODE 
+    class=constant>T</CODE></A>)</LI></UL></DIV>
+  <P>the <A href="http://www.lisp.org/HyperSpec/Body/syscla_stream.html" 
+  target=_top><CODE class=classname>STREAM</CODE></A> can be read from (e.g., 
+  with <A href="http://www.lisp.org/HyperSpec/Body/fun_read-char.html" 
+  target=_top><CODE class=function>READ-CHAR</CODE></A> or <A 
+  href="http://www.lisp.org/HyperSpec/Body/fun_read-byte.html" target=_top><CODE 
+  class=function>READ-BYTE</CODE></A>). </P>
+  <P>The <EM class=replaceable><CODE>socket-stream</CODE></EM> argument can also 
+  be a <A title="32.14.&nbsp;Raw Socket Access" 
+  href="http://clisp.cons.org/impnotes/rawsock.html">raw socket</A>.</P>
+  <DT><A id=so-opt></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/socket.html#so-opt"><CODE 
+  class=function>SOCKET:SOCKET-OPTIONS</CODE></A> <EM 
+  class=replaceable><CODE>socket-server</CODE></EM> <A 
+  href="http://www.lisp.org/HyperSpec/Body/sec_3-4-1.html" target=_top><CODE 
+  class=literal>&amp;REST</CODE></A> {<EM 
+  class=replaceable><CODE>option</CODE></EM>}*)</CODE></SPAN>
+  <DD>
+  <P>Query and, optionally, set socket options using <A class=unix 
+  href="http://www.opengroup.org/onlinepubs/007904975/functions/getsockopt.html"><CODE 
+  class=function>getsockopt</CODE></A> and <A class=unix 
+  href="http://www.opengroup.org/onlinepubs/007904975/functions/setsockopt.html"><CODE 
+  class=function>setsockopt</CODE></A>. An <EM 
+  class=replaceable><CODE>option</CODE></EM> is a keyword, optionally followed 
+  by the new value. When the new value is not supplied, <A class=unix 
+  href="http://www.opengroup.org/onlinepubs/007904975/functions/setsockopt.html"><CODE 
+  class=function>setsockopt</CODE></A> is not called. For each option the old 
+  (or current, if new value was not supplied) value is returned. E.g., <CODE 
+  class=code>(<A href="http://clisp.cons.org/impnotes/socket.html#so-opt"><CODE 
+  class=function>SOCKET:SOCKET-OPTIONS</CODE></A> <EM 
+  class=replaceable><CODE>socket-server</CODE></EM> :SO-LINGER 1 
+  :SO-RCVLOWAT)</CODE> returns 2 values: <A 
+  href="http://www.lisp.org/HyperSpec/Body/convar_nil.html" target=_top><CODE 
+  class=constant>NIL</CODE></A>, the old value of the <CODE 
+  class=constant>:SO-LINGER</CODE> option, and 1, the current value of the <CODE 
+  class=constant>:SO-RCVLOWAT</CODE> option. </P>
+  <P>The <EM class=replaceable><CODE>socket-stream</CODE></EM> argument can also 
+  be a <A title="32.14.&nbsp;Raw Socket Access" 
+  href="http://clisp.cons.org/impnotes/rawsock.html">raw socket</A>.</P>
+  <DT><A id=so-handles></A><SPAN class=term><CODE class=code>(<A 
+  href="http://clisp.cons.org/impnotes/socket.html#so-handles"><CODE 
+  class=function>SOCKET:STREAM-HANDLES</CODE></A> <EM 
+  class=replaceable><CODE>stream</CODE></EM>)</CODE></SPAN>
+  <DD>Return the input and output OS <A class=unix 
+  href="http://www.opengroup.org/onlinepubs/007904975/basedefs/xbd_chap03.html#tag_03_165">file 
+  descriptor</A>s of the <EM class=replaceable><CODE>stream</CODE></EM> as <A 
+  href="http://www.lisp.org/HyperSpec/Body/glo_m.html#multiple_values" 
+  target=_top>multiple values</A>. See <A title="32.14.&nbsp;Raw Socket Access" 
+  href="http://clisp.cons.org/impnotes/rawsock.html">Section&nbsp;32.14, “Raw 
+  Socket Access”</A>. </DD></DL></DIV></DIV><!--#endif--></DIV>
+<DIV class=bookinfo>
+<HR width="100%">
+
+<TABLE width="100%" summary="impnotes meta info">
+  <TBODY>
+  <TR>
+    <TH>
+    <TD align=left>These notes document <A href="http://clisp.cons.org/" 
+      target=_top><SPAN><STRONG class=command>CLISP</STRONG></SPAN></A> version 
+      2.41</TD>
+    <TD align=right>Last modified: 2006-10-13</TD></TH></TR></TBODY></TABLE></DIV>
+<DIV class=custom-footer>
+<HR width="100%">
+
+<TABLE width="100%">
+  <TBODY>
+  <TR>
+    <TD align=left><A href="http://clisp.cons.org/"><IMG height=48 
+      alt="[CLISP home]" src="31_5_&nbsp;Socket Streams_files/clisp.png" 
+      width=48></A></TD>
+    <TD align=middle><A 
+      href="http://sourceforge.net/donate/index.php?group_id=1355"><IMG 
+      height=32 alt="[Support This Project]" 
+      src="31_5_&nbsp;Socket Streams_files/project-support.jpg" width=88 
+      border=0></A></TD>
+    <TD align=right><A href="http://sourceforge.net/"><IMG height=37 
+      alt=[SourceForge] src="31_5_&nbsp;Socket Streams_files/sflogo.png" 
+      width=125></A></TD></TR></TBODY></TABLE></DIV>
+<DIV class=navfooter>
+<HR>
+
+<TABLE width="100%" summary="Navigation footer">
+  <TBODY>
+  <TR>
+    <TD align=left width="40%"><A accessKey=p 
+      href="http://clisp.cons.org/impnotes/affi.html">Prev</A>&nbsp;</TD>
+    <TD align=middle width="20%"><A accessKey=u 
+      href="http://clisp.cons.org/impnotes/ext-platform.html">Up</A></TD>
+    <TD align=right width="40%">&nbsp;<A accessKey=n 
+      href="http://clisp.cons.org/impnotes/quickstart.html">Next</A></TD></TR>
+  <TR>
+    <TD vAlign=top align=left width="40%">31.4.&nbsp;The Amiga Foreign 
+      Function Call Facility&nbsp;</TD>
+    <TD align=middle width="20%"><A accessKey=h 
+      href="http://clisp.cons.org/impnotes/index.html">Home</A></TD>
+    <TD vAlign=top align=right width="40%">&nbsp;31.6.&nbsp;Quickstarting 
+      delivery with <SPAN><STRONG 
+  class=command>CLISP</STRONG></SPAN></TD></TR></TBODY></TABLE></DIV></BODY></HTML>

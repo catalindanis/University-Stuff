@@ -1,0 +1,28 @@
+D:\00 MAP\curs\c#\sem12-schelet\Sem12\Sem12\bin\Debug\net9.0\Sem12.exe
+D:\00 MAP\curs\c#\sem12-schelet\Sem12\Sem12\bin\Debug\net9.0\Sem12.deps.json
+D:\00 MAP\curs\c#\sem12-schelet\Sem12\Sem12\bin\Debug\net9.0\Sem12.runtimeconfig.json
+D:\00 MAP\curs\c#\sem12-schelet\Sem12\Sem12\bin\Debug\net9.0\Sem12.dll
+D:\00 MAP\curs\c#\sem12-schelet\Sem12\Sem12\bin\Debug\net9.0\Sem12.pdb
+D:\00 MAP\curs\c#\sem12-schelet\Sem12\Sem12\obj\Debug\net9.0\Sem12.GeneratedMSBuildEditorConfig.editorconfig
+D:\00 MAP\curs\c#\sem12-schelet\Sem12\Sem12\obj\Debug\net9.0\Sem12.AssemblyInfoInputs.cache
+D:\00 MAP\curs\c#\sem12-schelet\Sem12\Sem12\obj\Debug\net9.0\Sem12.AssemblyInfo.cs
+D:\00 MAP\curs\c#\sem12-schelet\Sem12\Sem12\obj\Debug\net9.0\Sem12.csproj.CoreCompileInputs.cache
+D:\00 MAP\curs\c#\sem12-schelet\Sem12\Sem12\obj\Debug\net9.0\Sem12.dll
+D:\00 MAP\curs\c#\sem12-schelet\Sem12\Sem12\obj\Debug\net9.0\refint\Sem12.dll
+D:\00 MAP\curs\c#\sem12-schelet\Sem12\Sem12\obj\Debug\net9.0\Sem12.pdb
+D:\00 MAP\curs\c#\sem12-schelet\Sem12\Sem12\obj\Debug\net9.0\Sem12.genruntimeconfig.cache
+D:\00 MAP\curs\c#\sem12-schelet\Sem12\Sem12\obj\Debug\net9.0\ref\Sem12.dll
+D:\Facultate\MAP\Sem12\Sem12\obj\Debug\net9.0\Sem12.GeneratedMSBuildEditorConfig.editorconfig
+D:\Facultate\MAP\Sem12\Sem12\obj\Debug\net9.0\Sem12.AssemblyInfoInputs.cache
+D:\Facultate\MAP\Sem12\Sem12\obj\Debug\net9.0\Sem12.AssemblyInfo.cs
+D:\Facultate\MAP\Sem12\Sem12\obj\Debug\net9.0\Sem12.csproj.CoreCompileInputs.cache
+D:\Facultate\MAP\Sem12\Sem12\obj\Debug\net9.0\Sem12.dll
+D:\Facultate\MAP\Sem12\Sem12\obj\Debug\net9.0\refint\Sem12.dll
+D:\Facultate\MAP\Sem12\Sem12\obj\Debug\net9.0\Sem12.pdb
+D:\Facultate\MAP\Sem12\Sem12\bin\Debug\net9.0\Sem12.exe
+D:\Facultate\MAP\Sem12\Sem12\bin\Debug\net9.0\Sem12.deps.json
+D:\Facultate\MAP\Sem12\Sem12\bin\Debug\net9.0\Sem12.runtimeconfig.json
+D:\Facultate\MAP\Sem12\Sem12\bin\Debug\net9.0\Sem12.dll
+D:\Facultate\MAP\Sem12\Sem12\bin\Debug\net9.0\Sem12.pdb
+D:\Facultate\MAP\Sem12\Sem12\obj\Debug\net9.0\Sem12.genruntimeconfig.cache
+D:\Facultate\MAP\Sem12\Sem12\obj\Debug\net9.0\ref\Sem12.dll

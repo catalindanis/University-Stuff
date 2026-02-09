@@ -1,0 +1,29 @@
+member1(E,[E|_]).
+member1(E,[_|L]) :- member1(E,L).
+
+invers(L, Rez) :- invers_aux([], L, Rez).
+
+invers_aux(Col, [], Col).
+invers_aux(Col, [H | T], Rez) :-
+	invers_aux([H | Col], T, Rez).
+
+pare([], []).
+pare([H | T], [H | Rez) :-
+	H mod 2 =:= 0,
+	!,
+	pare(T, Rez).
+pare([_| T], Rez) :-
+	pare(T, Rez).
+
+suma([], 0).
+suma([H | T], S) :-
+	is_list(H), !,
+	suma(H, Rez1),
+	suma(T, Rez2),
+	S is Rez1 + Rez2.
+suma([H | T], S) :-
+	number(H), !,
+	suma(T, Rez),
+	S is Rez + H.
+suma([_ | T], S) :-
+	suma(T, S).

@@ -1,0 +1,10 @@
+generare(L, S, Rez) :-
+	findall(Sol, generare_aux(L, S, Sol), Rez).
+
+generare_aux(_, 0, []).
+generare_aux([H | T], S, [H | Rez]) :-
+	S - H >= 0,
+	S1 is S - H,
+	generare_aux(T, S1, Rez).
+generare_aux([_ | T], S, Rez) :-
+	generare_aux(T, S, Rez).

@@ -1,0 +1,14 @@
+generare(N, []).
+generare(N, Rez) :-
+	findall(S, generare_aux(N, 0, 1, S), Rez).
+
+generare_aux(N, N, _, []).
+generare_aux(N, Sc, Val, [Val | Rez]) :-
+	Sc + Val =< N,
+	Sc1 is Sc + Val,
+	Val1 is Val + 1,
+	generare_aux(N, Sc1, Val1, Rez).
+generare_aux(N, Sc, Val, Rez) :-
+	Sc + Val =< N,
+	Val1 is	Val + 1,
+	generare_aux(N, Sc, Val1, Rez).
