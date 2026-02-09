@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.tema.PageController">
+   <children>
+      <Label text="Username">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </Label>
+      <TextField fx:id="usernameField">
+         <VBox.margin>
+            <Insets left="10.0" right="10.0" />
+         </VBox.margin>
+      </TextField>
+
+      <Label text="Email">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </Label>
+      <TextField fx:id="emailField">
+         <VBox.margin>
+            <Insets left="10.0" right="10.0" />
+         </VBox.margin>
+      </TextField>
+
+      <VBox alignment="CENTER" fx:id="personFieldsVBox">
+         <Label text="First name">
+            <VBox.margin>
+               <Insets top="10.0" />
+            </VBox.margin>
+         </Label>
+         <TextField fx:id="firstNameField">
+            <VBox.margin>
+               <Insets left="10.0" right="10.0" />
+            </VBox.margin>
+         </TextField>
+
+         <Label text="Last name">
+            <VBox.margin>
+               <Insets top="10.0" />
+            </VBox.margin>
+         </Label>
+         <TextField fx:id="lastNameField">
+            <VBox.margin>
+               <Insets left="10.0" right="10.0" />
+            </VBox.margin>
+         </TextField>
+
+         <Label text="Occupation">
+            <VBox.margin>
+               <Insets top="10.0" />
+            </VBox.margin>
+         </Label>
+         <TextField fx:id="occupationField">
+            <VBox.margin>
+               <Insets left="10.0" right="10.0" />
+            </VBox.margin>
+         </TextField>
+
+         <Label text="Empathy level">
+            <VBox.margin>
+               <Insets top="10.0" />
+            </VBox.margin>
+         </Label>
+         <TextField fx:id="empathyLevelField">
+            <VBox.margin>
+               <Insets left="10.0" right="10.0" />
+            </VBox.margin>
+         </TextField>
+
+         <Label text="Date of birth">
+            <VBox.margin>
+               <Insets top="10.0" />
+            </VBox.margin>
+         </Label>
+         <DatePicker fx:id="dateOfBirthField" />
+      </VBox>
+
+      <VBox alignment="CENTER" fx:id="duckFieldVBox">
+         <Label text="Speed">
+            <VBox.margin>
+               <Insets top="10.0" />
+            </VBox.margin>
+         </Label>
+         <TextField fx:id="speedField">
+            <VBox.margin>
+               <Insets left="10.0" right="10.0" />
+            </VBox.margin>
+         </TextField>
+
+         <Label text="Resistance">
+            <VBox.margin>
+               <Insets top="10.0" />
+            </VBox.margin>
+         </Label>
+         <TextField fx:id="resistanceField">
+            <VBox.margin>
+               <Insets left="10.0" right="10.0" />
+            </VBox.margin>
+         </TextField>
+
+         <Label text="Type">
+            <VBox.margin>
+               <Insets top="10.0" />
+            </VBox.margin>
+         </Label>
+         <ComboBox fx:id="duckTypeComboBox">
+            <VBox.margin>
+               <Insets left="10.0" right="10.0" />
+            </VBox.margin>
+         </ComboBox>
+
+      </VBox>
+
+      <Label fx:id="numberOfFriendsLabel" alignment="CENTER">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </Label>
+
+      <Button fx:id="saveDataButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="100" minWidth="100" mnemonicParsing="false" text="Save">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin></Button>
+   </children>
+</VBox>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.TextFlow?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.tema.DucksController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+   <children>
+      <TableView fx:id="table" maxHeight="150.0" maxWidth="550.0" minHeight="150.0">
+          <columns>
+              <TableColumn fx:id="idCol" text="Id" />
+              <TableColumn fx:id="usernameCol" text="Name" />
+              <TableColumn fx:id="emailCol" text="Email" />
+              <TableColumn fx:id="passwordCol" text="Password" />
+              <TableColumn fx:id="typeCol" text="Type" />
+              <TableColumn fx:id="speedCol" text="Speed" />
+              <TableColumn fx:id="resistanceCol" text="Resistance" />
+<!--              <TableColumn fx:id="groupCol" text="Group" />-->
+          </columns>
+      </TableView>
+
+      <GridPane>
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+             <Button alignment="TOP_RIGHT" mnemonicParsing="false" onAction="#onNextPage" text="Next" GridPane.columnIndex="2" />
+             <TextFlow fx:id="textFlow" prefHeight="200.0" prefWidth="200.0" textAlignment="CENTER" GridPane.columnIndex="1">
+             </TextFlow>
+            <Button mnemonicParsing="false" onAction="#onPreviousPage" text="Previous" />
+         </children>
+      </GridPane>
+
+       <ComboBox fx:id="filterDuckTypeComboBox" layoutX="50" layoutY="40" onAction="#onFilterDuckTypeChanged" prefWidth="200" />
+
+       <GridPane hgap="20.0" vgap="20.0">
+           <columnConstraints>
+               <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+               <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+           </columnConstraints>
+           <rowConstraints>
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+           </rowConstraints>
+           <children>
+               <TextField fx:id="email" promptText="Email" />
+               <TextField fx:id="username" promptText="Username" GridPane.columnIndex="1" />
+               <TextField fx:id="password" promptText="Password" GridPane.rowIndex="1" />
+               <TextField fx:id="speed" promptText="Speed" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+               <TextField fx:id="resistance" promptText="Resistance" GridPane.rowIndex="2" />
+               <ComboBox fx:id="duckTypeComboBox" prefHeight="26.0" prefWidth="290.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+           </children>
+       </GridPane>
+      <HBox alignment="TOP_CENTER" prefHeight="0.0" prefWidth="600.0" spacing="20">
+         <children>
+            <Button mnemonicParsing="false" text="Add" onAction="#onAddDuck" />
+             <Button mnemonicParsing="false" text="Delete" onAction="#onDeleteDuck" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

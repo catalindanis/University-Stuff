@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox alignment="CENTER" spacing="20" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.tema.EventsController">
+    <VBox spacing="5">
+        <Text>Events</Text>
+        <ListView fx:id="eventsListView" />
+    </VBox>
+    <VBox fx:id="adminControls" spacing="5">
+        <Text>Admin</Text>
+        <TextField promptText="Name" fx:id="eventName" />
+        <ComboBox prefWidth="150.0" fx:id = "eventTypeComboBox"/>
+            <HBox>
+                <Button text="+" fx:id="addLaneButton">
+                    <HBox.margin>
+                        <Insets right="10.0" />
+                    </HBox.margin>
+                </Button>
+                <Button text="-" fx:id="removeLaneButton"/>
+            </HBox>
+        <ScrollPane
+                fitToWidth="true"
+                vbarPolicy="AS_NEEDED"
+                hbarPolicy="NEVER"
+                maxHeight="250">
+            <content>
+                <VBox fx:id="lanesBox">
+                    <Text>Lane #1</Text>
+                    <TextField promptText="Buoy distance" />
+                </VBox>
+            </content>
+        </ScrollPane>
+        <HBox>
+            <Button text="Add" fx:id="addEventButton">
+                <HBox.margin>
+                <Insets right="10.0" />
+                </HBox.margin>
+            </Button>
+            <Button text="Delete" fx:id="removeEventButton">
+                <HBox.margin>
+                    <Insets right="10.0" />
+                </HBox.margin>
+            </Button>
+            <Button text="Start" fx:id="startEventButton" />
+        </HBox>
+    </VBox>
+    <VBox fx:id="personControls" spacing="5">
+        <Text>Person</Text>
+        <Button text="Subscribe" fx:id="subscribeEventButton" />
+        <HBox.margin>
+            <Insets bottom="10.0" top="10.0" />
+        </HBox.margin>
+    </VBox>
+    <VBox fx:id="duckControls" spacing="5">
+        <Text>Duck</Text>
+        <Button text="Join" fx:id="joinEventButton" />
+        <HBox.margin>
+            <Insets bottom="10.0" top="10.0" />
+        </HBox.margin>
+    </VBox>
+</HBox>
