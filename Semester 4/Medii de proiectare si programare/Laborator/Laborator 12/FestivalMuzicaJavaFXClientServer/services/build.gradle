@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+}
+
+group = 'ro.mpp2026'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.18.0'
+    implementation project(':model')
+    implementation project(':persistence')
+    implementation project(':networking')
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,0 +1,13 @@
+.configuration-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.configuration-option {
+    display: block;
+    width: fit-content;
+    padding: 5px;
+    border: 1px solid black;
+    background-color: cadetblue;
+}

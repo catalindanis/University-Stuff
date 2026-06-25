@@ -1,0 +1,11 @@
+rootProject.name = "client"
+
+include 'model'
+include 'networking'
+include 'persistence'
+include 'services'
+
+project(':model').projectDir = file('../model')
+project(':networking').projectDir = file('../networking')
+project(':persistence').projectDir = file('../persistence')
+project(':services').projectDir = file('../services')

@@ -1,0 +1,28 @@
+.custom-button {
+    padding: 10px 24px;
+    font-size: var(--default-font-size);
+    color: var(--text-primary-color);
+    background-color: var(--secondary-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    outline: none;
+}
+
+.custom-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.custom-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.custom-button:disabled {
+    background-color: var(--primary-color);
+    cursor: not-allowed;
+    transform: none;
+}

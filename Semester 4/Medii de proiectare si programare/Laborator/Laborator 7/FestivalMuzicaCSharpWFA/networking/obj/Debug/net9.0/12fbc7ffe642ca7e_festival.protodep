@@ -1,0 +1,3 @@
+obj\Debug\net9.0\Protos/Festival.cs \
+obj\Debug\net9.0\Protos/FestivalGrpc.cs: C:/Users/catal/.nuget/packages/grpc.tools/2.62.0/build/native/include/google/protobuf/timestamp.proto\
+ Protos/festival.proto

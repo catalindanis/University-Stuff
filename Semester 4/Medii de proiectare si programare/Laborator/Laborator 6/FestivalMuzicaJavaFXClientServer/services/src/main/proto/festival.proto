@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option java_package = "ro.mpp2026.festivalmuzicajavafx.grpc";
+option java_outer_classname = "FestivalProto";
+option java_multiple_files = true;
+
+option csharp_namespace = "FestivalGrpc";
+
+package festival;
+
+message UserRequest {
+  int64 id       = 1;
+  string email   = 2;
+  string password = 3;
+}
+
+message UserResponse {
+  int64 id = 1;
+}
+
+message ShowRequest {
+  string artist_name   = 1;
+  google.protobuf.Timestamp date = 2;
+  string location      = 3;
+  int32 number_of_seats = 4;
+}
+
+message ShowResponse {
+  int64  id              = 1;
+  string artist_name     = 2;
+  google.protobuf.Timestamp date = 3;
+  string location        = 4;
+  int32  remaining_seats = 5;
+}
+
+message TicketResponse {
+  int64        id          = 1;
+  string       client_name = 2;
+  ShowResponse show        = 3;
+  int32        no_seats    = 4;
+}
+
+message ShowFilter {
+  string artist_name = 1;
+  google.protobuf.Timestamp date = 2;
+}
+
+message LoginRequest {
+  UserRequest user = 1;
+}
+
+message RegisterRequest {
+  UserRequest user = 1;
+}
+
+message LogoutRequest {
+  int64 user_id = 1;
+}
+
+message FindAllShowsRequest {
+  optional ShowFilter filter = 1;
+}
+
+message FindShowRequest {
+  int64 id = 1;
+}
+
+message BookTicketRequest {
+  int64  show_id          = 1;
+  string client           = 2;
+  int32  number_of_seats  = 3;
+}
+
+message UpdateTicketRequest {
+  int64  ticket_id        = 1;
+  int64  show_id          = 2;
+  string client           = 3;
+  int32  number_of_seats  = 4;
+}
+
+message FindTicketsForShowRequest {
+  int64 show_id = 1;
+}
+
+message FindShowByIdRequest {
+  int64 id = 1;
+}
+
+message OkResponse {}
+
+message ErrorResponse {
+  string message = 1;
+}
+
+message ShowListResponse {
+  repeated ShowResponse shows = 1;
+}
+
+message TicketListResponse {
+  repeated TicketResponse tickets = 1;
+}
+
+message SoldSeatsResponse {
+  int32 sold_seats = 1;
+}
+
+message ServerUpdate {
+  string type = 1;
+}
+
+service FestivalService {
+
+  rpc Login    (LoginRequest)    returns (UserResponse);
+  rpc Register (RegisterRequest) returns (OkResponse);
+  rpc Logout   (LogoutRequest)   returns (OkResponse);
+
+  rpc SaveShow    (ShowRequest)        returns (OkResponse);
+  rpc FindAllShows(FindAllShowsRequest) returns (ShowListResponse);
+  rpc FindShowById(FindShowRequest)    returns (ShowResponse);
+
+  rpc BookTicket          (BookTicketRequest)          returns (OkResponse);
+  rpc UpdateTicket        (UpdateTicketRequest)        returns (OkResponse);
+  rpc FindAllTickets      (OkResponse)                 returns (TicketListResponse);
+  rpc FindTicketsForShow  (FindTicketsForShowRequest)  returns (TicketListResponse);
+  rpc GetSoldSeatsForShow (FindTicketsForShowRequest)  returns (SoldSeatsResponse);
+
+  rpc Subscribe (UserResponse) returns (stream ServerUpdate);
+}

@@ -1,0 +1,13 @@
+4. Proiectați și implementați o aplicație client-server pentru următoarea problemă. (8p)
+
+Un joc cu un jucător. La începutul jocului, jucătorul primește 50 de lei, iar sistemul îi va trimite o configurație (aleasă aleator din baza de date) cu 5 poziții și cu valoarea asociată fiecărei poziții (ex. 15lei, 20lei, 3lei, 12lei, 30lei). Jucătorul va fi poziționat înaintea primei poziții, iar scopul este să obțină o sumă cât mai mare de bani la finalul jocului. Jucătorul poate să facă următoarele:
+
+1.Începere joc. Pentru a porni un joc, jucătorul își introduce aliasul asociat. După verificarea că aliasul corespunde unui jucător înregistrat în aplicație, începe jocul și jucătorul va vedea cele 5 poziții și valoarea fiecărei poziții.
+
+2.Generare număr. Fiecare jucător generează aleator un număr n între 1 și 3 (1, 2 sau 3), prin apăsarea unui buton. După ce numărul este generat, jucătorul va înainta cu n poziții în lista pozițiilor afișate (e posibil să treacă iarăși pe la start). Dacă noua poziție nu a fost deja ocupată, jucătorul va plăti serverului valoarea poziției respective și va deveni ocupantul acelei poziții. Dacă noua poziție depășește cele 5 poziții și jucătorul trece din nou pe la start, acesta va primi 5 lei de la server. Dacă noua poziție a mai fost vizitată de jucător, acesta rămâne cu aceeași sumă de bani. Cerința 2 se repetă de încă 2 ori.
+
+3.Final joc. După repetarea de 3 ori a cerinței 2 jocul se termină, iar jucătorul va putea vizualiza suma de bani obținută și poziția lui în clasamentul tuturor jocurilor finalizate până atunci. Pentru fiecare joc, în clasament se va afișa alias-ul jucătorului, data și ora la care a început jocul și suma obținută. Dacă în timp ce un jucător execută cele 3 generări de numere, un alt jucător a finalizat un joc, clasamentul se va actualiza automat pentru a include și rezultatul respectiv.
+
+4.Un serviciu REST (1) care pentru un anumit jucător, permite vizualizarea tuturor jocurilor finalizate și a rezultatului obținut.
+
+5.Un client web si un un serviciu REST (2) care permite adăugarea unei noi configurații de joc (valorile celor 5 poziții).

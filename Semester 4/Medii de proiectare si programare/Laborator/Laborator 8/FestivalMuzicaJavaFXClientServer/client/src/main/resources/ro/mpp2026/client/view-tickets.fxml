@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ro.mpp2026.client.controller.ViewTicketsController">
+    <VBox prefHeight="303.0" prefWidth="532.0">
+        <TableView fx:id="ticketsTable" prefHeight="200.0" prefWidth="200.0">
+            <columns>
+                <TableColumn fx:id="clientNameColumn" prefWidth="100.0" text="Client" />
+                <TableColumn fx:id="showNameColumn" prefWidth="100.0" text="Show" />
+                <TableColumn fx:id="numberOfSeatsColumn" prefWidth="100.0" text="Number of seats" />
+            </columns>
+            <VBox.margin>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </VBox.margin>
+        </TableView>
+      <HBox prefHeight="0.0" prefWidth="522.0">
+         <children>
+            <TextField fx:id="numberOfSeatsField" promptText="Number of seats" />
+            <Button fx:id="updateTicketButton" mnemonicParsing="false" text="Update">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin></Button>
+         </children>
+         <VBox.margin>
+            <Insets left="10.0" />
+         </VBox.margin>
+      </HBox>
+        <Label fx:id="messageLabel" textFill="RED">
+            <padding>
+                <Insets left="10.0" />
+            </padding>
+            <VBox.margin>
+                <Insets top="10.0" />
+            </VBox.margin>
+        </Label>
+    </VBox>
+</AnchorPane>

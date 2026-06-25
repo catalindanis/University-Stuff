@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+}
+
+group = 'ro.mpp2026'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.18.0'
+    compileOnly("org.projectlombok:lombok:1.18.44")
+    annotationProcessor("org.projectlombok:lombok:1.18.44")
+    implementation 'org.xerial:sqlite-jdbc:3.45.3.0'
+
+    implementation 'org.hibernate.orm:hibernate-core:6.4.4.Final'
+    implementation 'org.hibernate.validator:hibernate-validator:8.0.0.Final'
+    implementation 'org.glassfish:jakarta.el:4.0.2'
+    implementation 'org.hibernate.orm:hibernate-community-dialects:6.4.4.Final'
+
+    implementation project(':model')
+
+    implementation 'org.springframework:spring-context:6.1.1'
+}
+
+test {
+    useJUnitPlatform()
+}

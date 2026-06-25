@@ -1,0 +1,41 @@
+:root {
+    --primary-color: #333138;
+    --secondary-color: #515052;
+    --text-primary-color: #FFFFFA;
+    --font-family: "Roboto Light", sans-serif;
+    --title-font-size: 1.5rem;
+    --default-font-size: 1rem;
+    --default-font-weight: 600;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    background-color: var(--primary-color);
+    color: var(--text-primary-color);
+    font-family: var(--font-family), serif;
+    font-weight: var(--default-font-weight);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.title {
+    font-size: var(--title-font-size);
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
