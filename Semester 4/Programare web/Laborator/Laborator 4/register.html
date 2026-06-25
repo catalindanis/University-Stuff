@@ -1,0 +1,157 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="responsive.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Meditații pentru toți - Înscriere</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div class="container">
+        <ul class="navbar">
+            <li><a href="index.html">Acasă</a></li>
+            <li><a href="register.html">Înscriere</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li class="has-submenu">
+                <a href="#">Despre</a>
+                <ul class="submenu">
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="teachers.html">Profesori</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="title-container mb-10">
+            <span class="title">Formular de inscriere</span>
+        </div>
+
+        <div class="subtitle-container mb-20">
+            <span>Ai deja un cont? <a href = "login.html">Click aici</a></span>
+        </div>
+
+        <form name="formular_inscriere" class="form" id="registerForm">
+        <fieldset>
+            <legend>Date personale</legend>
+
+            <p>
+                Nume:<br>
+                <input id="lastNameInput" type="text" name="nume" maxlength="40" size="30" placeholder="Nume">
+            </p>
+
+            <p>
+                Prenume:<br>
+                <input id="firstNameInput" type="text" name="prenume" maxlength="40" size="30" placeholder="Prenume">
+            </p>
+
+            <p>
+                E-mail:<br>
+                <input id="emailInput" type="text" name="email" placeholder="exemplu@student.ro" size="30">
+            </p>
+
+            <p>
+                Parolă:<br>
+                <input id="passwordInput" type="password" name="password" placeholder="Parolă">
+            </p>
+
+            <p>
+                Vârstă:<br>
+                <input id="ageInput" type="number" name="age" placeholder="20" min="7">
+            </p>
+
+            <p>
+                Data nașterii:<br>
+                <input id="dateInput" type="date" name="date">
+            </p>
+
+            <p>
+                Telefon părinte:<br>
+                <input id="phoneInput" type="text" name="telefon" maxlength="10" size="12" placeholder="07xxxxxxxx">
+            </p>
+
+            <p>
+                Județ:<br>
+                <select id="countySelect" name="judet"></select>
+            </p>
+
+            <p>
+                Oraș:<br>
+                <select id="citySelect" name="oras" disabled="disabled">
+                    <option value="">Alegeți un județ mai întâi</option>
+                </select>
+            </p>
+
+            <p>
+                Clasa:<br>
+                <select name="clase" multiple="multiple" size="4" id="classSelect">
+                    <option value="9">Clasa a IX-a</option>
+                    <option value="10">Clasa a X-a</option>
+                    <option value="11">Clasa a XI-a</option>
+                    <option value="12">Clasa a XII-a</option>
+                </select>
+            </p>
+
+            <p>
+                Materie preferată:<br>
+                <select name="materie">
+                    <option value="mate" selected="selected">Matematică</option>
+                    <option value="info">Informatică</option>
+                    <option value="romana" disabled="disabled">Limba română (ocupat)</option>
+                </select>
+            </p>
+
+            <p>
+                Interval preferat:<br>
+                <select name="interval" size="3">
+                    <option value="dimineata">Dimineață</option>
+                    <option value="pranz">Prânz</option>
+                    <option value="seara">Seară</option>
+                </select>
+            </p>
+
+            <p>
+                Tip ședință:<br>
+                <input type="radio" name="tip_sedinta" value="online">Online
+                <input type="radio" name="tip_sedinta" value="fizic">Fizic
+            </p>
+
+            <p>
+                Buget maxim pe ședință:<br>
+                <input type="number" name="buget" max="300" step="10" placeholder="150">
+            </p>
+
+            <p>
+                <input type="checkbox" name="regulament" value="da">
+                Doresc noutăți:<br>
+            </p>
+
+            <p>
+                <input type="checkbox" name="terms" value="da" id="termsInput">
+                Sunt de acord cu prelucrarea datelor:
+            </p>
+
+            <p class="custom-paragraph">
+                Observații:<br>
+                <textarea name="observatii" cols="45"
+                    rows="5" placeholder="Sunt disponibil(ă) după ora 17:00, luni și joi."></textarea>
+            </p>
+
+            <div class="container text-center mb-20">
+                <span class="error" id="registerErrorText"></span>
+            </div>
+
+            <div class="container">
+                <input type="submit" name="trimite" value="Register" class="mb-10">
+                <input type="reset" name="reseteaza" value="Resetează">
+            </div>
+        </fieldset>
+    </form>
+    </div>
+    <button id="theme-toggle" class="sticky-theme-toggle">Schimbă Tema</button>
+
+    <script src="index.js"></script>
+</body>
+
+</html>

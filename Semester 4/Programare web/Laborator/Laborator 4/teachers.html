@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="responsive.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Meditații pentru toți - Profesori</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <nav class="container">
+        <ul class="navbar">
+            <li><a href="index.html">Acasă</a></li>
+            <li><a href="register.html">Înscriere</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li class="has-submenu">
+                <a href="#">Despre</a>
+                <ul class="submenu">
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="teachers.html">Profesori</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div class="container content">
+        <div class="title-container">
+            <span class="title">Profesori</span>
+        </div>
+        <div id="section">
+            <h2>Tabel Orizontal</h2>
+            <table id="teachers-table">
+                <thead>
+                    <tr>
+                        <th data-column="name">Nume<span class="sort-indicator"></span></th>
+                        <th data-column="subject">Materie<span class="sort-indicator"></span></th>
+                        <th data-column="experience">Experiență (ani)<span class="sort-indicator"></span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <hr>
+            <h2>Tabel Vertical</h2>
+            <table id="vertical-teachers-table" class="vertical-table">
+            </table>
+        </div>
+    </div>    
+        <button id="theme-toggle" class="sticky-theme-toggle">Schimbă Tema</button>
+    <script src="index.js"></script>
+</body>
+
+</html>

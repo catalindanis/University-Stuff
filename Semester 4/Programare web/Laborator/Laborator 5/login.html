@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="responsive.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Meditații pentru toți - Înscriere</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div class="container">
+        <ul class="navbar">
+            <li><a href="index.html">Acasă</a></li>
+            <li><a href="register.html">Înscriere</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li class="has-submenu">
+                <a href="#">Despre</a>
+                <ul class="submenu">
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="teachers.html">Profesori</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="title-container mb-10">
+            <span class="title">Intră în cont</span>
+        </div>
+
+        <div class="subtitle-container mb-20">
+            <span>Nu ai cont? <a href = "register.html">Click aici</a></span>
+        </div>
+
+
+        <form name="formular_inscriere" action="#" class="form" id="loginForm">
+        <fieldset>
+            <legend>Date personale</legend>
+
+            <p>
+                E-mail:<br>
+                <input type="text" name="email" placeholder="exemplu@student.ro" size="30" id="emailInput">
+            </p>
+            
+            <p>
+                Parolă:<br>
+                <input type="password" name="password" placeholder="Parolă" id="passwordInput">
+            </p>
+
+            <div class="container text-center mb-20">
+                <span class="error" id="registerErrorText"></span>
+            </div>
+
+            <div class="container">
+                <input type="submit" name="trimite" value="Login">
+            </div>
+        </fieldset>
+    </form>
+    </div>
+
+        <button id="theme-toggle" class="sticky-theme-toggle">Schimbă Tema</button>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>

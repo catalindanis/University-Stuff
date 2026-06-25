@@ -1,0 +1,137 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="responsive.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Meditații pentru toți - Înscriere</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div class="container">
+        <ul class="navbar">
+            <li><a href="index.html">Acasă</a></li>
+            <li><a href="inscriere.html">Înscriere</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li class="has-submenu">
+                <a href="#">Despre</a>
+                <ul class="submenu">
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="locatie.html">Locație</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="container content">
+        <div class="title-container">
+            <span class="title">Formular de inscriere</span>
+        </div>
+
+        <form name="formular_inscriere" action="#">
+        <fieldset>
+            <legend>Date personale</legend>
+
+            <p>
+                Nume elev:<br>
+                <input type="text" name="nume" maxlength="40" size="30" value="Nume">
+            </p>
+
+            <p>
+                Prenume elev:<br>
+                <input type="text" name="prenume" maxlength="40" size="30" value="Prenume">
+            </p>
+
+            <p>
+                E-mail:<br>
+                <input type="text" name="email" readonly="readonly" value="exemplu@student.ro" size="30">
+            </p>
+
+            <p>
+                Telefon părinte:<br>
+                <input type="text" name="telefon" maxlength="10" size="12" value="07xxxxxxxx">
+            </p>
+
+            <p>
+                Oraș:<br>
+                <input type="text" name="oras" maxlength="30" size="20" value="București">
+            </p>
+
+            <p>
+                Stradă:<br>
+                <input type="text" name="strada" maxlength="40" size="25" value="Strada Școlii">
+            </p>
+
+            <p>
+                Număr:<br>
+                <input type="text" name="numar" maxlength="6" size="8" value="10A">
+            </p>
+
+            <p>
+                Cod poștal:<br>
+                <input type="text" name="cod_postal" maxlength="6" size="8" value="010101">
+            </p>
+
+            <p>
+                Clasa:<br>
+                <select name="clase" multiple="multiple" size="4">
+                    <option value="9">Clasa a IX-a</option>
+                    <option value="10" selected="selected">Clasa a X-a</option>
+                    <option value="11">Clasa a XI-a</option>
+                    <option value="12">Clasa a XII-a</option>
+                </select>
+            </p>
+
+            <p>
+                Materie preferată:<br>
+                <select name="materie">
+                    <option value="mate" selected="selected">Matematică</option>
+                    <option value="info">Informatică</option>
+                    <option value="romana" disabled="disabled">Limba română (ocupat)</option>
+                </select>
+            </p>
+
+            <p>
+                Interval preferat:<br>
+                <select name="interval" size="3">
+                    <option value="dimineata" selected="selected">Dimineață</option>
+                    <option value="pranz">Prânz</option>
+                    <option value="seara">Seară</option>
+                </select>
+            </p>
+
+            <p>
+                Tip ședință:<br>
+                <input type="radio" name="tip_sedinta" value="online" checked="checked"> Online
+                <input type="radio" name="tip_sedinta" value="fizic"> Fizic
+            </p>
+
+            <p>
+                Buget maxim pe ședință:<br>
+                <input type="number" name="buget" max="300" step="10" value="150">
+            </p>
+
+            <p>
+                Accept regulamentul:
+                <input type="checkbox" name="regulament" checked="checked" value="da">
+                Doresc noutăți:
+                <input type="checkbox" name="newsletter" value="da">
+                Sunt de acord cu prelucrarea datelor:
+            </p>
+
+            <p>
+                Observații:<br>
+                <textarea name="observatii" cols="45"
+                    rows="5">Sunt disponibil(ă) după ora 17:00, luni și joi.</textarea>
+            </p>
+
+            <p>
+                <input type="submit" name="trimite" value="Trimite formular">
+                <input type="reset" name="reseteaza" value="Resetează">
+            </p>
+        </fieldset>
+    </form>
+    </div>
+</body>
+
+</html>
