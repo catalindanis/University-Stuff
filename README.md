@@ -28,3 +28,12 @@ Semester 3:
 - Probability and Statistics
 - English
 - Pedagogical Module
+
+Semester 4:
+- Artificial Intelligence
+- Software Engineering
+- Systems for Design and Implementation
+- Database Management Systems
+- Web Programming
+- English
+- Pedagogical Module
