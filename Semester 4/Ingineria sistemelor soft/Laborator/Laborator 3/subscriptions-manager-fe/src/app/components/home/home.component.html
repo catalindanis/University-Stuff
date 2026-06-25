@@ -1,0 +1,364 @@
+<div class="home-container">
+  <div *ngIf="isAdmin" class="admin-section">
+    <div class="admin-header">
+      <h1>Subscription Categories</h1>
+      <p class="subtitle">Manage all subscription categories in the system</p>
+    </div>
+
+    <div class="add-category-card">
+      <form class="add-category-form" (ngSubmit)="onAddCategory()">
+        <div class="form-group">
+          <label for="companyName">Company Name</label>
+          <input
+            id="companyName"
+            type="text"
+            [(ngModel)]="formData.companyName"
+            name="companyName"
+            placeholder="Enter company name"
+            [disabled]="formLoading"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="billingType">Billing Type</label>
+          <select
+            id="billingType"
+            [(ngModel)]="formData.billingType"
+            name="billingType"
+            [disabled]="formLoading || billingTypes.length === 0"
+          >
+            <option *ngFor="let type of billingTypes" [value]="type">
+              {{ type }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="price">Price ($)</label>
+          <input
+            id="price"
+            type="number"
+            [(ngModel)]="formData.price"
+            name="price"
+            placeholder="Enter price"
+            step="0.01"
+            min="0"
+            [disabled]="formLoading"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="add-button"
+          [disabled]="formLoading"
+        >
+          {{ formLoading ? 'Creating...' : 'Add Category' }}
+        </button>
+      </form>
+
+      <div class="success-message" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+
+      <div class="form-error" *ngIf="formError">
+        {{ formError }}
+      </div>
+    </div>
+
+    <div class="error-message" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <div class="loading" *ngIf="loading">
+      <p>Loading subscription categories...</p>
+    </div>
+
+    <div class="empty-state" *ngIf="!loading && categories.length === 0 && !errorMessage">
+      <p>No subscription categories found.</p>
+    </div>
+
+    <div class="table-wrapper" *ngIf="!loading && categories.length > 0">
+      <table class="categories-table">
+        <thead>
+          <tr>
+            <th>Company Name</th>
+            <th>Billing Type</th>
+            <th>Price</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let category of categories">
+            <td>{{ category.companyName }}</td>
+            <td>{{ category.billingType }}</td>
+            <td>${{ category.price.toFixed(2) }}</td>
+            <td>
+              <button class="action-button delete-button mr-4" (click)="onDeleteCategory(category)">
+                Delete
+              </button>
+              <button class="action-button edit-button" (click)="openEditModal(category)">
+                Edit
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div *ngIf="!isAdmin" class="admin-section">
+    <div class="user-header">
+      <h1>Your Subscriptions</h1>
+      <p class="subtitle">Manage your subscriptions</p>
+    </div>
+
+    <div class="add-subscription-card">
+      <form class="add-subscription-form" (ngSubmit)="onAddSubscription()">
+        <div class="form-group">
+          <label for="subCategory">Category</label>
+          <select id="subCategory" [(ngModel)]="subscriptionForm.subscriptionCategoryId" name="subscriptionCategoryId" [disabled]="subscriptionFormLoading || categories.length === 0">
+            <option *ngFor="let c of categories" [ngValue]="c.id">{{ c.companyName }} — {{ c.billingType }} — ${{ c.price.toFixed(2) }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="startDate">Start Date</label>
+          <input id="startDate" type="date" [(ngModel)]="subscriptionForm.startDate" name="startDate" [disabled]="subscriptionFormLoading" />
+        </div>
+
+        <button type="submit" class="add-button" [disabled]="subscriptionFormLoading">
+          {{ subscriptionFormLoading ? 'Creating...' : 'Add Subscription' }}
+        </button>
+      </form>
+
+      <div class="success-message" *ngIf="subscriptionSuccess">
+        {{ subscriptionSuccess }}
+      </div>
+
+      <div class="form-error" *ngIf="subscriptionFormError">
+        {{ subscriptionFormError }}
+      </div>
+    </div>
+
+    <p>Filter subscriptions</p>
+    <div class="filters">
+      <div class="form-group inline">
+        <label for="filterStartDate">Start Date</label>
+        <input id="filterStartDate" type="date" [(ngModel)]="filterStartDate" name="filterStartDate" (change)="applyFilters()" />
+      </div>
+
+      <div class="form-group inline">
+        <label for="filterCategory">Category</label>
+        <select id="filterCategory" [(ngModel)]="filterCategoryId" name="filterCategoryId" (change)="applyFilters()">
+          <option [ngValue]="null">All categories</option>
+          <option *ngFor="let c of categories" [ngValue]="c.id">{{ c.companyName }} — {{ c.billingType }} — ${{ c.price.toFixed(2) }}</option>
+        </select>
+      </div>
+
+      <button class="calculate-button" (click)="onCalculateCosts()">
+        Calculate costs
+      </button>
+      <button class="export-button" (click)="onExportReport()">
+        Export report
+      </button>
+    </div>
+
+    <div class="error-message" *ngIf="subsError">
+      {{ subsError }}
+    </div>
+
+    <div class="loading" *ngIf="subsLoading">
+      <p>Loading your subscriptions...</p>
+    </div>
+
+    <div class="empty-state" *ngIf="!subsLoading && subscriptions.length === 0 && !subsError">
+      <p>No subscriptions found.</p>
+    </div>
+
+    <div class="table-wrapper" *ngIf="!subsLoading && subscriptions.length > 0">
+      <table class="categories-table">
+        <thead>
+          <tr>
+            <th>Company Name</th>
+            <th>Billing Type</th>
+            <th>Price</th>
+            <th>Start Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of subscriptions">
+            <td>{{ getCategoryById(s.subscriptionCategoryId)?.companyName || '—' }}</td>
+            <td>{{ getCategoryById(s.subscriptionCategoryId)?.billingType || '—' }}</td>
+            <td>${{ getCategoryById(s.subscriptionCategoryId)?.price?.toFixed(2) || '0.00' }}</td>
+            <td>{{ s.startDate }}</td>
+            <td>
+              <button class="action-button mr-4" (click)="openPaymentAlertModal(s)">Alert</button>
+              <button class="action-button delete-button mr-4" (click)="onDeleteSubscription(s)">Delete</button>
+              <button class="action-button edit-button" (click)="openEditSubscriptionModal(s)">Edit</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="isModalOpen" (click)="closeModal()"></div>
+<div class="modal-dialog" *ngIf="isModalOpen">
+  <div class="modal-header">
+    <h2>Edit Subscription Category</h2>
+    <button class="modal-close" (click)="closeModal()">✕</button>
+  </div>
+
+  <div class="modal-body">
+    <form class="modal-form" (ngSubmit)="onUpdateCategory()">
+      <div class="form-group">
+        <label for="modalCompanyName">Company Name</label>
+        <input
+          id="modalCompanyName"
+          type="text"
+          [(ngModel)]="modalFormData.companyName"
+          name="companyName"
+          placeholder="Enter company name"
+          [disabled]="modalFormLoading"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="modalBillingType">Billing Type</label>
+        <select
+          id="modalBillingType"
+          [(ngModel)]="modalFormData.billingType"
+          name="billingType"
+          [disabled]="modalFormLoading || billingTypes.length === 0"
+        >
+          <option *ngFor="let type of billingTypes" [value]="type">
+            {{ type }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="modalPrice">Price ($)</label>
+        <input
+          id="modalPrice"
+          type="number"
+          [(ngModel)]="modalFormData.price"
+          name="price"
+          placeholder="Enter price"
+          step="0.01"
+          min="0"
+          [disabled]="modalFormLoading"
+        />
+      </div>
+
+      <div class="success-message" *ngIf="modalSuccessMessage">
+        {{ modalSuccessMessage }}
+      </div>
+
+      <div class="form-error" *ngIf="modalFormError">
+        {{ modalFormError }}
+      </div>
+
+      <div class="modal-actions">
+        <button
+          type="button"
+          class="cancel-button"
+          (click)="closeModal()"
+          [disabled]="modalFormLoading"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="save-button"
+          [disabled]="modalFormLoading"
+        >
+          {{ modalFormLoading ? 'Updating...' : 'Save Changes' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="isSubscriptionModalOpen" (click)="closeSubscriptionModal()"></div>
+<div class="modal-dialog" *ngIf="isSubscriptionModalOpen">
+  <div class="modal-header">
+    <h2>Edit Subscription</h2>
+    <button class="modal-close" (click)="closeSubscriptionModal()">✕</button>
+  </div>
+
+  <div class="modal-body">
+    <form class="modal-form" (ngSubmit)="onUpdateSubscription()">
+      <div class="form-group">
+        <label for="modalSubCategory">Category</label>
+        <select id="modalSubCategory" [(ngModel)]="modalSubscriptionData.subscriptionCategoryId" name="subscriptionCategoryId" [disabled]="modalSubscriptionLoading || categories.length === 0">
+          <option *ngFor="let c of categories" [ngValue]="c.id">{{ c.companyName }} — {{ c.billingType }} — ${{ c.price.toFixed(2) }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="modalStartDate">Start Date</label>
+        <input id="modalStartDate" type="date" [(ngModel)]="modalSubscriptionData.startDate" name="startDate" [disabled]="modalSubscriptionLoading" />
+      </div>
+
+      <div class="success-message" *ngIf="modalSubscriptionSuccess">
+        {{ modalSubscriptionSuccess }}
+      </div>
+
+      <div class="form-error" *ngIf="modalSubscriptionError">
+        {{ modalSubscriptionError }}
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="cancel-button" (click)="closeSubscriptionModal()" [disabled]="modalSubscriptionLoading">Cancel</button>
+        <button type="submit" class="save-button" [disabled]="modalSubscriptionLoading">{{ modalSubscriptionLoading ? 'Updating...' : 'Save Changes' }}</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="isPaymentAlertModalOpen" (click)="closePaymentAlertModal()"></div>
+<div class="modal-dialog" *ngIf="isPaymentAlertModalOpen">
+  <div class="modal-header">
+    <h2>Add Payment Alert</h2>
+    <button class="modal-close" (click)="closePaymentAlertModal()">✕</button>
+  </div>
+
+  <div class="modal-body">
+    <form class="modal-form" (ngSubmit)="onUpdateSubscription()">
+      <div class="form-group">
+        <label for="paymentAlertSubscription">Subscription</label>
+        <select id="paymentAlertSubscription" [disabled]="true">
+          <option [selected]="true" [ngValue]="paymentAlertData.subscription?.id">{{ getCategoryById(paymentAlertData.subscription?.subscriptionCategoryId)?.companyName + ' — ' + getCategoryById(paymentAlertData.subscription?.subscriptionCategoryId)?.billingType + ' — $' + getCategoryById(paymentAlertData.subscription?.subscriptionCategoryId)?.price }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="paymentAlertDate">Date</label>
+        <input id="paymentAlertDate" type="date" [(ngModel)]="paymentAlertData.date" name="date"/>
+      </div>
+
+      <div class="success-message" *ngIf="modalAlertSuccess">
+        {{ modalAlertSuccess }}
+      </div>
+
+      <div class="form-error" *ngIf="modalAlertError">
+        {{ modalAlertError }}
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="cancel-button" (click)="closePaymentAlertModal()">Cancel</button>
+        <button type="submit" class="save-button" (click)="addPaymentAlert()">Add</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="isMessageModalOpen" (click)="closeShowCostModal()">
+<app-modalmessage [message]="costModalMessage"></app-modalmessage>
+</div>
+
+
+

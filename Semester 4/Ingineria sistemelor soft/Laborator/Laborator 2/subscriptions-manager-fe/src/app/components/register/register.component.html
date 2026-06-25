@@ -1,0 +1,32 @@
+<main class="register-page">
+  <section class="register-card" aria-labelledby="register-title">
+	<h1 id="register-title">Create account</h1>
+	<p class="subtitle">Create your profile to start managing subscriptions.</p>
+
+	<form class="register-form" novalidate (ngSubmit)="onRegister()">
+	  <label for="firstName">First name</label>
+	  <input id="firstName" type="text" name="firstName" [(ngModel)]="firstName" placeholder="John" autocomplete="given-name" />
+
+	  <label for="lastName">Last name</label>
+	  <input id="lastName" type="text" name="lastName" [(ngModel)]="lastName" placeholder="Doe" autocomplete="family-name" />
+
+	  <label for="email">Email</label>
+	  <input id="email" type="email" name="email" [(ngModel)]="email" placeholder="you@example.com" autocomplete="email" />
+
+	  <label for="password">Password</label>
+	  <input id="password" type="password" name="password" [(ngModel)]="password" placeholder="Create a password" autocomplete="new-password" />
+
+	  <label for="confirmPassword">Confirm password</label>
+	  <input id="confirmPassword" type="password" name="confirmPassword" [(ngModel)]="confirmPassword" placeholder="Repeat your password" autocomplete="new-password" />
+
+    <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+	  <button type="submit">Create account</button>
+	</form>
+
+	<p class="login-link">
+	  Already have an account?
+	  <a routerLink="/login">Sign in</a>
+	</p>
+  </section>
+</main>

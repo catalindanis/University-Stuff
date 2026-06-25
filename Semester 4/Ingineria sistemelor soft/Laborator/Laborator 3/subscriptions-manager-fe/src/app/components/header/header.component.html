@@ -1,0 +1,19 @@
+<header class="header">
+  <div class="header-content">
+    <h1 class="header-title">Subscriptions Manager</h1>
+
+    <button class="burger-menu" (click)="toggleMenu()" [class.active]="isMenuOpen">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav class="menu" [class.open]="isMenuOpen">
+      <button class="menu-item" (click)="onLogout()">Logout</button>
+    </nav>
+  </div>
+
+  <!-- Click outside to close menu -->
+  <div class="menu-overlay" *ngIf="isMenuOpen" (click)="closeMenu()"></div>
+</header>
+

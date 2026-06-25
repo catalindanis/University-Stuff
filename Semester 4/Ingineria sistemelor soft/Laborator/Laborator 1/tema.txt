@@ -1,0 +1,61 @@
+✅ Temă propusă (recomandată)
+SubscriptionManager
+
+Sistem de gestionare a abonamentelor personale
+
+Aplicație web sau desktop care permite utilizatorilor să gestioneze abonamente recurente (Netflix, Spotify, utilități, software etc.), cu costuri, date de reînnoire și notificări.
+
+🧱 Arhitectură stratificată (obligatorie)
+
+1️⃣ Presentation Layer
+
+UI Web (HTML/Thymeleaf) sau
+
+UI Desktop (JavaFX / Swing)
+
+2️⃣ Business Logic Layer
+
+validări
+
+calcule cost lunar/anual
+
+logică de notificare
+
+3️⃣ Data Access Layer
+
+JPA + Hibernate (ORM)
+
+Repository / DAO
+
+Bază de date relațională (MySQL / PostgreSQL / H2)
+
+📌 Entități principale
+
+Subscription
+
+Category
+
+User (opțional, pentru complexitate)
+
+PaymentCycle
+
+👉 CRUD complet obligatoriu pe Subscription
+
+⚙️ Funcționalități majore (8 funcții – în cerință)
+
+Adăugare abonament (Create)
+
+Vizualizare listă abonamente (Read)
+
+Editare abonament (Update)
+
+Ștergere abonament (Delete)
+
+Clasificare pe categorii
+
+Calcul cost lunar și anual
+
+Filtrare după categorie / cost
+
+Alerte pentru reînnoire (logică simulată)
+
