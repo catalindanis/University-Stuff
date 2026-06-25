@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="535.0" prefWidth="222.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sgbd.proiect.controller.HomeController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="538.0" prefWidth="222.0" AnchorPane.bottomAnchor="-38.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Button fx:id="dirtyReadsButton" mnemonicParsing="false" text="Dirty reads">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin></Button>
+            <Button fx:id="nonRepeatableReadsButton" mnemonicParsing="false" text="Non repeatable reads">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin></Button>
+            <Button fx:id="simulatePhantomReadButton" mnemonicParsing="false" text="Phantom read">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin></Button>
+            <Button fx:id="lostUpdatesButton" mnemonicParsing="false" text="Lost updates">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin></Button>
+            <Button fx:id="deadlockButton" mnemonicParsing="false" text="Deadlock">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin></Button>
+            <Button fx:id="oneTransactionPerCommitButton" mnemonicParsing="false" text="insertOneTransactionPerCommit">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin></Button>
+            <Button fx:id="commitEvery100InsertsButton" mnemonicParsing="false" text="commitEvery100Inserts">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin></Button>
+            <Button fx:id="insertWithOneCommitButton" mnemonicParsing="false" text="insertWithOneCommit">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin></Button>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -1,0 +1,14 @@
+SELECT 
+	p.product_name,
+	SUM(oi.quantity),
+	COUNT(DISTINCT o.customer_id)
+FROM
+	Products p
+JOIN
+	Order_items oi ON oi.product_id = p.product_id
+JOIN
+	Orders o ON oi.order_id = o.order_id
+GROUP BY
+	p.product_id, p.product_name
+HAVING
+	COUNT(DISTINCT o.customer_id) >= 2

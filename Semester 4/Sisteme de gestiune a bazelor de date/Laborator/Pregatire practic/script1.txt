@@ -1,0 +1,19 @@
+SELECT 
+	e.employee_name,
+	e.department,
+	COUNT(DISTINCT o.customer_id) AS distinct_customers_handled, 
+	SUM(oi.quantity * p.price) AS totalrevenuegenerated, 
+	AVG(oi.discount) AS avgdiscountgiven
+FROM
+	Employees e
+JOIN
+	Orders o ON e.employeeid = o.employeeid
+JOIN
+	OrderItems oi ON o.orderid = oi.orderid
+JOIN
+	Products p ON oi.productid = p.productid
+GROUP BY e.employeeid,e.employeename,e.department
+HAVING
+	COUNT(DISTINCT o.orderid) > 3 AND SUM(oi.quantity * p.price) > 5000
+ORDER BY
+	total_revenue_generated

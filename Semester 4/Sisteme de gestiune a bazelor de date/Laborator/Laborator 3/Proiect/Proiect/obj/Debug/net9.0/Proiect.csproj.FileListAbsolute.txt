@@ -1,0 +1,5 @@
+D:\Facultate\Sisteme de gestiune a bazelor de date\Laborator\Laborator 3\Proiect\Proiect\obj\Debug\net9.0\Proiect.csproj.AssemblyReference.cache
+D:\Facultate\Sisteme de gestiune a bazelor de date\Laborator\Laborator 3\Proiect\Proiect\obj\Debug\net9.0\Proiect.GeneratedMSBuildEditorConfig.editorconfig
+D:\Facultate\Sisteme de gestiune a bazelor de date\Laborator\Laborator 3\Proiect\Proiect\obj\Debug\net9.0\Proiect.AssemblyInfoInputs.cache
+D:\Facultate\Sisteme de gestiune a bazelor de date\Laborator\Laborator 3\Proiect\Proiect\obj\Debug\net9.0\Proiect.AssemblyInfo.cs
+D:\Facultate\Sisteme de gestiune a bazelor de date\Laborator\Laborator 3\Proiect\Proiect\obj\Debug\net9.0\Proiect.csproj.CoreCompileInputs.cache
