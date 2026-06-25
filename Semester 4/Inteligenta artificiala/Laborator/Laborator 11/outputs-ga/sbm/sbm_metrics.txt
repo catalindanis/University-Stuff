@@ -1,0 +1,7 @@
+dataset: sbm
+method: ga
+nodes: 50
+edges: 128
+communities: 4
+modularity: 0.535187
+conductance: 0.904013

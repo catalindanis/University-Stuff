@@ -1,0 +1,6 @@
+dataset: krebs
+method: girvan_newman
+nodes: 105
+edges: 441
+communities: 5
+modularity: 0.516801

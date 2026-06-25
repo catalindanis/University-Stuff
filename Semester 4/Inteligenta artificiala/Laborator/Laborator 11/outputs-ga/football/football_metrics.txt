@@ -1,0 +1,7 @@
+dataset: football
+method: ga
+nodes: 115
+edges: 613
+communities: 10
+modularity: 0.603375
+modularity: 0.603375

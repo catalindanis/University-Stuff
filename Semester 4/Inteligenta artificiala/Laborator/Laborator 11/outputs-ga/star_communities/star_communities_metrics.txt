@@ -1,0 +1,7 @@
+dataset: star_communities
+method: ga
+nodes: 45
+edges: 69
+communities: 3
+modularity: 0.623188
+modularity: 0.623188

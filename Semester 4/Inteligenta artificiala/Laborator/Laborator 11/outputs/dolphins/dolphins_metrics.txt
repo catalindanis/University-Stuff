@@ -1,0 +1,6 @@
+dataset: dolphins
+method: girvan_newman
+nodes: 62
+edges: 159
+communities: 5
+modularity: 0.519382

@@ -1,0 +1,13 @@
+.report-header { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid var(--border); }
+.report-header h3 { color: var(--text-muted); font-size: 13px; text-transform: uppercase; margin: 0 0 5px 0; }
+.report-header h2 { color: var(--text-main); font-size: 24px; margin: 0; }
+.empty-report { padding: 60px 20px; text-align: center; color: var(--text-muted); font-style: italic; border: 2px dashed var(--border); border-radius: 12px; margin-top: 20px; }
+.info-block { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; border-left: 4px solid var(--primary); }
+.info-block h4 { margin: 0 0 10px 0; color: var(--primary); font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+.info-block p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--text-main); }
+.grid-2-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.priority-block { border-left-color: #ef4444; }
+.priority-block h4 { color: #ef4444; }
+.action-text { font-weight: 600; }
+.ref-list { margin: 0; padding-left: 20px; font-size: 14px; color: var(--text-muted); }
+.ref-list li { margin-bottom: 5px; }

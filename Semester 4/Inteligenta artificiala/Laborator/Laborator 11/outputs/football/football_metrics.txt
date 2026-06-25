@@ -1,0 +1,6 @@
+dataset: football
+method: girvan_newman
+nodes: 115
+edges: 613
+communities: 10
+modularity: 0.599629

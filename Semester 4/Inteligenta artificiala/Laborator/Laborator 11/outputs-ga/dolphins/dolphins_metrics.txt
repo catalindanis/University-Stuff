@@ -1,0 +1,6 @@
+dataset: dolphins
+method: ga
+nodes: 62
+edges: 159
+communities: 4
+modularity: 0.520292

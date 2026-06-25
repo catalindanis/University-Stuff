@@ -1,0 +1,7 @@
+dataset: karate
+method: ga
+nodes: 34
+edges: 78
+communities: 5
+modularity: 0.401298
+modularity: 0.401298

@@ -1,0 +1,6 @@
+[submodule "Pharmacovigilance-Signal-Triage-Copilot-BE"]
+	path = Pharmacovigilance-Signal-Triage-Copilot-BE
+	url = https://github.com/catalindanis/Pharmacovigilance-Signal-Triage-Copilot-BE
+[submodule "Pharmacovigilance-Signal-Triage-Copilot-FE"]
+	path = Pharmacovigilance-Signal-Triage-Copilot-FE
+	url = https://github.com/catalindanis/Pharmacovigilance-Signal-Triage-Copilot-FE

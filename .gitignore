@@ -1,0 +1,123 @@
+# ====================================================================
+# 🤖 PYTHON & MACHINE LEARNING (AI Labs)
+# ====================================================================
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+bin/
+lib/
+include/
+share/
+
+# Python cache and compiled bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Heavy ML Models, weights, and training checkpoints
+*checkpoint*/
+*.safetensors
+*.pt
+*.pth
+*.bin
+*.onnx
+*.pkl
+
+
+# ====================================================================
+# ⚛️ REACT & NODE.JS
+# ====================================================================
+# Dependencies (Never commit node_modules!)
+node_modules/
+.pnpm-store/
+
+# Production build outputs
+build/
+dist/
+out/
+
+# Local environment variables (Contains API keys/secrets)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+
+
+# ====================================================================
+# ☕ JAVA (Maven, Gradle, IntelliJ, Eclipse)
+# ====================================================================
+# Compiled Java bytecode
+*.class
+
+# Package outputs (Heavy archives)
+*.jar
+*.war
+*.ear
+*.nar
+
+# Build tools directories
+target/
+.gradle/
+build/
+out/
+bin/
+
+# IDE specific settings
+.metadata/
+.classpath
+.project
+.settings/
+*.iml
+*.iws
+*.ipr
+
+
+# ====================================================================
+# ⚔️ C# & .NET (Visual Studio, Rider)
+# ====================================================================
+# Build Outputs
+[bin]/
+[obj]/
+[Bbin]/
+[Oobj]/
+
+# User-specific and cache files
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+
+# NuGet Packages
+*.nuget.props
+*.nuget.targets
+packages/
+
+
+# ====================================================================
+# 🖥️ OS & IDE GENERAL
+# ====================================================================
+# Windows folder settings
+Thumbs.db
+desktop.ini
+
+# macOS folder settings
+.DS_Store
+
+# JetBrains (IntelliJ, Rider, PyCharm) global settings
+.idea/
+
+# VS Code settings
+.vscode/

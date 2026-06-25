@@ -1,0 +1,7 @@
+dataset: smallworld
+method: ga
+nodes: 30
+edges: 67
+communities: 5
+modularity: 0.483738
+modularity: 0.483738

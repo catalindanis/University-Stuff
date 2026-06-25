@@ -1,0 +1,7 @@
+dataset: smallworld
+method: girvan_newman
+nodes: 30
+edges: 67
+communities: 5
+modularity: 0.469926
+modularity: 0.469926

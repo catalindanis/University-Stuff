@@ -1,0 +1,44 @@
+.dashboard-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  background: var(--surface);
+  padding: 20px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  flex-shrink: 0;
+  min-width: 1000px;
+}
+
+.header-brand h1 { margin: 0; font-size: 24px; color: var(--text-main); }
+.header-brand span { color: var(--primary); }
+.header-brand p { margin: 5px 0 0 0; color: var(--text-muted); font-size: 14px; }
+h2 { color: var(--text-main) }
+
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 24px;
+  height: calc(100vh - 150px);
+}
+
+.signals-panel, .report-panel {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  overflow-y: auto;
+  position: relative;
+}
+
+.spinner { width: 40px; height: 40px; border: 4px solid #e2e8f0; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.btn-export { background: var(--text-main); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; transition: background 0.2s; }
+.btn-export:hover { background: #0f172a; }

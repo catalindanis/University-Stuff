@@ -1,0 +1,7 @@
+dataset: geometric
+method: ga
+nodes: 55
+edges: 225
+communities: 4
+modularity: 0.595269
+coverage: 0.920000
